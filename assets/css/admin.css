@@ -1,0 +1,82 @@
+/* Bourse aux stickers — administration */
+
+.stk-admin-card {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    padding: 0 1.25rem 1.25rem;
+    margin: 1rem 0 1.5rem;
+    max-width: 1100px;
+}
+
+.stk-admin-columns {
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) 2fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.stk-admin-columns .stk-admin-card {
+    margin: 0;
+}
+
+.stk-image-preview img {
+    display: block;
+    max-width: 120px;
+    height: auto;
+    margin-bottom: .5rem;
+}
+
+.stk-table td {
+    vertical-align: middle;
+}
+
+.stk-actions form {
+    display: inline-block;
+    margin: 0 0 0 .25rem;
+}
+
+.stk-inactive td {
+    opacity: .55;
+}
+
+.stk-search {
+    margin: 1rem 0;
+}
+
+.stk-admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    gap: .4rem;
+    margin: 0;
+}
+
+.stk-admin-grid li {
+    margin: 0;
+    padding: .3rem;
+    text-align: center;
+    border: 1px solid #c3c4c7;
+    border-radius: 3px;
+    background: #fff;
+}
+
+.stk-admin-grid li span,
+.stk-admin-grid li em {
+    display: block;
+    font-size: 11px;
+}
+
+.stk-admin-grid .stk-state-manquant {
+    opacity: .45;
+    border-style: dashed;
+}
+
+.stk-admin-grid .stk-state-double {
+    border-color: #1d2327;
+    font-weight: 600;
+}
+
+@media (max-width: 960px) {
+    .stk-admin-columns {
+        grid-template-columns: 1fr;
+    }
+}

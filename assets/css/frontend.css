@@ -1,0 +1,196 @@
+/* Bourse aux stickers — Mon compte */
+
+.stk-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    list-style: none;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, .12);
+}
+
+.stk-nav li a {
+    display: inline-block;
+    padding: .5rem .9rem;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+}
+
+.stk-nav li.is-active a {
+    font-weight: 600;
+    border-bottom-color: currentColor;
+}
+
+.stk-stats {
+    font-size: 1.05em;
+}
+
+.stk-help,
+.stk-privacy,
+.stk-profile .description {
+    opacity: .8;
+    font-size: .92em;
+}
+
+.stk-filters {
+    display: flex;
+    gap: .5rem;
+    margin: 1rem 0;
+}
+
+.stk-filters .stk-filter.is-active {
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.stk-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: .75rem;
+    list-style: none;
+    margin: 0 0 1rem;
+    padding: 0;
+}
+
+.stk-card {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid rgba(0, 0, 0, .12);
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fff;
+    transition: border-color .15s, opacity .15s;
+}
+
+.stk-card[hidden] {
+    display: none;
+}
+
+.stk-card.is-saving {
+    opacity: .6;
+}
+
+.stk-card-plus {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .25rem;
+    width: 100%;
+    padding: .5rem;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    text-align: center;
+}
+
+.stk-card-plus:focus-visible,
+.stk-card-minus:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+}
+
+.stk-card-img {
+    width: 100%;
+    height: auto;
+    max-height: 90px;
+    object-fit: contain;
+}
+
+.stk-card-num {
+    font-size: 1.4em;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.stk-card-name {
+    font-size: .8em;
+    line-height: 1.2;
+    word-break: break-word;
+}
+
+.stk-card-qty {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+}
+
+.stk-card-minus {
+    flex: 0 0 2.2rem;
+    height: 2.2rem;
+    border: 0;
+    border-right: 1px solid rgba(0, 0, 0, .1);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font-size: 1.2em;
+    line-height: 1;
+}
+
+.stk-card-qty input[type="number"] {
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+    height: 2.2rem;
+    border: 0;
+    padding: 0 .25rem;
+    text-align: center;
+    background: transparent;
+}
+
+.stk-card-reserved {
+    display: block;
+    padding: .15rem .25rem;
+    font-size: .75em;
+    text-align: center;
+    background: rgba(0, 0, 0, .06);
+}
+
+.stk-card-reserved[hidden] {
+    display: none;
+}
+
+/* États : manquant (estompé), possédé, double (mis en avant). */
+.stk-state-manquant {
+    opacity: .55;
+    border-style: dashed;
+}
+
+.stk-state-manquant.is-saving {
+    opacity: .4;
+}
+
+.stk-state-possede {
+    border-color: rgba(0, 0, 0, .45);
+}
+
+.stk-state-double {
+    border-color: #000;
+    box-shadow: 0 0 0 1px #000;
+}
+
+.stk-inventory-status.is-error {
+    color: #b32d2e;
+}
+
+.stk-form {
+    margin-bottom: 2rem;
+}
+
+.stk-profile select {
+    width: 100%;
+}
+
+.stk-inventory .screen-reader-text {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}

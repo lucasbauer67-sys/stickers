@@ -1,0 +1,646 @@
+# Copyright (C) 2026 Xylene14
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Bourse aux stickers 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-11-15T13:16:25+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: stickers\n"
+
+#. Plugin Name of the plugin
+#: stickers.php
+#: includes/class-stk-admin.php:31
+#: templates/myaccount/nav.php:13
+msgid "Bourse aux stickers"
+msgstr ""
+
+#. Description of the plugin
+#: stickers.php
+msgid "Bourse d'échange de stickers entre membres connectés : inventaire déclaratif, propositions d'échange, suggestions automatiques."
+msgstr ""
+
+#. Author of the plugin
+#: stickers.php
+msgid "Xylene14"
+msgstr ""
+
+#: includes/class-stk-admin.php:32
+#: includes/class-stk-frontend.php:38
+#: includes/class-stk-frontend.php:62
+msgid "Stickers"
+msgstr ""
+
+#: includes/class-stk-admin.php:39
+#: includes/class-stk-admin.php:161
+msgid "Catalogue des stickers"
+msgstr ""
+
+#: includes/class-stk-admin.php:39
+msgid "Catalogue"
+msgstr ""
+
+#: includes/class-stk-admin.php:40
+#: includes/class-stk-admin.php:322
+msgid "Membres de la bourse"
+msgstr ""
+
+#: includes/class-stk-admin.php:40
+msgid "Membres"
+msgstr ""
+
+#: includes/class-stk-admin.php:41
+#: includes/class-stk-admin.php:535
+msgid "Réglages de la bourse"
+msgstr ""
+
+#: includes/class-stk-admin.php:41
+msgid "Réglages"
+msgstr ""
+
+#: includes/class-stk-admin.php:53
+msgid "Image du sticker"
+msgstr ""
+
+#: includes/class-stk-admin.php:54
+msgid "Utiliser cette image"
+msgstr ""
+
+#: includes/class-stk-admin.php:55
+msgid "Supprimer définitivement ce sticker ?"
+msgstr ""
+
+#: includes/class-stk-admin.php:90
+msgid "Action non autorisée."
+msgstr ""
+
+#: includes/class-stk-admin.php:111
+msgid "Sticker mis à jour."
+msgstr ""
+
+#: includes/class-stk-admin.php:115
+msgid "Sticker ajouté. Vous pouvez saisir le suivant."
+msgstr ""
+
+#: includes/class-stk-admin.php:125
+#: includes/class-stk-catalog.php:129
+msgid "Sticker introuvable."
+msgstr ""
+
+#: includes/class-stk-admin.php:133
+msgid "Sticker activé."
+msgstr ""
+
+#: includes/class-stk-admin.php:133
+msgid "Sticker désactivé : il n'apparaît plus dans la bourse, les quantités déclarées sont conservées."
+msgstr ""
+
+#: includes/class-stk-admin.php:140
+msgid "Sticker supprimé."
+msgstr ""
+
+#. translators: %d: nombre de stickers actifs
+#: includes/class-stk-admin.php:166
+#, php-format
+msgid "%d sticker actif : c'est le total de la collection affiché aux membres."
+msgid_plural "%d stickers actifs : c'est le total de la collection affiché aux membres."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %s: numéro du sticker
+#: includes/class-stk-admin.php:175
+#, php-format
+msgid "Modifier le sticker nº %s"
+msgstr ""
+
+#: includes/class-stk-admin.php:177
+msgid "Ajouter un sticker"
+msgstr ""
+
+#: includes/class-stk-admin.php:185
+#: includes/class-stk-admin.php:232
+msgid "Numéro"
+msgstr ""
+
+#: includes/class-stk-admin.php:188
+msgid "Numéro unique dans la collection. Les numéros spéciaux sont acceptés (ex. 12a)."
+msgstr ""
+
+#: includes/class-stk-admin.php:192
+#: includes/class-stk-admin.php:234
+msgid "Nom"
+msgstr ""
+
+#: includes/class-stk-admin.php:196
+msgid "Ordre d'affichage"
+msgstr ""
+
+#: includes/class-stk-admin.php:199
+msgid "Laisser vide pour un ordre automatique (numéro × 10). Exemple : 125 place un sticker entre le 12 et le 13."
+msgstr ""
+
+#: includes/class-stk-admin.php:203
+msgid "Image (facultative)"
+msgstr ""
+
+#: includes/class-stk-admin.php:208
+msgid "Choisir une image"
+msgstr ""
+
+#: includes/class-stk-admin.php:209
+msgid "Retirer l'image"
+msgstr ""
+
+#: includes/class-stk-admin.php:213
+#: includes/class-stk-admin.php:235
+msgid "Statut"
+msgstr ""
+
+#: includes/class-stk-admin.php:214
+msgid "Actif (visible dans la bourse)"
+msgstr ""
+
+#: includes/class-stk-admin.php:217
+msgid "Mettre à jour"
+msgstr ""
+
+#: includes/class-stk-admin.php:217
+msgid "Ajouter le sticker"
+msgstr ""
+
+#: includes/class-stk-admin.php:219
+msgid "Annuler"
+msgstr ""
+
+#: includes/class-stk-admin.php:224
+msgid "Stickers du catalogue"
+msgstr ""
+
+#: includes/class-stk-admin.php:226
+msgid "Aucun sticker pour l'instant."
+msgstr ""
+
+#: includes/class-stk-admin.php:231
+msgid "Ordre"
+msgstr ""
+
+#: includes/class-stk-admin.php:233
+msgid "Image"
+msgstr ""
+
+#: includes/class-stk-admin.php:236
+msgid "Membres qui l'ont"
+msgstr ""
+
+#: includes/class-stk-admin.php:237
+msgid "Actions"
+msgstr ""
+
+#: includes/class-stk-admin.php:250
+msgid "Actif"
+msgstr ""
+
+#: includes/class-stk-admin.php:250
+msgid "Désactivé"
+msgstr ""
+
+#: includes/class-stk-admin.php:253
+msgid "Modifier"
+msgstr ""
+
+#: includes/class-stk-admin.php:259
+msgid "Désactiver"
+msgstr ""
+
+#: includes/class-stk-admin.php:259
+msgid "Activer"
+msgstr ""
+
+#: includes/class-stk-admin.php:267
+msgid "Supprimer"
+msgstr ""
+
+#: includes/class-stk-admin.php:289
+#: includes/class-stk-admin.php:394
+msgid "Membre introuvable."
+msgstr ""
+
+#: includes/class-stk-admin.php:297
+msgid "Pseudo modifié."
+msgstr ""
+
+#: includes/class-stk-admin.php:323
+msgid "Sont listés les clients qui ont choisi un pseudo."
+msgstr ""
+
+#: includes/class-stk-admin.php:327
+#: includes/class-stk-admin.php:329
+msgid "Rechercher"
+msgstr ""
+
+#: includes/class-stk-admin.php:328
+msgid "Pseudo, nom ou email"
+msgstr ""
+
+#: includes/class-stk-admin.php:335
+#: includes/class-stk-admin.php:414
+#: templates/myaccount/profil.php:30
+msgid "Pseudo"
+msgstr ""
+
+#: includes/class-stk-admin.php:336
+#: includes/class-stk-admin.php:423
+msgid "Compte client"
+msgstr ""
+
+#: includes/class-stk-admin.php:337
+#: templates/myaccount/profil.php:64
+msgid "Adresse"
+msgstr ""
+
+#: includes/class-stk-admin.php:338
+msgid "Possédés"
+msgstr ""
+
+#: includes/class-stk-admin.php:339
+#: templates/myaccount/inventaire.php:54
+msgid "Doubles"
+msgstr ""
+
+#: includes/class-stk-admin.php:340
+msgid "Dernière activité"
+msgstr ""
+
+#: includes/class-stk-admin.php:345
+msgid "Aucun membre."
+msgstr ""
+
+#: includes/class-stk-admin.php:355
+#: includes/class-stk-admin.php:427
+msgid "Compte supprimé"
+msgstr ""
+
+#: includes/class-stk-admin.php:362
+msgid "Incomplète"
+msgstr ""
+
+#: includes/class-stk-admin.php:394
+#: includes/class-stk-admin.php:410
+msgid "Retour à la liste"
+msgstr ""
+
+#. translators: %s: pseudo
+#: includes/class-stk-admin.php:407
+#, php-format
+msgid "Membre : %s"
+msgstr ""
+
+#: includes/class-stk-admin.php:420
+msgid "Modifier le pseudo"
+msgstr ""
+
+#: includes/class-stk-admin.php:430
+msgid "Adresse de la bourse"
+msgstr ""
+
+#: includes/class-stk-admin.php:440
+msgid "Adresse non renseignée."
+msgstr ""
+
+#: includes/class-stk-admin.php:445
+msgid "Inventaire"
+msgstr ""
+
+#. translators: 1: possédés, 2: total, 3: manquants, 4: doubles
+#: includes/class-stk-admin.php:450
+#, php-format
+msgid "%1$d / %2$d possédés · %3$d manquants · %4$d doubles"
+msgstr ""
+
+#. translators: %d: nombre d'exemplaires promis
+#: includes/class-stk-admin.php:468
+#, php-format
+msgid "%d promis"
+msgstr ""
+
+#: includes/class-stk-admin.php:541
+msgid "Nom de la collection"
+msgstr ""
+
+#: includes/class-stk-admin.php:544
+msgid "Affiché en titre de l'inventaire des membres. Laisser vide pour ne rien afficher."
+msgstr ""
+
+#: includes/class-stk-admin.php:548
+msgid "Token GitHub (mises à jour)"
+msgstr ""
+
+#: includes/class-stk-admin.php:551
+msgid "Token enregistré — laisser vide pour le conserver"
+msgstr ""
+
+#: includes/class-stk-admin.php:553
+msgid "Supprimer le token enregistré"
+msgstr ""
+
+#: includes/class-stk-admin.php:555
+msgid "Nécessaire pour que WordPress détecte les nouvelles versions publiées sur le dépôt privé GitHub « stickers » (Releases)."
+msgstr ""
+
+#: includes/class-stk-admin.php:559
+msgid "Désinstallation"
+msgstr ""
+
+#: includes/class-stk-admin.php:563
+msgid "Supprimer toutes les données de la bourse (catalogue, inventaires, membres, échanges, réglages) quand le plugin est supprimé"
+msgstr ""
+
+#: includes/class-stk-admin.php:564
+msgid "Décoché par défaut : la suppression du plugin conserve alors toutes les données."
+msgstr ""
+
+#. translators: %d: longueur maximale
+#: includes/class-stk-catalog.php:81
+#, php-format
+msgid "Numéro invalide : %d caractères maximum (lettres, chiffres, espace, point, tiret, tiret bas)."
+msgstr ""
+
+#: includes/class-stk-catalog.php:87
+msgid "Le nom est obligatoire (190 caractères maximum)."
+msgstr ""
+
+#: includes/class-stk-catalog.php:91
+msgid "Le fichier choisi n'est pas une image."
+msgstr ""
+
+#: includes/class-stk-catalog.php:96
+msgid "Ce numéro existe déjà dans le catalogue."
+msgstr ""
+
+#: includes/class-stk-catalog.php:132
+#: includes/class-stk-catalog.php:137
+#: includes/class-stk-catalog.php:180
+#: includes/class-stk-members.php:165
+msgid "Erreur de base de données."
+msgstr ""
+
+#: includes/class-stk-catalog.php:176
+msgid "Ce sticker est utilisé par des membres : il peut seulement être désactivé."
+msgstr ""
+
+#. translators: 1: numéro du sticker, 2: nom du sticker
+#: includes/class-stk-catalog.php:205
+#, php-format
+msgid "Nº %1$s — %2$s"
+msgstr ""
+
+#: includes/class-stk-database.php:130
+#: includes/class-stk-database.php:135
+#: includes/class-stk-database.php:147
+msgid "Erreur de base de données, veuillez réessayer."
+msgstr ""
+
+#: includes/class-stk-database.php:145
+msgid "Opération concurrente, veuillez réessayer."
+msgstr ""
+
+#: includes/class-stk-frontend.php:67
+msgid "Mon inventaire"
+msgstr ""
+
+#: includes/class-stk-frontend.php:68
+msgid "Pseudo et adresse"
+msgstr ""
+
+#: includes/class-stk-frontend.php:97
+msgid "Enregistré"
+msgstr ""
+
+#: includes/class-stk-frontend.php:98
+msgid "Erreur, la modification n'a pas été enregistrée."
+msgstr ""
+
+#. translators: %s: lien vers la page Pseudo et adresse
+#: includes/class-stk-frontend.php:121
+#, php-format
+msgid "Choisissez un pseudo pour participer à la bourse : %s"
+msgstr ""
+
+#: includes/class-stk-frontend.php:122
+msgid "choisir mon pseudo"
+msgstr ""
+
+#: includes/class-stk-frontend.php:175
+msgid "Session expirée, veuillez réessayer."
+msgstr ""
+
+#: includes/class-stk-frontend.php:187
+msgid "Inventaire enregistré."
+msgstr ""
+
+#: includes/class-stk-frontend.php:193
+msgid "Pseudo enregistré."
+msgstr ""
+
+#: includes/class-stk-frontend.php:199
+msgid "Adresse enregistrée."
+msgstr ""
+
+#: includes/class-stk-frontend.php:224
+msgid "Vous devez être connecté."
+msgstr ""
+
+#: includes/class-stk-github-updater.php:161
+msgid "Bourse d'échange de stickers entre membres."
+msgstr ""
+
+#: includes/class-stk-github-updater.php:162
+msgid "Aucune note de version."
+msgstr ""
+
+#: includes/class-stk-github-updater.php:191
+msgid "Releases GitHub"
+msgstr ""
+
+#: includes/class-stk-inventory.php:77
+msgid "Sticker inconnu ou désactivé."
+msgstr ""
+
+#. translators: %d: quantité maximale
+#: includes/class-stk-inventory.php:82
+#, php-format
+msgid "La quantité doit être comprise entre 0 et %d."
+msgstr ""
+
+#. translators: 1: libellé du sticker, 2: quantité minimale
+#: includes/class-stk-inventory.php:113
+#, php-format
+msgid "%1$s : des exemplaires sont promis dans un échange en cours, la quantité ne peut pas descendre sous %2$d."
+msgstr ""
+
+#: includes/class-stk-members.php:37
+msgid "France"
+msgstr ""
+
+#: includes/class-stk-members.php:38
+msgid "Belgique"
+msgstr ""
+
+#: includes/class-stk-members.php:39
+msgid "Suisse"
+msgstr ""
+
+#. translators: 1: longueur minimale, 2: longueur maximale
+#: includes/class-stk-members.php:58
+#, php-format
+msgid "Le pseudo doit contenir de %1$d à %2$d caractères : lettres sans accent, chiffres, point, tiret ou tiret bas."
+msgstr ""
+
+#: includes/class-stk-members.php:67
+#: includes/class-stk-members.php:102
+msgid "Ce pseudo est déjà utilisé par un autre membre."
+msgstr ""
+
+#: includes/class-stk-members.php:123
+msgid "Tous les champs de l'adresse sont obligatoires, sauf le complément d'adresse."
+msgstr ""
+
+#: includes/class-stk-members.php:127
+msgid "Ce pays n'est pas accepté par la bourse."
+msgstr ""
+
+#: includes/class-stk-members.php:131
+msgid "Le code postal ne correspond pas au pays choisi."
+msgstr ""
+
+#: includes/class-stk-members.php:137
+msgid "Un champ de l'adresse est trop long."
+msgstr ""
+
+#: includes/class-stk-members.php:153
+msgid "Choisissez d'abord votre pseudo."
+msgstr ""
+
+#: stickers.php:96
+msgid "Bourse aux stickers nécessite WooCommerce actif."
+msgstr ""
+
+#: templates/myaccount/inventaire.php:25
+msgid "Le catalogue des stickers n'est pas encore disponible."
+msgstr ""
+
+#. translators: 1: possédés, 2: total, 3: manquants, 4: doubles
+#: templates/myaccount/inventaire.php:32
+#, php-format
+msgid "%1$s / %2$s stickers possédés · %3$s manquants · %4$s doubles"
+msgstr ""
+
+#. translators: %d: quantité maximale
+#: templates/myaccount/inventaire.php:45
+#, php-format
+msgid "Indiquez pour chaque numéro le nombre d'exemplaires que vous possédez (0 à %d). Cliquez sur une case pour ajouter un exemplaire, sur « − » pour en retirer un."
+msgstr ""
+
+#: templates/myaccount/inventaire.php:51
+msgid "Filtrer la grille"
+msgstr ""
+
+#: templates/myaccount/inventaire.php:52
+msgid "Tous"
+msgstr ""
+
+#: templates/myaccount/inventaire.php:53
+msgid "Manquants"
+msgstr ""
+
+#. translators: %s: libellé du sticker
+#: templates/myaccount/inventaire.php:75
+#, php-format
+msgid "Ajouter un exemplaire : %s"
+msgstr ""
+
+#. translators: %s: libellé du sticker
+#: templates/myaccount/inventaire.php:87
+#, php-format
+msgid "Retirer un exemplaire : %s"
+msgstr ""
+
+#. translators: %s: libellé du sticker
+#: templates/myaccount/inventaire.php:92
+#, php-format
+msgid "Exemplaires : %s"
+msgstr ""
+
+#. translators: %d: nombre d'exemplaires promis
+#: templates/myaccount/inventaire.php:101
+#, php-format
+msgid "dont %d promis"
+msgstr ""
+
+#: templates/myaccount/inventaire.php:110
+msgid "Enregistrer l'inventaire"
+msgstr ""
+
+#: templates/myaccount/profil.php:22
+msgid "Votre pseudo est visible des autres membres de la bourse. Votre nom et votre adresse ne sont communiqués qu'à la personne avec qui vous avez accepté un échange, et seulement jusqu'à sa clôture."
+msgstr ""
+
+#: templates/myaccount/profil.php:26
+msgid "Mon pseudo"
+msgstr ""
+
+#. translators: 1: longueur minimale, 2: longueur maximale
+#: templates/myaccount/profil.php:39
+#, php-format
+msgid "%1$d à %2$d caractères : lettres sans accent, chiffres, point, tiret ou tiret bas. Votre pseudo doit être unique."
+msgstr ""
+
+#: templates/myaccount/profil.php:46
+msgid "Enregistrer le pseudo"
+msgstr ""
+
+#: templates/myaccount/profil.php:50
+msgid "Mon adresse pour les échanges"
+msgstr ""
+
+#: templates/myaccount/profil.php:53
+msgid "Choisissez d'abord votre pseudo pour pouvoir enregistrer votre adresse."
+msgstr ""
+
+#: templates/myaccount/profil.php:55
+msgid "Cette adresse est propre à la bourse : elle ne modifie pas vos adresses de facturation et de livraison de la boutique."
+msgstr ""
+
+#: templates/myaccount/profil.php:60
+msgid "Nom et prénom du destinataire"
+msgstr ""
+
+#: templates/myaccount/profil.php:68
+msgid "Complément d'adresse (facultatif)"
+msgstr ""
+
+#: templates/myaccount/profil.php:72
+msgid "Code postal"
+msgstr ""
+
+#: templates/myaccount/profil.php:76
+msgid "Ville"
+msgstr ""
+
+#: templates/myaccount/profil.php:80
+msgid "Pays"
+msgstr ""
+
+#: templates/myaccount/profil.php:82
+msgid "Choisir…"
+msgstr ""
+
+#: templates/myaccount/profil.php:89
+msgid "Enregistrer l'adresse"
+msgstr ""
