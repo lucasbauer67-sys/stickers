@@ -40,6 +40,9 @@ foreach ($args['exchanges'] as $exchange) {
                     foreach ($actions as $action) {
                         $todo[] = $todo_labels[$action];
                     }
+                    if ($exchange->statut === STK_Exchanges::LITIGE) {
+                        $todo[] = __('Litige en cours : l\'équipe du site arbitre.', 'stickers');
+                    }
                     STK_Frontend::template('exchange-card', array(
                         'exchange'  => $exchange,
                         'items'     => $items,

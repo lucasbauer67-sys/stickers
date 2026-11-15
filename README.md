@@ -1,4 +1,4 @@
-# Bourse aux stickers — v0.3.0
+# Bourse aux stickers — v1.0.0
 
 Plugin WordPress/WooCommerce des éditions Black and White : bourse d'échange de stickers entre membres connectés, dans l'esprit des albums Panini. Indépendant du plugin « Abonnements Éditions Limitées ».
 
@@ -47,6 +47,23 @@ En tête de **Mon compte → Stickers → Propositions** : les membres avec qui 
 - Aucun email de suggestion.
 - Mesure locale avec 1 000 membres × 100 stickers et 300 propositions en attente : ~35 ms pour le calcul des suggestions, ~30 ms pour la bourse.
 
+## Étape 4 (v1.0.0) — emails, rappels, litiges, RGPD
+
+**Emails** (texte brut via `wp_mail`, comme le plugin Abonnements ; jamais d'adresse postale) : proposition reçue, acceptation, refus, annulation, demande d'annulation, expiration, rappels (proposition, expédition, réception), clôture, litige (admin + autre membre), litige arbitré, nouveau message. Objet et texte modifiables dans **Stickers → Réglages** (champ vidé = texte par défaut), balises `[pseudo]`, `[autre_pseudo]`, `[numero]`, `[lien]`, `[vous_donnez]`, `[vous_recevez]`, `[date_expiration]`, `[motif]`…
+
+**Tâche horaire** (Action Scheduler de WooCommerce, action `stk_hourly`, groupe `stickers`, visible dans WooCommerce → État → Actions planifiées) :
+- expiration des propositions sans réponse (défaut : 7 jours) ;
+- rappels paramétrables (premier rappel après N jours, puis tous les N jours, nombre de rappels) :
+  - proposition sans réponse, au destinataire (défaut J+3, J+5 ; jamais le jour de l'expiration ou après) ;
+  - expédition, depuis l'acceptation, à celui qui n'a pas expédié (défaut J+3, J+5) ;
+  - réception, depuis l'expédition par l'autre, à celui qui doit confirmer (défaut J+3, J+5) ;
+- un rappel ne part jamais deux fois (compteur incrémenté de façon conditionnelle) ;
+- purge facultative des membres inactifs (désactivée par défaut, 24 mois proposés).
+
+**Litiges** : « Signaler un problème » sur un échange accepté, par l'un ou l'autre, jusqu'à la clôture (motif obligatoire). L'échange est suspendu : réservations maintenues, adresse masquée, plus d'expédition ni d'annulation, discussion ouverte. **Admin → Stickers → Litiges** (compteur dans le menu) : motif, notes internes, « Clôturer comme réussi » (inventaires mis à jour) ou « Annuler l'échange » (réservations libérées, inventaires inchangés). Aucune correction automatique.
+
+**RGPD** : export et effacement via Outils → Exporter / Effacer les données personnelles ; même effacement à la suppression d'un compte. L'effacement annule ou refuse les propositions en attente, transmet les échanges acceptés à l'admin (litige), supprime pseudo, adresse et inventaire, efface le texte des messages ; l'historique des échanges reste visible pour l'autre membre (« Membre supprimé »). Texte proposé pour la politique de confidentialité (Réglages → Confidentialité → guide).
+
 ## Règles de stock
 
 Doubles = exemplaires − 1. Manquants = numéros à 0. Un membre ne peut pas descendre sous 1 + exemplaires promis dans un échange en cours (réservations). Les modifications d'inventaire se font en transaction avec verrouillage des lignes du membre.
@@ -60,6 +77,9 @@ Pour livrer : changer `Version:` dans l'en-tête **et** `STK_VERSION`, pousser s
 
 Supprimer le plugin ne supprime les données que si la case « Supprimer toutes les données de la bourse » est cochée dans les Réglages.
 
-## Feuille de route
+## Mise en production
 
-- Étape 4 : emails, rappels et expiration (Action Scheduler), litiges et arbitrage, RGPD (export / effacement), purge facultative.
+1. Lucas crée la Release GitHub `v1.0.0` (cible `main`).
+2. Première installation en production : téléverser le zip (Extensions → Ajouter → Téléverser), activer. Les mises à jour suivantes passeront par les Releases.
+3. Stickers → Réglages : saisir le token GitHub, vérifier délais et textes des emails.
+4. Ressaisir le catalogue (celui du site de test n'est pas copié).

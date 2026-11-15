@@ -16,10 +16,68 @@ class STK_Admin_Exchanges {
     public function __construct() {
         add_action('admin_menu', array($this, 'add_menu'), 20);
         add_action('admin_post_stk_message_visibility', array($this, 'handle_message_visibility'));
+        add_action('admin_post_stk_dispute_notes', array($this, 'handle_notes'));
+        add_action('admin_post_stk_resolve', array($this, 'handle_resolve'));
+    }
+
+    public static function dispute_count() {
+        global $wpdb;
+        $table = STK_Database::table('exchanges');
+        return (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $table WHERE statut = %s", STK_Exchanges::LITIGE));
     }
 
     public function add_menu() {
         add_submenu_page('stk-catalogue', __('Échanges de stickers', 'stickers'), __('Échanges', 'stickers'), STK_Admin::CAP, 'stk-echanges', array($this, 'render'));
+
+        $count = self::dispute_count();
+        $label = __('Litiges', 'stickers') . ($count ? ' <span class="awaiting-mod">' . (int) $count . '</span>' : '');
+        add_submenu_page('stk-catalogue', __('Litiges à arbitrer', 'stickers'), $label, STK_Admin::CAP, 'stk-litiges', array($this, 'render_disputes'));
+    }
+
+    public function render_disputes() {
+        if (!current_user_can(STK_Admin::CAP)) {
+            return;
+        }
+        $this->render_list(STK_Exchanges::LITIGE, 'stk-litiges', __('Litiges à arbitrer', 'stickers'));
+    }
+
+    private function redirect_to_exchange($id) {
+        wp_safe_redirect(add_query_arg(array('page' => 'stk-echanges', 'echange' => (int) $id), admin_url('admin.php')));
+        exit;
+    }
+
+    private function notice($message, $type) {
+        set_transient('stk_admin_notice_' . get_current_user_id(), array('message' => $message, 'type' => $type), 60);
+    }
+
+    public function handle_notes() {
+        $id = isset($_POST['exchange_id']) ? absint($_POST['exchange_id']) : 0;
+        if (!current_user_can(STK_Admin::CAP)) {
+            wp_die(esc_html__('Action non autorisée.', 'stickers'), 403);
+        }
+        check_admin_referer('stk_dispute_notes_' . $id);
+        $result = STK_Exchanges::save_admin_notes($id, $_POST['admin_notes'] ?? ''); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- nettoyé dans save_admin_notes().
+        $this->notice(is_wp_error($result) ? $result->get_error_message() : __('Notes enregistrées.', 'stickers'), is_wp_error($result) ? 'error' : 'success');
+        $this->redirect_to_exchange($id);
+    }
+
+    public function handle_resolve() {
+        $id = isset($_POST['exchange_id']) ? absint($_POST['exchange_id']) : 0;
+        if (!current_user_can(STK_Admin::CAP)) {
+            wp_die(esc_html__('Action non autorisée.', 'stickers'), 403);
+        }
+        check_admin_referer('stk_resolve_' . $id);
+        $decision = isset($_POST['decision']) ? sanitize_key(wp_unslash($_POST['decision'])) : '';
+        if (isset($_POST['admin_notes'])) {
+            STK_Exchanges::save_admin_notes($id, $_POST['admin_notes']); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- nettoyé dans save_admin_notes().
+        }
+        $result = STK_Exchanges::resolve($id, get_current_user_id(), $decision);
+        if (is_wp_error($result)) {
+            $this->notice($result->get_error_message(), 'error');
+        } else {
+            $this->notice($decision === 'success' ? __('Litige arbitré : échange clôturé comme réussi, inventaires mis à jour. Les deux membres ont été prévenus.', 'stickers') : __('Litige arbitré : échange annulé, réservations libérées. Les deux membres ont été prévenus.', 'stickers'), 'success');
+        }
+        $this->redirect_to_exchange($id);
     }
 
     public static function log_labels() {
@@ -41,6 +99,12 @@ class STK_Admin_Exchanges {
             'cancel_void'     => __('Demande d\'annulation caduque (expédition)', 'stickers'),
             'message_hidden'  => __('Message masqué', 'stickers'),
             'message_shown'   => __('Message réaffiché', 'stickers'),
+            'expire'          => __('Expirée faute de réponse', 'stickers'),
+            'reminder'        => __('Rappel envoyé par email', 'stickers'),
+            'dispute'         => __('Problème signalé (litige)', 'stickers'),
+            'resolve_success' => __('Litige arbitré : clôturé comme réussi', 'stickers'),
+            'resolve_cancel'  => __('Litige arbitré : échange annulé', 'stickers'),
+            'erased'          => __('Données d\'un membre effacées (RGPD)', 'stickers'),
         );
     }
 
@@ -77,10 +141,10 @@ class STK_Admin_Exchanges {
         }
     }
 
-    private function render_list() {
+    private function render_list($forced_status = '', $page = 'stk-echanges', $title = '') {
         global $wpdb;
         // phpcs:disable WordPress.Security.NonceVerification.Recommended
-        $status = isset($_GET['statut']) ? sanitize_key(wp_unslash($_GET['statut'])) : '';
+        $status = $forced_status !== '' ? $forced_status : (isset($_GET['statut']) ? sanitize_key(wp_unslash($_GET['statut'])) : '');
         $search = isset($_GET['s']) ? trim(sanitize_text_field(wp_unslash($_GET['s']))) : '';
         $paged  = isset($_GET['paged']) ? max(1, absint($_GET['paged'])) : 1;
         // phpcs:enable
@@ -115,11 +179,13 @@ class STK_Admin_Exchanges {
             $counts[$row->statut] = (int) $row->n;
         }
         $items = STK_Exchanges::get_items_map(wp_list_pluck($rows, 'id'));
-        $base  = admin_url('admin.php?page=stk-echanges');
+        $base  = admin_url('admin.php?page=' . $page);
+        $detail_base = admin_url('admin.php?page=stk-echanges');
         ?>
         <div class="wrap stk-admin">
-            <h1><?php esc_html_e('Échanges de stickers', 'stickers'); ?></h1>
+            <h1><?php echo esc_html($title !== '' ? $title : __('Échanges de stickers', 'stickers')); ?></h1>
 
+            <?php if ($forced_status === '') : ?>
             <ul class="subsubsub">
                 <li><a href="<?php echo esc_url($base); ?>" class="<?php echo $status === '' ? 'current' : ''; ?>"><?php esc_html_e('Tous', 'stickers'); ?> <span class="count">(<?php echo esc_html(array_sum($counts)); ?>)</span></a></li>
                 <?php foreach ($labels as $key => $label) : ?>
@@ -128,10 +194,11 @@ class STK_Admin_Exchanges {
                     <?php endif; ?>
                 <?php endforeach; ?>
             </ul>
+            <?php endif; ?>
 
             <form method="get" class="stk-search" style="clear:both">
-                <input type="hidden" name="page" value="stk-echanges">
-                <?php if ($status !== '') : ?><input type="hidden" name="statut" value="<?php echo esc_attr($status); ?>"><?php endif; ?>
+                <input type="hidden" name="page" value="<?php echo esc_attr($page); ?>">
+                <?php if ($status !== '' && $forced_status === '') : ?><input type="hidden" name="statut" value="<?php echo esc_attr($status); ?>"><?php endif; ?>
                 <label class="screen-reader-text" for="stk-search"><?php esc_html_e('Rechercher', 'stickers'); ?></label>
                 <input type="search" id="stk-search" name="s" value="<?php echo esc_attr($search); ?>" placeholder="<?php esc_attr_e('Pseudo ou numéro d\'échange', 'stickers'); ?>">
                 <button type="submit" class="button"><?php esc_html_e('Rechercher', 'stickers'); ?></button>
@@ -158,7 +225,7 @@ class STK_Admin_Exchanges {
                     }
                     ?>
                     <tr>
-                        <td><a href="<?php echo esc_url(add_query_arg('echange', (int) $row->id, $base)); ?>"><strong><?php echo esc_html($row->id); ?></strong></a></td>
+                        <td><a href="<?php echo esc_url(add_query_arg('echange', (int) $row->id, $detail_base)); ?>"><strong><?php echo esc_html($row->id); ?></strong></a></td>
                         <td><?php echo esc_html(($row->proposer_pseudo ?: __('Membre supprimé', 'stickers')) . ' → ' . ($row->recipient_pseudo ?: __('Membre supprimé', 'stickers'))); ?></td>
                         <td><?php echo esc_html(STK_Exchanges::label($row->statut)); ?></td>
                         <td><?php echo esc_html($count); ?></td>
@@ -208,6 +275,65 @@ class STK_Admin_Exchanges {
                 (int) $exchange->id
             )); ?> — <?php echo esc_html(STK_Exchanges::label($exchange->statut)); ?></h1>
             <p><a href="<?php echo esc_url($back); ?>">← <?php esc_html_e('Retour à la liste', 'stickers'); ?></a></p>
+
+            <?php if ($exchange->statut === STK_Exchanges::LITIGE || $exchange->dispute_at) : ?>
+                <div class="stk-admin-card stk-dispute-box">
+                    <h2><?php esc_html_e('Litige', 'stickers'); ?></h2>
+                    <p>
+                        <?php
+                        printf(
+                            /* translators: 1: pseudo, 2: date */
+                            esc_html__('Signalé par %1$s le %2$s.', 'stickers'),
+                            wp_kses_post($member_link($exchange->dispute_by)),
+                            esc_html($date($exchange->dispute_at))
+                        );
+                        ?>
+                    </p>
+                    <blockquote><?php echo nl2br(esc_html((string) $exchange->dispute_reason)); ?></blockquote>
+
+                    <?php if ($exchange->resolution) : ?>
+                        <p><strong>
+                            <?php
+                            $resolver = get_userdata((int) $exchange->resolved_by);
+                            printf(
+                                /* translators: 1: date, 2: nom de l'administrateur, 3: décision */
+                                esc_html__('Arbitré le %1$s par %2$s : %3$s.', 'stickers'),
+                                esc_html($date($exchange->resolved_at)),
+                                esc_html($resolver ? $resolver->display_name : '—'),
+                                $exchange->resolution === 'success' ? esc_html__('clôturé comme réussi', 'stickers') : esc_html__('échange annulé', 'stickers')
+                            );
+                            ?>
+                        </strong></p>
+                    <?php endif; ?>
+
+                    <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+                        <input type="hidden" name="action" value="stk_dispute_notes">
+                        <input type="hidden" name="exchange_id" value="<?php echo esc_attr($exchange->id); ?>">
+                        <?php wp_nonce_field('stk_dispute_notes_' . $exchange->id); ?>
+                        <p>
+                            <label for="stk-admin-notes"><strong><?php esc_html_e('Notes internes (non visibles des membres)', 'stickers'); ?></strong></label><br>
+                            <textarea id="stk-admin-notes" name="admin_notes" rows="4" class="large-text"><?php echo esc_textarea((string) $exchange->admin_notes); ?></textarea>
+                        </p>
+                        <p><button type="submit" class="button"><?php esc_html_e('Enregistrer les notes', 'stickers'); ?></button></p>
+                    </form>
+
+                    <?php if ($exchange->statut === STK_Exchanges::LITIGE) : ?>
+                        <p><?php esc_html_e('Les adresses des deux membres sont sur leur fiche (liens ci-dessous). Les stickers restent réservés jusqu\'à votre décision. Aucune correction automatique : choisissez l\'issue.', 'stickers'); ?></p>
+                        <?php foreach (array(
+                            'success' => array(__('Clôturer comme réussi', 'stickers'), __('Clôturer comme réussi ? Les inventaires des deux membres seront mis à jour comme si l\'échange avait eu lieu.', 'stickers'), 'button button-primary'),
+                            'cancel'  => array(__('Annuler l\'échange', 'stickers'), __('Annuler l\'échange ? Les stickers réservés seront libérés et aucun inventaire ne sera modifié.', 'stickers'), 'button'),
+                        ) as $decision => $labels) : ?>
+                            <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" class="stk-resolve-form" style="display:inline-block;margin-right:.5rem" data-confirm="<?php echo esc_attr($labels[1]); ?>">
+                                <input type="hidden" name="action" value="stk_resolve">
+                                <input type="hidden" name="exchange_id" value="<?php echo esc_attr($exchange->id); ?>">
+                                <input type="hidden" name="decision" value="<?php echo esc_attr($decision); ?>">
+                                <?php wp_nonce_field('stk_resolve_' . $exchange->id); ?>
+                                <button type="submit" class="<?php echo esc_attr($labels[2]); ?>"><?php echo esc_html($labels[0]); ?></button>
+                            </form>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
 
             <div class="stk-admin-columns">
                 <div class="stk-admin-card">

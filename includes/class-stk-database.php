@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) {
 class STK_Database {
 
     /** Version du schéma (indépendante de la version du plugin). */
-    const DB_VERSION = '2';
+    const DB_VERSION = '3';
 
     /** Nombre de tentatives en cas de blocage croisé (deadlock). */
     const TRANSACTION_RETRIES = 3;
@@ -72,7 +72,7 @@ class STK_Database {
             KEY sticker_qte (sticker_id,quantite)
         ) $options;");
 
-        // v2 : échanges, contenu des échanges, historique, discussion.
+        // v2 : échanges, contenu des échanges, historique, discussion. v3 : rappels, litiges.
         $exchanges = self::table('exchanges');
         $items     = self::table('exchange_items');
         $log       = self::table('exchange_log');
@@ -93,6 +93,18 @@ class STK_Database {
             proposer_received_at datetime DEFAULT NULL,
             recipient_received_at datetime DEFAULT NULL,
             cancel_requested_by bigint(20) unsigned NOT NULL DEFAULT 0,
+            rem_proposal tinyint(3) unsigned NOT NULL DEFAULT 0,
+            rem_ship_proposer tinyint(3) unsigned NOT NULL DEFAULT 0,
+            rem_ship_recipient tinyint(3) unsigned NOT NULL DEFAULT 0,
+            rem_receive_proposer tinyint(3) unsigned NOT NULL DEFAULT 0,
+            rem_receive_recipient tinyint(3) unsigned NOT NULL DEFAULT 0,
+            dispute_by bigint(20) unsigned NOT NULL DEFAULT 0,
+            dispute_reason text NULL,
+            dispute_at datetime DEFAULT NULL,
+            admin_notes text NULL,
+            resolution varchar(20) NOT NULL DEFAULT '',
+            resolved_by bigint(20) unsigned NOT NULL DEFAULT 0,
+            resolved_at datetime DEFAULT NULL,
             closed_at datetime DEFAULT NULL,
             created_at datetime NOT NULL,
             updated_at datetime NOT NULL,

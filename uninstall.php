@@ -30,16 +30,27 @@ $stk_options = array(
     'stk_github_token',
     'stk_delete_data_on_uninstall',
     'stk_flush_rewrite',
+    'stk_settings',
+    'stk_emails',
+    'stk_last_purge',
 );
 foreach ($stk_options as $stk_option) {
     delete_option($stk_option);
 }
 
 delete_transient('stk_github_release');
+delete_transient('stk_scheduled');
 
-// Notices d'administration temporaires (une par utilisateur).
-$wpdb->query($wpdb->prepare(
-    "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
-    $wpdb->esc_like('_transient_stk_admin_notice_') . '%',
-    $wpdb->esc_like('_transient_timeout_stk_admin_notice_') . '%'
-));
+// Tâche planifiée horaire (Action Scheduler, groupe « stickers »).
+if (function_exists('as_unschedule_all_actions')) {
+    as_unschedule_all_actions('stk_hourly', array(), 'stickers');
+}
+
+// Transients par utilisateur : notices d'administration, anti-flood des messages.
+foreach (array('stk_admin_notice_', 'stk_msg_flood_') as $stk_prefix) {
+    $wpdb->query($wpdb->prepare(
+        "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
+        $wpdb->esc_like('_transient_' . $stk_prefix) . '%',
+        $wpdb->esc_like('_transient_timeout_' . $stk_prefix) . '%'
+    ));
+}

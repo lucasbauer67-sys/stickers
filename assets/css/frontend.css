@@ -475,3 +475,27 @@
 .stk-suggestion {
     border-style: dashed;
 }
+
+/* ---- Étape 4 : litiges ---- */
+
+.stk-dispute {
+    margin: 1.25rem 0;
+}
+
+.stk-dispute summary {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.stk-dispute textarea {
+    width: 100%;
+}
+
+.stk-dispute-info {
+    border-left-color: #b32d2e;
+}
+
+.stk-status-litige {
+    background: #b32d2e;
+    color: #fff;
+}

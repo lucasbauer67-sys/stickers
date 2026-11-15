@@ -3,7 +3,10 @@
  * Propositions et échanges : machine d'états, réservations, clôture.
  *
  * Statuts : propose → accepte → cloture ; propose → refuse | annule | expire | remplace ;
- * accepte → annule (accord des deux, avant toute expédition) ; accepte → litige (étape 4).
+ * accepte → annule (accord des deux, avant toute expédition) ; accepte → litige → cloture | annule (arbitrage admin).
+ *
+ * Chaque action réussie déclenche, après validation de la transaction, l'action WordPress
+ * « stk_exchange_event » ($event, $exchange_id, $actor_id, $extra), utilisée pour les emails.
  *
  * Règles de verrouillage (pour éviter les blocages croisés) : toujours la ligne de l'échange
  * d'abord, puis les inventaires (ordre croissant user_id, sticker_id), puis les réservations.
@@ -26,7 +29,6 @@ class STK_Exchanges {
     const REMPLACE = 'remplace';
     const LITIGE   = 'litige';
 
-    const EXPIRY_DAYS = 7;
     const MESSAGE_MAX = 1000;
 
     public static function labels() {
@@ -232,7 +234,10 @@ class STK_Exchanges {
     private static function lock_inventories(array $user_ids) {
         global $wpdb;
         $table    = STK_Database::table('inventory');
-        $user_ids = array_values(array_unique(array_map('intval', $user_ids)));
+        $user_ids = array_values(array_unique(array_filter(array_map('intval', $user_ids))));
+        if (!$user_ids) {
+            return array();
+        }
         sort($user_ids);
         $placeholders = implode(',', array_fill(0, count($user_ids), '%d'));
         $rows = $wpdb->get_results($wpdb->prepare(
@@ -290,6 +295,16 @@ class STK_Exchanges {
 
     private static function not_found() {
         return new WP_Error('stk_not_found', __('Échange introuvable.', 'stickers'));
+    }
+
+    /**
+     * Déclenche l'événement après une action réussie (transaction déjà validée).
+     */
+    private static function done($result, $event, $exchange_id, $actor_id, array $extra = array()) {
+        if (!is_wp_error($result) && $result !== false) {
+            do_action('stk_exchange_event', $event, (int) $exchange_id, (int) $actor_id, $extra);
+        }
+        return $result;
     }
 
     private static function wrong_state() {
@@ -373,7 +388,7 @@ class STK_Exchanges {
         }
         $source = in_array($source, array('manuel', 'suggestion'), true) ? $source : 'manuel';
 
-        return STK_Database::transaction(function () use ($wpdb, $proposer_id, $recipient_id, $give, $ask, $message, $parent_id, $source) {
+        $result = STK_Database::transaction(function () use ($wpdb, $proposer_id, $recipient_id, $give, $ask, $message, $parent_id, $source) {
             $exchanges = STK_Database::table('exchanges');
             $items     = STK_Database::table('exchange_items');
             $now       = STK_Database::now();
@@ -461,7 +476,7 @@ class STK_Exchanges {
                 'recipient_id' => $recipient_id,
                 'statut'       => self::PROPOSE,
                 'source'       => $source,
-                'expires_at'   => gmdate('Y-m-d H:i:s', time() + self::EXPIRY_DAYS * DAY_IN_SECONDS),
+                'expires_at'   => gmdate('Y-m-d H:i:s', time() + STK_Settings::get('expiry_days') * DAY_IN_SECONDS),
                 'created_at'   => $now,
                 'updated_at'   => $now,
             ), array('%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%s'));
@@ -506,6 +521,8 @@ class STK_Exchanges {
             self::log($id, $proposer_id, $parent_id ? 'counter_created' : 'propose', $parent_id ? (string) $parent_id : '');
             return $id;
         });
+
+        return self::done($result, 'proposal_created', is_wp_error($result) ? 0 : $result, $proposer_id, array('parent' => $parent_id));
     }
 
     /* ------------------------------------------------------------------
@@ -516,7 +533,7 @@ class STK_Exchanges {
         global $wpdb;
         $user_id = (int) $user_id;
 
-        return STK_Database::transaction(function () use ($wpdb, $id, $user_id) {
+        $result = STK_Database::transaction(function () use ($wpdb, $id, $user_id) {
             $exchange = self::lock_exchange($id);
             if (!$exchange || self::role($exchange, $user_id) !== 'recipient') {
                 return self::not_found();
@@ -582,6 +599,7 @@ class STK_Exchanges {
             self::log($id, $user_id, 'accept');
             return true;
         });
+        return self::done($result, 'accepted', $id, $user_id);
     }
 
     public static function refuse($id, $user_id) {
@@ -593,9 +611,9 @@ class STK_Exchanges {
     }
 
     private static function close_pending($id, $user_id, $role, $status, $action) {
-        return STK_Database::transaction(function () use ($id, $user_id, $role, $status, $action) {
+        $result = STK_Database::transaction(function () use ($id, $user_id, $role, $status, $action) {
             $exchange = self::lock_exchange($id);
-            if (!$exchange || self::role($exchange, $user_id) !== $role) {
+            if (!$exchange || ($role !== 'system' && self::role($exchange, $user_id) !== $role)) {
                 return self::not_found();
             }
             if ($exchange->statut !== self::PROPOSE) {
@@ -612,6 +630,15 @@ class STK_Exchanges {
             self::log($id, $user_id, $action);
             return true;
         });
+        $events = array('refuse' => 'refused', 'cancel' => 'cancelled', 'expire' => 'expired');
+        return self::done($result, $events[$action], $id, $user_id, array('kind' => 'proposal'));
+    }
+
+    /**
+     * Expiration automatique d'une proposition sans réponse (tâche planifiée).
+     */
+    public static function expire($id) {
+        return self::close_pending($id, 0, 'system', self::EXPIRE, 'expire');
     }
 
     /* ------------------------------------------------------------------
@@ -620,7 +647,7 @@ class STK_Exchanges {
 
     public static function ship($id, $user_id) {
         $user_id = (int) $user_id;
-        return STK_Database::transaction(function () use ($id, $user_id) {
+        $result  = STK_Database::transaction(function () use ($id, $user_id) {
             $exchange = self::lock_exchange($id);
             $role     = $exchange ? self::role($exchange, $user_id) : null;
             if (!$role) {
@@ -642,6 +669,7 @@ class STK_Exchanges {
             self::log($id, $user_id, 'ship');
             return true;
         });
+        return self::done($result, 'shipped', $id, $user_id);
     }
 
     /**
@@ -652,7 +680,7 @@ class STK_Exchanges {
      */
     public static function receive($id, $user_id) {
         $user_id = (int) $user_id;
-        return STK_Database::transaction(function () use ($id, $user_id) {
+        $result  = STK_Database::transaction(function () use ($id, $user_id) {
             $exchange = self::lock_exchange($id);
             $role     = $exchange ? self::role($exchange, $user_id) : null;
             if (!$role) {
@@ -682,26 +710,28 @@ class STK_Exchanges {
                 }
             }
 
-            $closed = self::apply_and_close($exchange, $items);
+            $closed = self::apply_and_close($exchange, $items, self::ACCEPTE);
             return is_wp_error($closed) ? $closed : 'closed';
         });
+        return self::done($result, $result === 'closed' ? 'closed' : 'received', $id, $user_id);
     }
 
     /**
      * Met à jour les inventaires et clôture. À appeler dans une transaction,
      * la ligne de l'échange étant déjà verrouillée.
      */
-    private static function apply_and_close($exchange, array $items) {
+    private static function apply_and_close($exchange, array $items, $from) {
         global $wpdb;
         $table       = STK_Database::table('inventory');
         $id          = (int) $exchange->id;
         $proposer_id = (int) $exchange->proposer_id;
         $now         = STK_Database::now();
 
-        $inventories = self::lock_inventories(array($proposer_id, (int) $exchange->recipient_id));
+        $inventories = self::lock_inventories(array_filter(array($proposer_id, (int) $exchange->recipient_id)));
         if (is_wp_error($inventories)) {
             return $inventories;
         }
+        $inventories += array($proposer_id => array(), (int) $exchange->recipient_id => array());
 
         foreach ($items as $item) {
             $sid      = (int) $item->sticker_id;
@@ -717,6 +747,9 @@ class STK_Exchanges {
             }
 
             foreach (array($giver => $giver_new, $receiver => $recv_new) as $user => $new_qty) {
+                if (!$user || !STK_Members::get($user)) {
+                    continue; // Membre effacé (RGPD) : son inventaire n'existe plus.
+                }
                 if (array_key_exists($sid, $inventories[$user])) {
                     $ok = $wpdb->update($table, array('quantite' => $new_qty, 'updated_at' => $now), array('user_id' => $user, 'sticker_id' => $sid), array('%d', '%s'), array('%d', '%d'));
                 } else {
@@ -733,7 +766,7 @@ class STK_Exchanges {
         if (is_wp_error($ok)) {
             return $ok;
         }
-        $ok = self::transition($id, self::ACCEPTE, array('statut' => self::CLOTURE, 'closed_at' => $now, 'cancel_requested_by' => 0));
+        $ok = self::transition($id, $from, array('statut' => self::CLOTURE, 'closed_at' => $now, 'cancel_requested_by' => 0));
         if (is_wp_error($ok)) {
             return $ok;
         }
@@ -753,7 +786,7 @@ class STK_Exchanges {
 
     public static function request_cancel($id, $user_id) {
         $user_id = (int) $user_id;
-        return STK_Database::transaction(function () use ($id, $user_id) {
+        $result  = STK_Database::transaction(function () use ($id, $user_id) {
             $exchange = self::lock_exchange($id);
             if (!$exchange || !self::role($exchange, $user_id)) {
                 return self::not_found();
@@ -771,6 +804,7 @@ class STK_Exchanges {
             self::log($id, $user_id, 'cancel_request');
             return true;
         });
+        return self::done($result, 'cancel_requested', $id, $user_id);
     }
 
     /**
@@ -779,7 +813,7 @@ class STK_Exchanges {
      */
     public static function answer_cancel($id, $user_id, $decision) {
         $user_id = (int) $user_id;
-        return STK_Database::transaction(function () use ($id, $user_id, $decision) {
+        $result  = STK_Database::transaction(function () use ($id, $user_id, $decision) {
             $exchange = self::lock_exchange($id);
             if (!$exchange || !self::role($exchange, $user_id)) {
                 return self::not_found();
@@ -815,5 +849,132 @@ class STK_Exchanges {
             self::log($id, $user_id, $action);
             return true;
         });
+        if ($decision === 'confirm') {
+            return self::done($result, 'cancelled', $id, $user_id, array('kind' => 'mutual'));
+        }
+        return $result;
+    }
+
+    /* ------------------------------------------------------------------
+     * Litiges : signalement par un membre, arbitrage par l'admin
+     * ------------------------------------------------------------------ */
+
+    /**
+     * « Signaler un problème » : sur un échange accepté, par l'une ou l'autre partie, jusqu'à la clôture.
+     * Les réservations sont maintenues et l'adresse n'est plus affichée.
+     */
+    public static function dispute($id, $user_id, $reason) {
+        $user_id = (int) $user_id;
+        $reason  = trim(sanitize_textarea_field(wp_unslash((string) $reason)));
+        if ($reason === '') {
+            return new WP_Error('stk_reason', __('Décrivez le problème rencontré.', 'stickers'));
+        }
+        if (mb_strlen($reason) > self::MESSAGE_MAX) {
+            return new WP_Error('stk_reason', sprintf(
+                /* translators: %d: nombre maximal de caractères */
+                __('La description ne doit pas dépasser %d caractères.', 'stickers'),
+                self::MESSAGE_MAX
+            ));
+        }
+
+        $result = STK_Database::transaction(function () use ($id, $user_id, $reason) {
+            $exchange = self::lock_exchange($id);
+            if (!$exchange || !self::role($exchange, $user_id)) {
+                return self::not_found();
+            }
+            if ($exchange->statut !== self::ACCEPTE) {
+                return self::wrong_state();
+            }
+            $ok = self::transition($id, self::ACCEPTE, array(
+                'statut'              => self::LITIGE,
+                'dispute_by'          => $user_id,
+                'dispute_reason'      => $reason,
+                'dispute_at'          => STK_Database::now(),
+                'cancel_requested_by' => 0,
+            ));
+            if (is_wp_error($ok)) {
+                return $ok;
+            }
+            self::log($id, $user_id, 'dispute');
+            return true;
+        });
+        return self::done($result, 'disputed', $id, $user_id, array('reason' => $reason));
+    }
+
+    /**
+     * Arbitrage : 'success' = clôturer comme réussi (inventaires mis à jour),
+     * 'cancel' = annuler l'échange (réservations libérées, inventaires inchangés).
+     */
+    public static function resolve($id, $admin_id, $decision) {
+        $admin_id = (int) $admin_id;
+        if (!in_array($decision, array('success', 'cancel'), true)) {
+            return new WP_Error('stk_decision', __('Décision inconnue.', 'stickers'));
+        }
+
+        $result = STK_Database::transaction(function () use ($id, $admin_id, $decision) {
+            $exchange = self::lock_exchange($id);
+            if (!$exchange) {
+                return self::not_found();
+            }
+            if ($exchange->statut !== self::LITIGE) {
+                return self::wrong_state();
+            }
+            $now  = STK_Database::now();
+            $meta = array('resolution' => $decision, 'resolved_by' => $admin_id, 'resolved_at' => $now);
+
+            if ($decision === 'success') {
+                $ok = self::transition($id, self::LITIGE, $meta);
+                if (!is_wp_error($ok)) {
+                    $exchange->statut = self::LITIGE;
+                    $ok = self::apply_and_close($exchange, self::get_items($id), self::LITIGE);
+                }
+            } else {
+                $ok = self::transition($id, self::LITIGE, $meta + array('statut' => self::ANNULE, 'closed_at' => $now));
+                if (!is_wp_error($ok)) {
+                    $ok = self::release($id);
+                }
+            }
+            if (is_wp_error($ok)) {
+                return $ok;
+            }
+            self::log($id, $admin_id, $decision === 'success' ? 'resolve_success' : 'resolve_cancel');
+            return true;
+        });
+        return self::done($result, 'resolved', $id, $admin_id, array('decision' => $decision));
+    }
+
+    public static function save_admin_notes($id, $notes) {
+        global $wpdb;
+        $notes = sanitize_textarea_field(wp_unslash((string) $notes));
+        $ok    = $wpdb->update(STK_Database::table('exchanges'), array('admin_notes' => $notes), array('id' => $id), array('%s'), array('%d'));
+        return $ok === false ? new WP_Error('stk_db', __('Erreur de base de données.', 'stickers')) : true;
+    }
+
+    /* ------------------------------------------------------------------
+     * Rappels (tâche planifiée)
+     * ------------------------------------------------------------------ */
+
+    /** Colonnes de compteur de rappels autorisées. */
+    public static function reminder_columns() {
+        return array('rem_proposal', 'rem_ship_proposer', 'rem_ship_recipient', 'rem_receive_proposer', 'rem_receive_recipient');
+    }
+
+    /**
+     * Incrémente un compteur de rappels seulement s'il vaut encore $current et que le statut
+     * n'a pas changé : un rappel ne part jamais deux fois, même si deux tâches se chevauchent.
+     */
+    public static function bump_reminder($id, $column, $status, $current) {
+        global $wpdb;
+        if (!in_array($column, self::reminder_columns(), true)) {
+            return false;
+        }
+        $table = STK_Database::table('exchanges');
+        $done  = $wpdb->query($wpdb->prepare(
+            "UPDATE $table SET $column = $column + 1 WHERE id = %d AND statut = %s AND $column = %d",
+            $id,
+            $status,
+            $current
+        ));
+        return $done === 1;
     }
 }

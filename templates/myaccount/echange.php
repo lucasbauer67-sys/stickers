@@ -75,6 +75,15 @@ $button = static function ($action, $label, $class = 'button') use ($exchange) {
 
     <?php if ($status === STK_Exchanges::PROPOSE) : ?>
         <div class="stk-actions-box">
+            <p class="stk-help">
+                <?php
+                printf(
+                    /* translators: %s: date */
+                    esc_html__('Sans réponse, cette proposition expirera le %s.', 'stickers'),
+                    esc_html(wp_date(get_option('date_format'), strtotime($exchange->created_at . ' UTC') + STK_Settings::get('expiry_days') * DAY_IN_SECONDS))
+                );
+                ?>
+            </p>
             <?php if ($role === 'recipient') : ?>
                 <p><?php esc_html_e('Si vous acceptez, vos stickers donnés seront réservés et l\'adresse d\'envoi sera communiquée à celui qui doit expédier.', 'stickers'); ?></p>
                 <?php
@@ -210,6 +219,49 @@ $button = static function ($action, $label, $class = 'button') use ($exchange) {
                 <?php endif; ?>
             </div>
         <?php endif; ?>
+
+        <details class="stk-dispute">
+            <summary><?php esc_html_e('Signaler un problème', 'stickers'); ?></summary>
+            <form method="post" action="<?php echo esc_url(STK_Frontend::exchange_url($exchange->id)); ?>">
+                <input type="hidden" name="stk_action" value="dispute">
+                <input type="hidden" name="exchange_id" value="<?php echo esc_attr($exchange->id); ?>">
+                <?php wp_nonce_field('stk_dispute_' . $exchange->id, '_stk_nonce'); ?>
+                <p><?php esc_html_e('Courrier non reçu, stickers différents de ceux prévus, aucune nouvelle de l\'autre membre… L\'équipe du site sera prévenue et arbitrera. L\'échange est suspendu en attendant.', 'stickers'); ?></p>
+                <label for="stk-dispute-reason"><?php esc_html_e('Décrivez le problème', 'stickers'); ?></label>
+                <textarea id="stk-dispute-reason" name="reason" rows="3" required maxlength="<?php echo esc_attr(STK_Exchanges::MESSAGE_MAX); ?>"></textarea>
+                <p><button type="submit" class="button"><?php esc_html_e('Signaler le problème', 'stickers'); ?></button></p>
+            </form>
+        </details>
+    <?php endif; ?>
+
+    <?php if ($status === STK_Exchanges::LITIGE || $exchange->dispute_at) : ?>
+        <div class="stk-info stk-dispute-info">
+            <p>
+                <?php
+                printf(
+                    /* translators: 1: pseudo, 2: date */
+                    esc_html__('Problème signalé par %1$s le %2$s :', 'stickers'),
+                    esc_html((int) $exchange->dispute_by === $user_id ? __('vous', 'stickers') : $args['other_pseudo']),
+                    esc_html(STK_Frontend::date($exchange->dispute_at))
+                );
+                ?>
+            </p>
+            <p><?php echo nl2br(esc_html((string) $exchange->dispute_reason)); ?></p>
+            <?php if ($status === STK_Exchanges::LITIGE) : ?>
+                <p><strong><?php esc_html_e('L\'échange est suspendu : l\'équipe du site va arbitrer. Vous pouvez continuer à échanger des messages ci-dessous.', 'stickers'); ?></strong></p>
+            <?php elseif ($exchange->resolution) : ?>
+                <p><strong>
+                    <?php
+                    printf(
+                        /* translators: 1: date, 2: décision */
+                        esc_html__('Arbitré le %1$s : %2$s.', 'stickers'),
+                        esc_html(STK_Frontend::date($exchange->resolved_at)),
+                        $exchange->resolution === 'success' ? esc_html__('échange clôturé comme réussi, inventaires mis à jour', 'stickers') : esc_html__('échange annulé, aucun inventaire modifié', 'stickers')
+                    );
+                    ?>
+                </strong></p>
+            <?php endif; ?>
+        </div>
     <?php endif; ?>
 
     <?php if ($status === STK_Exchanges::CLOTURE) : ?>
@@ -238,7 +290,9 @@ $button = static function ($action, $label, $class = 'button') use ($exchange) {
                             <strong><?php echo $mine ? esc_html__('Vous', 'stickers') : esc_html($args['pseudos'][(int) $message->user_id] ?? $args['other_pseudo']); ?></strong>
                             · <?php echo esc_html(STK_Frontend::date($message->created_at)); ?>
                         </p>
-                        <?php if ((int) $message->hidden) : ?>
+                        <?php if ($message->message === '') : ?>
+                            <p class="stk-message-hidden"><?php esc_html_e('Message supprimé.', 'stickers'); ?></p>
+                        <?php elseif ((int) $message->hidden) : ?>
                             <p class="stk-message-hidden"><?php esc_html_e('Message masqué par la modération.', 'stickers'); ?></p>
                         <?php else : ?>
                             <p><?php echo nl2br(esc_html($message->message)); ?></p>

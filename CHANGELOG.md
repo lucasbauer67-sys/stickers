@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.0 — étape 4
+
+- Emails transactionnels en texte brut (14 modèles), objets et textes modifiables dans les réglages.
+- Tâche horaire Action Scheduler : expiration des propositions, rappels paramétrables (proposition, expédition, réception), purge facultative des inactifs.
+- Litiges : signalement par les membres, page admin Litiges, notes internes, arbitrage « clôturer comme réussi » ou « annuler ».
+- RGPD : export, effacement, suppression de compte, texte de politique de confidentialité.
+- Base v3 (colonnes rappels et litiges, migration automatique).
+
 ## 0.3.0 — étape 3
 
 - Suggestions automatiques (correspondances mutuelles) en tête de l'onglet Propositions : 20 maximum, classées par nombre d'échanges un pour un.

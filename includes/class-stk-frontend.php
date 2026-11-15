@@ -503,6 +503,11 @@ class STK_Frontend {
                 }
                 break;
 
+            case 'dispute':
+                $result  = STK_Exchanges::dispute($exchange_id, $user_id, $_POST['reason'] ?? ''); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- nettoyé dans dispute().
+                $success = __('Problème signalé : l\'équipe du site va examiner la situation. L\'échange est suspendu en attendant.', 'stickers');
+                break;
+
             case 'post_message':
                 $result  = STK_Messages::post($exchange_id, $user_id, $_POST['message'] ?? ''); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- nettoyé dans post().
                 $success = __('Message envoyé.', 'stickers');

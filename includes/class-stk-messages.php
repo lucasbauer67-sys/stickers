@@ -71,6 +71,7 @@ class STK_Messages {
         $message_id = (int) $wpdb->insert_id; // À lire avant set_transient(), qui écrit dans wp_options.
         set_transient($flood_key, 1, self::FLOOD_DELAY);
         STK_Members::touch_activity($user_id);
+        do_action('stk_exchange_event', 'message_posted', (int) $exchange->id, (int) $user_id, array('message_id' => $message_id));
         return $message_id;
     }
 

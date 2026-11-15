@@ -48,13 +48,13 @@ class STK_Admin {
         wp_enqueue_style('stk-admin', STK_PLUGIN_URL . 'assets/css/admin.css', array(), STK_VERSION);
         if (strpos($hook, 'stk-catalogue') !== false) {
             wp_enqueue_media();
-            wp_enqueue_script('stk-admin', STK_PLUGIN_URL . 'assets/js/admin.js', array('jquery'), STK_VERSION, true);
-            wp_localize_script('stk-admin', 'stkAdmin', array(
-                'mediaTitle'    => __('Image du sticker', 'stickers'),
-                'mediaButton'   => __('Utiliser cette image', 'stickers'),
-                'confirmDelete' => __('Supprimer définitivement ce sticker ?', 'stickers'),
-            ));
         }
+        wp_enqueue_script('stk-admin', STK_PLUGIN_URL . 'assets/js/admin.js', array('jquery'), STK_VERSION, true);
+        wp_localize_script('stk-admin', 'stkAdmin', array(
+            'mediaTitle'    => __('Image du sticker', 'stickers'),
+            'mediaButton'   => __('Utiliser cette image', 'stickers'),
+            'confirmDelete' => __('Supprimer définitivement ce sticker ?', 'stickers'),
+        ));
     }
 
     /* ------------------------------------------------------------------
@@ -498,6 +498,16 @@ class STK_Admin {
             'sanitize_callback' => array($this, 'sanitize_checkbox'),
             'default'           => '0',
         ));
+        register_setting('stk_settings', STK_Settings::OPTION, array(
+            'type'              => 'array',
+            'sanitize_callback' => array('STK_Settings', 'sanitize'),
+            'default'           => STK_Settings::defaults(),
+        ));
+        register_setting('stk_settings', STK_Emails::OPTION, array(
+            'type'              => 'array',
+            'sanitize_callback' => array('STK_Emails', 'sanitize'),
+            'default'           => array(),
+        ));
     }
 
     public function sanitize_collection_name($value) {
@@ -530,12 +540,21 @@ class STK_Admin {
             return;
         }
         $has_token = get_option('stk_github_token', '') !== '';
+        $settings  = STK_Settings::all();
+        $opt       = STK_Settings::OPTION;
+        $reminders = array(
+            'proposal' => array(__('Proposition sans réponse', 'stickers'), __('au destinataire, compté depuis l\'envoi de la proposition', 'stickers')),
+            'ship'     => array(__('Expédition', 'stickers'), __('à celui qui n\'a pas indiqué son envoi, compté depuis l\'acceptation', 'stickers')),
+            'receive'  => array(__('Confirmation de réception', 'stickers'), __('à celui qui doit confirmer, compté depuis l\'expédition par l\'autre membre', 'stickers')),
+        );
         ?>
         <div class="wrap stk-admin">
             <h1><?php esc_html_e('Réglages de la bourse', 'stickers'); ?></h1>
             <?php settings_errors(); ?>
             <form method="post" action="options.php">
                 <?php settings_fields('stk_settings'); ?>
+
+                <h2><?php esc_html_e('Général', 'stickers'); ?></h2>
                 <table class="form-table" role="presentation">
                     <tr>
                         <th scope="row"><label for="stk-collection-name"><?php esc_html_e('Nom de la collection', 'stickers'); ?></label></th>
@@ -544,6 +563,85 @@ class STK_Admin {
                             <p class="description"><?php esc_html_e('Affiché en titre de l\'inventaire des membres. Laisser vide pour ne rien afficher.', 'stickers'); ?></p>
                         </td>
                     </tr>
+                </table>
+
+                <h2><?php esc_html_e('Délais et rappels', 'stickers'); ?></h2>
+                <table class="form-table" role="presentation">
+                    <tr>
+                        <th scope="row"><label for="stk-expiry"><?php esc_html_e('Expiration des propositions', 'stickers'); ?></label></th>
+                        <td>
+                            <input type="number" id="stk-expiry" name="<?php echo esc_attr($opt); ?>[expiry_days]" min="1" max="60" class="small-text" value="<?php echo esc_attr($settings['expiry_days']); ?>">
+                            <?php esc_html_e('jours sans réponse', 'stickers'); ?>
+                            <p class="description"><?php esc_html_e('La proposition expire et les stickers réservés sont libérés. Le proposeur est prévenu par email.', 'stickers'); ?></p>
+                        </td>
+                    </tr>
+                </table>
+                <table class="widefat striped stk-reminders">
+                    <thead>
+                        <tr>
+                            <th><?php esc_html_e('Rappel', 'stickers'); ?></th>
+                            <th><?php esc_html_e('Premier rappel après', 'stickers'); ?></th>
+                            <th><?php esc_html_e('Puis tous les', 'stickers'); ?></th>
+                            <th><?php esc_html_e('Nombre de rappels', 'stickers'); ?></th>
+                            <th><?php esc_html_e('Calendrier actuel', 'stickers'); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($reminders as $type => $labels) :
+                        $days = array();
+                        for ($i = 0; ($day = STK_Settings::reminder_day($type, $i)) !== null; $i++) {
+                            if ($type !== 'proposal' || $day < $settings['expiry_days']) {
+                                $days[] = 'J+' . $day;
+                            }
+                        }
+                        ?>
+                        <tr>
+                            <td><strong><?php echo esc_html($labels[0]); ?></strong><br><span class="description"><?php echo esc_html($labels[1]); ?></span></td>
+                            <td><input type="number" name="<?php echo esc_attr($opt . '[' . $type . '_first]'); ?>" min="1" max="60" class="small-text" value="<?php echo esc_attr($settings[$type . '_first']); ?>" aria-label="<?php echo esc_attr($labels[0] . ' : ' . __('premier rappel après (jours)', 'stickers')); ?>"> <?php esc_html_e('jours', 'stickers'); ?></td>
+                            <td><input type="number" name="<?php echo esc_attr($opt . '[' . $type . '_interval]'); ?>" min="1" max="30" class="small-text" value="<?php echo esc_attr($settings[$type . '_interval']); ?>" aria-label="<?php echo esc_attr($labels[0] . ' : ' . __('intervalle (jours)', 'stickers')); ?>"> <?php esc_html_e('jours', 'stickers'); ?></td>
+                            <td><input type="number" name="<?php echo esc_attr($opt . '[' . $type . '_count]'); ?>" min="0" max="10" class="small-text" value="<?php echo esc_attr($settings[$type . '_count']); ?>" aria-label="<?php echo esc_attr($labels[0] . ' : ' . __('nombre de rappels', 'stickers')); ?>"></td>
+                            <td><?php echo $days ? esc_html(implode(', ', $days)) : esc_html__('aucun rappel', 'stickers'); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <p class="description"><?php esc_html_e('0 rappel = aucun rappel. Les rappels de proposition prévus le jour de l\'expiration ou après ne sont pas envoyés. Les vérifications ont lieu une fois par heure (WooCommerce → État → Actions planifiées, action « stk_hourly »).', 'stickers'); ?></p>
+
+                <h2><?php esc_html_e('Emails', 'stickers'); ?></h2>
+                <p class="description"><?php echo esc_html(STK_Emails::placeholders_help()); ?><br><?php esc_html_e('Emails envoyés en texte brut. Videz un champ pour revenir au texte par défaut.', 'stickers'); ?></p>
+                <?php foreach (STK_Emails::templates() as $key => $template) :
+                    $base = STK_Emails::OPTION . '[' . $key . ']';
+                    ?>
+                    <details class="stk-email-template">
+                        <summary><strong><?php echo esc_html($template['label']); ?></strong> — <?php echo esc_html($template['to']); ?></summary>
+                        <p>
+                            <label for="stk-email-<?php echo esc_attr($key); ?>-subject"><?php esc_html_e('Objet', 'stickers'); ?></label><br>
+                            <input type="text" id="stk-email-<?php echo esc_attr($key); ?>-subject" name="<?php echo esc_attr($base); ?>[subject]" class="large-text" value="<?php echo esc_attr(STK_Emails::get($key, 'subject')); ?>">
+                        </p>
+                        <p>
+                            <label for="stk-email-<?php echo esc_attr($key); ?>-body"><?php esc_html_e('Texte', 'stickers'); ?></label><br>
+                            <textarea id="stk-email-<?php echo esc_attr($key); ?>-body" name="<?php echo esc_attr($base); ?>[body]" rows="9" class="large-text"><?php echo esc_textarea(STK_Emails::get($key, 'body')); ?></textarea>
+                        </p>
+                    </details>
+                <?php endforeach; ?>
+
+                <h2><?php esc_html_e('Données personnelles', 'stickers'); ?></h2>
+                <table class="form-table" role="presentation">
+                    <tr>
+                        <th scope="row"><?php esc_html_e('Purge des membres inactifs', 'stickers'); ?></th>
+                        <td>
+                            <input type="hidden" name="<?php echo esc_attr($opt); ?>[purge_enabled]" value="0">
+                            <label><input type="checkbox" name="<?php echo esc_attr($opt); ?>[purge_enabled]" value="1" <?php checked($settings['purge_enabled'], 1); ?>>
+                                <?php esc_html_e('Effacer automatiquement les données de bourse des membres inactifs depuis', 'stickers'); ?></label>
+                            <input type="number" name="<?php echo esc_attr($opt); ?>[purge_months]" min="1" max="120" class="small-text" value="<?php echo esc_attr($settings['purge_months']); ?>" aria-label="<?php esc_attr_e('Nombre de mois', 'stickers'); ?>">
+                            <?php esc_html_e('mois', 'stickers'); ?>
+                            <p class="description"><?php esc_html_e('Désactivé par défaut. Activité = inventaire, profil, messages, clôture d\'échange. Les membres ayant une proposition, un échange ou un litige en cours ne sont jamais purgés. Export et effacement à la demande : Outils → Exporter / Effacer les données personnelles.', 'stickers'); ?></p>
+                        </td>
+                    </tr>
+                </table>
+
+                <h2><?php esc_html_e('Mises à jour et désinstallation', 'stickers'); ?></h2>
+                <table class="form-table" role="presentation">
                     <tr>
                         <th scope="row"><label for="stk-github-token"><?php esc_html_e('Token GitHub (mises à jour)', 'stickers'); ?></label></th>
                         <td>

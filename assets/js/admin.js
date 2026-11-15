@@ -8,6 +8,9 @@
         event.preventDefault();
         var $field = $(this).closest('.stk-image-field');
 
+        if (typeof wp === 'undefined' || !wp.media) {
+            return;
+        }
         if (!frame) {
             frame = wp.media({
                 title: stkAdmin.mediaTitle,
@@ -34,6 +37,13 @@
         $field.find('.stk-image-id').val('0');
         $field.find('.stk-image-preview').empty();
         $(this).prop('hidden', true);
+    });
+
+    // Arbitrage d'un litige : confirmation avant d'appliquer la décision.
+    $(document).on('submit', '.stk-resolve-form', function (event) {
+        if (!window.confirm($(this).data('confirm'))) {
+            event.preventDefault();
+        }
     });
 
     $(document).on('submit', '.stk-delete-form', function (event) {

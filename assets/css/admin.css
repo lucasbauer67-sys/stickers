@@ -108,3 +108,28 @@
 .stk-admin-message-meta {
     font-size: 12px;
 }
+
+.stk-reminders {
+    max-width: 1100px;
+    margin-bottom: .5rem;
+}
+
+.stk-reminders td {
+    vertical-align: middle;
+}
+
+.stk-email-template {
+    max-width: 900px;
+    margin: 0 0 .5rem;
+    padding: .5rem .75rem;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+}
+
+.stk-email-template summary {
+    cursor: pointer;
+}
+
+.stk-dispute-box {
+    border-left: 4px solid #b32d2e;
+}
