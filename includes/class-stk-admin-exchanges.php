@@ -218,6 +218,7 @@ class STK_Admin_Exchanges {
                         <?php if ((int) $exchange->parent_id) : ?>
                             <tr><th><?php esc_html_e('Contre-proposition de', 'stickers'); ?></th><td><a href="<?php echo esc_url(add_query_arg('echange', (int) $exchange->parent_id, $back)); ?>">nº <?php echo esc_html($exchange->parent_id); ?></a></td></tr>
                         <?php endif; ?>
+                        <tr><th><?php esc_html_e('Origine', 'stickers'); ?></th><td><?php echo $exchange->source === 'suggestion' ? esc_html__('Suggestion automatique', 'stickers') : esc_html__('Bourse (proposition manuelle)', 'stickers'); ?></td></tr>
                         <tr><th><?php esc_html_e('Proposé le', 'stickers'); ?></th><td><?php echo esc_html($date($exchange->created_at)); ?></td></tr>
                         <tr><th><?php esc_html_e('Accepté le', 'stickers'); ?></th><td><?php echo esc_html($date($exchange->accepted_at)); ?></td></tr>
                         <tr><th><?php esc_html_e('Expédié par le proposeur', 'stickers'); ?></th><td><?php echo esc_html($date($exchange->proposer_shipped_at)); ?></td></tr>

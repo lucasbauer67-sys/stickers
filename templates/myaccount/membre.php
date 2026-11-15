@@ -30,6 +30,10 @@ $label = static function ($sticker) {
     <p><a href="<?php echo esc_url(STK_Frontend::url('bourse')); ?>">← <?php esc_html_e('Retour à la bourse', 'stickers'); ?></a></p>
     <h3><?php echo esc_html($other->pseudo); ?></h3>
 
+    <?php if (!empty($args['suggestion'])) : ?>
+        <p class="stk-info"><?php esc_html_e('Suggestion automatique : un échange équilibré est pré-rempli avec des numéros qui vous manquent à tous les deux. Ajustez-le si besoin, puis envoyez.', 'stickers'); ?></p>
+    <?php endif; ?>
+
     <?php if ($parent) : ?>
         <p class="stk-info">
             <?php
@@ -63,6 +67,7 @@ $label = static function ($sticker) {
         <input type="hidden" name="stk_action" value="propose">
         <input type="hidden" name="recipient" value="<?php echo esc_attr($other->pseudo); ?>">
         <input type="hidden" name="parent_id" value="<?php echo esc_attr($parent ? $parent->id : 0); ?>">
+        <input type="hidden" name="source" value="<?php echo !empty($args['suggestion']) ? 'suggestion' : 'manuel'; ?>">
         <?php wp_nonce_field('stk_propose', '_stk_nonce'); ?>
 
         <fieldset>

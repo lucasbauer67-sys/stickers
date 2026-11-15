@@ -247,8 +247,9 @@ class STK_Frontend {
             return;
         }
         // phpcs:disable WordPress.Security.NonceVerification.Recommended
-        $pseudo   = isset($_GET['membre']) ? sanitize_text_field(wp_unslash($_GET['membre'])) : '';
-        $reply_id = isset($_GET['reponse']) ? absint($_GET['reponse']) : 0;
+        $pseudo     = isset($_GET['membre']) ? sanitize_text_field(wp_unslash($_GET['membre'])) : '';
+        $reply_id   = isset($_GET['reponse']) ? absint($_GET['reponse']) : 0;
+        $suggestion = !$reply_id && !empty($_GET['suggestion']);
         // phpcs:enable
 
         $other = $pseudo !== '' ? STK_Members::get_by_pseudo($pseudo) : null;
@@ -277,12 +278,23 @@ class STK_Frontend {
         }
 
         $detail = STK_Market::member_detail($user_id, (int) $other->user_id);
+
+        // Suggestion automatique : échange équilibré pré-rempli (modifiable avant envoi).
+        if ($suggestion) {
+            $prefill = STK_Suggestions::balanced_prefill($detail);
+            if (!$prefill['give']) {
+                wc_print_notice(__('Cette suggestion n\'est plus d\'actualité : les inventaires ont changé.', 'stickers'), 'notice');
+                $suggestion = false;
+            }
+        }
+
         self::template('membre', array(
-            'other'   => $other,
-            'detail'  => $detail,
-            'parent'  => $parent,
-            'prefill' => $prefill,
-            'ready'   => STK_Members::has_address($member),
+            'other'      => $other,
+            'detail'     => $detail,
+            'parent'     => $parent,
+            'prefill'    => $prefill,
+            'suggestion' => $suggestion,
+            'ready'      => STK_Members::has_address($member),
         ));
     }
 
@@ -307,6 +319,7 @@ class STK_Frontend {
         }
 
         self::template($type, array(
+            'suggestions' => $type === 'propositions' ? STK_Suggestions::for_user($user_id) : array(),
             'user_id'   => $user_id,
             'exchanges' => $exchanges,
             'items'     => STK_Exchanges::get_items_map($ids),
@@ -435,11 +448,12 @@ class STK_Frontend {
                 $give      = self::posted_quantities('give');
                 $ask       = self::posted_quantities('ask');
                 $parent_id = isset($_POST['parent_id']) ? absint($_POST['parent_id']) : 0;
+                $source    = isset($_POST['source']) ? sanitize_key(wp_unslash($_POST['source'])) : 'manuel';
                 $result    = $recipient
-                    ? STK_Exchanges::create($user_id, (int) $recipient->user_id, $give, $ask, $_POST['message'] ?? '', $parent_id) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- nettoyé dans create().
+                    ? STK_Exchanges::create($user_id, (int) $recipient->user_id, $give, $ask, $_POST['message'] ?? '', $parent_id, $source) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- nettoyé dans create().
                     : new WP_Error('stk_recipient', __('Destinataire invalide.', 'stickers'));
                 if (is_wp_error($result)) {
-                    $redirect = $recipient ? self::member_url($recipient->pseudo, $parent_id ? array('reponse' => $parent_id) : array()) : self::url('bourse');
+                    $redirect = $recipient ? self::member_url($recipient->pseudo, $parent_id ? array('reponse' => $parent_id) : ($source === 'suggestion' ? array('suggestion' => 1) : array())) : self::url('bourse');
                 } else {
                     $success  = $parent_id ? __('Contre-proposition envoyée.', 'stickers') : __('Proposition envoyée.', 'stickers');
                     $redirect = self::exchange_url($result);

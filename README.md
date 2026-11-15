@@ -1,4 +1,4 @@
-# Bourse aux stickers — v0.2.0
+# Bourse aux stickers — v0.3.0
 
 Plugin WordPress/WooCommerce des éditions Black and White : bourse d'échange de stickers entre membres connectés, dans l'esprit des albums Panini. Indépendant du plugin « Abonnements Éditions Limitées ».
 
@@ -38,6 +38,15 @@ Plugin WordPress/WooCommerce des éditions Black and White : bourse d'échange d
 
 **Admin → Stickers → Échanges** : liste filtrable par statut, recherche par pseudo ou numéro, détail (déroulement, contenu, réservations, historique), discussion avec masquage / réaffichage des messages.
 
+## Étape 3 (v0.3.0) — suggestions automatiques
+
+En tête de **Mon compte → Stickers → Propositions** : les membres avec qui l'échange profite aux deux (j'ai un double qui lui manque **et** il a un double qui me manque).
+- Calcul à la demande, à l'affichage de la page ; 20 suggestions au maximum, classées par nombre d'échanges un pour un possibles. Symétrique : si A voit B, B voit A.
+- Ne tiennent compte que des doubles disponibles (hors exemplaires réservés) et des stickers actifs ; les membres sans adresse et ceux avec qui une proposition est déjà en attente sont exclus.
+- « Préparer cette proposition » ouvre la fiche du membre avec un échange équilibré pré-rempli (un exemplaire de chaque numéro, autant de chaque côté), modifiable avant envoi. L'origine « suggestion » est enregistrée et visible dans l'admin.
+- Aucun email de suggestion.
+- Mesure locale avec 1 000 membres × 100 stickers et 300 propositions en attente : ~35 ms pour le calcul des suggestions, ~30 ms pour la bourse.
+
 ## Règles de stock
 
 Doubles = exemplaires − 1. Manquants = numéros à 0. Un membre ne peut pas descendre sous 1 + exemplaires promis dans un échange en cours (réservations). Les modifications d'inventaire se font en transaction avec verrouillage des lignes du membre.
@@ -53,5 +62,4 @@ Supprimer le plugin ne supprime les données que si la case « Supprimer toutes 
 
 ## Feuille de route
 
-- Étape 3 : suggestions automatiques.
 - Étape 4 : emails, rappels et expiration (Action Scheduler), litiges et arbitrage, RGPD (export / effacement), purge facultative.

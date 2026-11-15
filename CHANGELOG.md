@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.0 — étape 3
+
+- Suggestions automatiques (correspondances mutuelles) en tête de l'onglet Propositions : 20 maximum, classées par nombre d'échanges un pour un.
+- Proposition pré-remplie et équilibrée depuis une suggestion ; origine « suggestion » enregistrée et affichée dans l'admin.
+
 ## 0.2.0 — étape 2
 
 - Tables `wp_stk_exchanges`, `wp_stk_exchange_items`, `wp_stk_exchange_log`, `wp_stk_messages` (migration automatique depuis 0.1.0).
