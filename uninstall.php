@@ -19,7 +19,7 @@ if (get_option('stk_delete_data_on_uninstall', '0') !== '1') {
 
 global $wpdb;
 
-$stk_tables = array('stickers', 'members', 'inventory');
+$stk_tables = array('stickers', 'members', 'inventory', 'exchanges', 'exchange_items', 'exchange_log', 'messages');
 foreach ($stk_tables as $stk_table) {
     $wpdb->query('DROP TABLE IF EXISTS `' . esc_sql($wpdb->prefix . 'stk_' . $stk_table) . '`'); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- noms fixes.
 }

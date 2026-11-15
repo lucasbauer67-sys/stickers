@@ -194,3 +194,272 @@
     white-space: nowrap;
     border: 0;
 }
+
+/* ---- Étape 2 : bourse, propositions, échanges ---- */
+
+.stk-badge {
+    display: inline-block;
+    min-width: 1.4em;
+    padding: 0 .35em;
+    margin-left: .25em;
+    border-radius: 1em;
+    background: #000;
+    color: #fff;
+    font-size: .75em;
+    line-height: 1.4em;
+    text-align: center;
+}
+
+.stk-bourse-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+    margin: 1rem 0;
+}
+
+.stk-bourse-filter input[type="text"] {
+    width: 8em;
+}
+
+.stk-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+    margin: 1rem 0;
+}
+
+.stk-pagination a,
+.stk-pagination .current {
+    display: inline-block;
+    min-width: 2em;
+    padding: .2em .5em;
+    border: 1px solid rgba(0, 0, 0, .2);
+    text-align: center;
+    text-decoration: none;
+}
+
+.stk-pagination .current {
+    font-weight: 700;
+    border-color: currentColor;
+}
+
+.stk-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .3rem;
+    list-style: none;
+    margin: 0 0 .5rem;
+    padding: 0;
+}
+
+.stk-chips li {
+    padding: .1em .5em;
+    border: 1px dashed rgba(0, 0, 0, .35);
+    border-radius: 3px;
+    font-size: .9em;
+}
+
+.stk-chips li.is-match {
+    font-weight: 700;
+    border-style: solid;
+    border-color: #000;
+}
+
+.stk-proposal fieldset {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border: 1px solid rgba(0, 0, 0, .15);
+}
+
+.stk-proposal legend {
+    padding: 0 .4rem;
+    font-weight: 600;
+}
+
+.stk-pick {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: .5rem 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.stk-pick li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    padding: .25rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, .08);
+}
+
+.stk-pick li.is-useful label {
+    font-weight: 600;
+}
+
+.stk-pick input[type="number"] {
+    width: 4em;
+    flex: 0 0 auto;
+}
+
+.stk-tag {
+    display: inline-block;
+    margin-left: .3em;
+    padding: 0 .35em;
+    border: 1px solid currentColor;
+    border-radius: 3px;
+    font-size: .75em;
+    font-weight: 400;
+}
+
+.stk-exchange-list {
+    list-style: none;
+    margin: 0 0 1.5rem;
+    padding: 0;
+}
+
+.stk-exchange-card {
+    margin: 0 0 .75rem;
+    padding: .75rem 1rem;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: 4px;
+}
+
+.stk-exchange-card.is-highlight {
+    border-color: #000;
+    border-width: 2px;
+}
+
+.stk-exchange-card p {
+    margin: 0 0 .4rem;
+}
+
+.stk-exchange-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+}
+
+.stk-status {
+    display: inline-block;
+    padding: 0 .5em;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, .08);
+    font-size: .8em;
+    font-weight: 600;
+}
+
+.stk-status-accepte,
+.stk-status-propose {
+    background: #000;
+    color: #fff;
+}
+
+.stk-date {
+    opacity: .7;
+    font-size: .85em;
+}
+
+.stk-exchange-todo {
+    font-weight: 600;
+}
+
+.stk-actions-box,
+.stk-cancel-box,
+.stk-address {
+    margin: 1.25rem 0;
+    padding: 1rem;
+    border: 1px solid rgba(0, 0, 0, .15);
+}
+
+.stk-inline-form {
+    display: inline-block;
+    margin: 0 .5rem .5rem 0;
+}
+
+.stk-button-secondary {
+    opacity: .8;
+}
+
+.stk-steps {
+    margin: 1.25rem 0 .5rem 1.25rem;
+}
+
+.stk-steps li {
+    margin-bottom: .6rem;
+}
+
+.stk-steps li.is-done {
+    opacity: .7;
+}
+
+.stk-steps li.is-done::marker {
+    content: "✓ ";
+}
+
+.stk-steps .stk-inline-form {
+    margin-left: .5rem;
+}
+
+.stk-info {
+    padding: .75rem 1rem;
+    border-left: 3px solid #000;
+    background: rgba(0, 0, 0, .04);
+}
+
+.stk-discussion {
+    margin-top: 2rem;
+}
+
+.stk-messages {
+    list-style: none;
+    margin: 0 0 1rem;
+    padding: 0;
+}
+
+.stk-message {
+    max-width: 85%;
+    margin: 0 0 .6rem;
+    padding: .5rem .75rem;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, .05);
+}
+
+.stk-message.is-mine {
+    margin-left: auto;
+    background: rgba(0, 0, 0, .1);
+}
+
+.stk-message p {
+    margin: 0;
+}
+
+.stk-message-meta {
+    font-size: .8em;
+    opacity: .75;
+}
+
+.stk-message-hidden {
+    font-style: italic;
+    opacity: .7;
+}
+
+.stk-message-form textarea {
+    width: 100%;
+}
+
+.stk-bourse .screen-reader-text,
+.stk-discussion .screen-reader-text {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}

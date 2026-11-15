@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) {
 class STK_Database {
 
     /** Version du schéma (indépendante de la version du plugin). */
-    const DB_VERSION = '1';
+    const DB_VERSION = '2';
 
     /** Nombre de tentatives en cas de blocage croisé (deadlock). */
     const TRANSACTION_RETRIES = 3;
@@ -70,6 +70,76 @@ class STK_Database {
             updated_at datetime NOT NULL,
             PRIMARY KEY  (user_id,sticker_id),
             KEY sticker_qte (sticker_id,quantite)
+        ) $options;");
+
+        // v2 : échanges, contenu des échanges, historique, discussion.
+        $exchanges = self::table('exchanges');
+        $items     = self::table('exchange_items');
+        $log       = self::table('exchange_log');
+        $messages  = self::table('messages');
+
+        dbDelta("CREATE TABLE $exchanges (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            thread_id bigint(20) unsigned NOT NULL DEFAULT 0,
+            parent_id bigint(20) unsigned NOT NULL DEFAULT 0,
+            proposer_id bigint(20) unsigned NOT NULL,
+            recipient_id bigint(20) unsigned NOT NULL,
+            statut varchar(20) NOT NULL,
+            source varchar(20) NOT NULL DEFAULT 'manuel',
+            expires_at datetime DEFAULT NULL,
+            accepted_at datetime DEFAULT NULL,
+            proposer_shipped_at datetime DEFAULT NULL,
+            recipient_shipped_at datetime DEFAULT NULL,
+            proposer_received_at datetime DEFAULT NULL,
+            recipient_received_at datetime DEFAULT NULL,
+            cancel_requested_by bigint(20) unsigned NOT NULL DEFAULT 0,
+            closed_at datetime DEFAULT NULL,
+            created_at datetime NOT NULL,
+            updated_at datetime NOT NULL,
+            PRIMARY KEY  (id),
+            KEY proposer (proposer_id,statut),
+            KEY recipient (recipient_id,statut),
+            KEY statut (statut),
+            KEY thread (thread_id)
+        ) $options;");
+
+        dbDelta("CREATE TABLE $items (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            exchange_id bigint(20) unsigned NOT NULL,
+            giver_id bigint(20) unsigned NOT NULL,
+            receiver_id bigint(20) unsigned NOT NULL,
+            sticker_id bigint(20) unsigned NOT NULL,
+            quantite tinyint(3) unsigned NOT NULL DEFAULT 1,
+            reserve tinyint(1) NOT NULL DEFAULT 0,
+            PRIMARY KEY  (id),
+            KEY exchange (exchange_id),
+            KEY giver_reserve (giver_id,reserve,sticker_id),
+            KEY sticker (sticker_id)
+        ) $options;");
+
+        dbDelta("CREATE TABLE $log (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            exchange_id bigint(20) unsigned NOT NULL,
+            user_id bigint(20) unsigned NOT NULL DEFAULT 0,
+            action varchar(40) NOT NULL,
+            details text NULL,
+            created_at datetime NOT NULL,
+            PRIMARY KEY  (id),
+            KEY exchange (exchange_id)
+        ) $options;");
+
+        dbDelta("CREATE TABLE $messages (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            thread_id bigint(20) unsigned NOT NULL,
+            exchange_id bigint(20) unsigned NOT NULL,
+            user_id bigint(20) unsigned NOT NULL,
+            message text NOT NULL,
+            hidden tinyint(1) NOT NULL DEFAULT 0,
+            hidden_by bigint(20) unsigned NOT NULL DEFAULT 0,
+            hidden_at datetime DEFAULT NULL,
+            created_at datetime NOT NULL,
+            PRIMARY KEY  (id),
+            KEY thread (thread_id,id)
         ) $options;");
 
         update_option('stk_db_version', self::DB_VERSION);

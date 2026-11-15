@@ -80,3 +80,31 @@
         grid-template-columns: 1fr;
     }
 }
+
+.stk-log {
+    margin: 0;
+}
+
+.stk-log li {
+    margin-bottom: .3rem;
+}
+
+.stk-admin-message {
+    padding: .5rem .75rem;
+    margin-bottom: .75rem;
+    border-left: 3px solid #2271b1;
+    background: #f6f7f7;
+}
+
+.stk-admin-message.is-hidden {
+    border-left-color: #b32d2e;
+    opacity: .75;
+}
+
+.stk-admin-message p {
+    margin: 0 0 .4rem;
+}
+
+.stk-admin-message-meta {
+    font-size: 12px;
+}

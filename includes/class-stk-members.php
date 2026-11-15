@@ -20,6 +20,30 @@ class STK_Members {
         return $wpdb->get_row($wpdb->prepare("SELECT * FROM $table WHERE user_id = %d", $user_id));
     }
 
+    /**
+     * Pseudos de plusieurs membres en une requête (« Membre supprimé » si absent).
+     *
+     * @return string[] user_id => pseudo
+     */
+    public static function pseudos(array $user_ids) {
+        global $wpdb;
+        $user_ids = array_values(array_unique(array_filter(array_map('absint', $user_ids))));
+        $map      = array();
+        if ($user_ids) {
+            $table        = STK_Database::table('members');
+            $placeholders = implode(',', array_fill(0, count($user_ids), '%d'));
+            foreach ((array) $wpdb->get_results($wpdb->prepare("SELECT user_id, pseudo FROM $table WHERE user_id IN ($placeholders)", $user_ids)) as $row) {
+                $map[(int) $row->user_id] = $row->pseudo;
+            }
+        }
+        foreach ($user_ids as $id) {
+            if (!isset($map[$id])) {
+                $map[$id] = __('Membre supprimé', 'stickers');
+            }
+        }
+        return $map;
+    }
+
     public static function get_by_pseudo($pseudo) {
         global $wpdb;
         $table = STK_Database::table('members');

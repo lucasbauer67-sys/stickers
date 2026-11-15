@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0 — étape 2
+
+- Tables `wp_stk_exchanges`, `wp_stk_exchange_items`, `wp_stk_exchange_log`, `wp_stk_messages` (migration automatique depuis 0.1.0).
+- Bourse (membres classés par intérêt mutuel, filtre par numéro), fiche membre et formulaire de proposition.
+- Propositions : accepter, refuser, annuler, contre-proposer ; une seule proposition en attente par paire de membres.
+- Échanges : « J'ai expédié » puis « Reçu », clôture et mise à jour des inventaires ; annulation d'un commun accord avant expédition.
+- Réservations des doubles engagés, transactions et verrous contre les actions simultanées.
+- Fil de discussion par échange ; modération (masquer / réafficher) dans l'admin.
+- Admin Échanges : liste, filtres, détail, historique.
+
 ## 0.1.0 — étape 1
 
 - Socle du plugin (WP 7.1 / PHP 8.3 / WooCommerce 11.2, compatibilité HPOS déclarée).

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Bourse aux stickers
  * Description: Bourse d'échange de stickers entre membres connectés : inventaire déclaratif, propositions d'échange, suggestions automatiques.
- * Version: 0.1.0
+ * Version: 0.2.0
  * Author: Xylene14
  * Requires at least: 7.1
  * Requires PHP: 8.3
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('STK_VERSION', '0.1.0');
+define('STK_VERSION', '0.2.0');
 define('STK_PLUGIN_FILE', __FILE__);
 define('STK_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('STK_PLUGIN_URL', plugin_dir_url(__FILE__));
@@ -30,8 +30,12 @@ require_once STK_PLUGIN_DIR . 'includes/class-stk-database.php';
 require_once STK_PLUGIN_DIR . 'includes/class-stk-catalog.php';
 require_once STK_PLUGIN_DIR . 'includes/class-stk-members.php';
 require_once STK_PLUGIN_DIR . 'includes/class-stk-inventory.php';
+require_once STK_PLUGIN_DIR . 'includes/class-stk-exchanges.php';
+require_once STK_PLUGIN_DIR . 'includes/class-stk-messages.php';
+require_once STK_PLUGIN_DIR . 'includes/class-stk-market.php';
 require_once STK_PLUGIN_DIR . 'includes/class-stk-frontend.php';
 require_once STK_PLUGIN_DIR . 'includes/class-stk-admin.php';
+require_once STK_PLUGIN_DIR . 'includes/class-stk-admin-exchanges.php';
 require_once STK_PLUGIN_DIR . 'includes/class-stk-github-updater.php';
 
 /**
@@ -43,6 +47,7 @@ final class STK_Plugin {
 
     public $frontend;
     public $admin;
+    public $admin_exchanges;
     public $updater;
 
     public static function instance() {
@@ -81,6 +86,7 @@ final class STK_Plugin {
 
         $this->frontend = new STK_Frontend();
         $this->admin    = new STK_Admin();
+        $this->admin_exchanges = new STK_Admin_Exchanges();
 
         if (is_admin() || wp_doing_cron()) {
             $this->updater = new STK_GitHub_Updater();
