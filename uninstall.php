@@ -35,6 +35,7 @@ $stk_options = array(
     'stk_last_purge',
     'stk_rules_version',
     'stk_wm_version',
+    'stk_enabled',
 );
 // Page des conditions générales créée par le plugin : mise à la corbeille (récupérable).
 $stk_terms_page = (int) get_option('stk_terms_page_id', 0);

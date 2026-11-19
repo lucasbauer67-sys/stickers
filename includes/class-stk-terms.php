@@ -58,11 +58,13 @@ class STK_Terms {
     }
 
     /**
-     * Adresse de la page des CGU (vide si la page n'est pas publiée).
+     * Adresse de la page des CGU (vide si la page n'est pas publiée, sauf aperçu administrateur).
      */
     public static function page_url() {
         $page_id = (int) get_option(self::OPTION_PAGE, 0);
-        if (!$page_id || get_post_status($page_id) !== 'publish') {
+        $status  = $page_id ? get_post_status($page_id) : '';
+        // Page privée pendant la fermeture de la bourse : lien affiché aux administrateurs (aperçu).
+        if ($status !== 'publish' && !($status === 'private' && current_user_can('read_private_pages'))) {
             return '';
         }
         return (string) get_permalink($page_id);
@@ -78,7 +80,7 @@ class STK_Terms {
         }
         $page_id = wp_insert_post(array(
             'post_type'      => 'page',
-            'post_status'    => 'publish',
+            'post_status'    => STK_Status::is_open() ? 'publish' : 'private',
             'post_title'     => __('Conditions générales d\'utilisation de la bourse aux stickers', 'stickers'),
             'post_name'      => 'conditions-bourse-stickers',
             'post_content'   => self::default_content(),

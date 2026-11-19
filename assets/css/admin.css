@@ -133,3 +133,11 @@
 .stk-dispute-box {
     border-left: 4px solid #b32d2e;
 }
+
+.stk-status-box {
+    border-left: 4px solid #dba617;
+}
+
+.stk-status-box.is-open {
+    border-left-color: #00a32a;
+}

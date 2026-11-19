@@ -1,4 +1,4 @@
-# Bourse aux stickers — v1.1.0
+# Bourse aux stickers — v1.2.0
 
 Plugin WordPress/WooCommerce des éditions Black and White : bourse d'échange de stickers entre membres connectés, dans l'esprit des albums Panini. Indépendant du plugin « Abonnements Éditions Limitées ».
 
@@ -64,6 +64,14 @@ En tête de **Mon compte → Stickers → Propositions** : les membres avec qui 
 
 **RGPD** : export et effacement via Outils → Exporter / Effacer les données personnelles ; même effacement à la suppression d'un compte. L'effacement annule ou refuse les propositions en attente, transmet les échanges acceptés à l'admin (litige), supprime pseudo, adresse et inventaire, efface le texte des messages ; l'historique des échanges reste visible pour l'autre membre (« Membre supprimé »). Texte proposé pour la politique de confidentialité (Réglages → Confidentialité → guide).
 
+## Version 1.2.0 — ouverture / fermeture de la bourse
+
+Bouton **Ouvrir la bourse aux clients / Fermer la bourse** en haut de Stickers → Catalogue (et Réglages). **Fermée par défaut** (installation comme mise à jour) :
+- clients : pas d'onglet « Stickers » dans Mon compte, adresse directe → « pas encore ouverte », formulaires et enregistrements refusés ;
+- administrateurs de la boutique : aperçu complet avec bandeau « fermée aux clients » (pour tester en production) ;
+- page des CGU en « privée » (404 pour les visiteurs), republiée à l'ouverture ;
+- tâche horaire suspendue (ni expiration, ni rappel, ni purge).
+
 ## Version 1.1.0 — règles, CGU, filigrane
 
 - **Menu** de l'onglet sur une ligne : Inventaire, Bourse, Propositions, Échanges, Profil (défilement horizontal sur petit écran).
@@ -86,7 +94,8 @@ Supprimer le plugin ne supprime les données que si la case « Supprimer toutes 
 
 ## Mise en production
 
-1. Lucas crée la Release GitHub `v1.0.0` (cible `main`).
-2. Première installation en production : téléverser le zip (Extensions → Ajouter → Téléverser), activer. Les mises à jour suivantes passeront par les Releases.
-3. Stickers → Réglages : saisir le token GitHub, vérifier délais et textes des emails.
-4. Ressaisir le catalogue (celui du site de test n'est pas copié).
+1. Lucas crée la Release GitHub de la dernière version (cible `main`).
+2. Première installation en production : téléverser le zip (Extensions → Ajouter → Téléverser), activer. La bourse est **fermée** aux clients.
+3. Stickers → Réglages : saisir le token GitHub, vérifier délais, textes des emails et page des CGU.
+4. Saisir le catalogue (celui du site de test n'est pas copié) et tester en aperçu administrateur.
+5. Stickers → Catalogue : « Ouvrir la bourse aux clients ».

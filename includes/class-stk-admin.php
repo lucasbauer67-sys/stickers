@@ -164,6 +164,7 @@ class STK_Admin {
         ?>
         <div class="wrap stk-admin">
             <h1><?php esc_html_e('Catalogue des stickers', 'stickers'); ?></h1>
+            <?php STK_Status::render_box(); ?>
             <p>
                 <?php
                 printf(
@@ -587,6 +588,7 @@ class STK_Admin {
         <div class="wrap stk-admin">
             <h1><?php esc_html_e('Réglages de la bourse', 'stickers'); ?></h1>
             <?php settings_errors(); ?>
+            <?php STK_Status::render_box(); ?>
             <form method="post" action="options.php">
                 <?php settings_fields('stk_settings'); ?>
 

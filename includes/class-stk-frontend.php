@@ -36,6 +36,9 @@ class STK_Frontend {
      * Onglet placé après « Mes abonnements » (plugin Abonnements), sinon après « Commandes ».
      */
     public function add_menu_item($items) {
+        if (!STK_Status::can_access()) {
+            return $items; // Bourse fermée : onglet masqué aux clients.
+        }
         $label = __('Stickers', 'stickers');
         $after = isset($items['mes-abonnements']) ? 'mes-abonnements' : (isset($items['orders']) ? 'orders' : null);
 
@@ -107,7 +110,7 @@ class STK_Frontend {
     }
 
     public function enqueue_assets() {
-        if (!self::is_stickers_page() || !is_user_logged_in()) {
+        if (!self::is_stickers_page() || !is_user_logged_in() || !STK_Status::can_access()) {
             return;
         }
         wp_enqueue_style('stk-frontend', STK_PLUGIN_URL . 'assets/css/frontend.css', array(), STK_VERSION);
@@ -131,6 +134,14 @@ class STK_Frontend {
         $user_id = get_current_user_id();
         if (!$user_id) {
             return;
+        }
+
+        if (!STK_Status::can_access()) {
+            wc_print_notice(__('La bourse aux stickers n\'est pas encore ouverte.', 'stickers'), 'notice');
+            return;
+        }
+        if (!STK_Status::is_open()) {
+            wc_print_notice(__('Aperçu administrateur : la bourse est fermée aux clients, eux ne voient pas cet onglet.', 'stickers'), 'notice');
         }
 
         $view   = self::current_view();
@@ -415,6 +426,12 @@ class STK_Frontend {
             return;
         }
 
+        if (!STK_Status::can_access()) {
+            wc_add_notice(__('La bourse aux stickers n\'est pas encore ouverte.', 'stickers'), 'error');
+            wp_safe_redirect(wc_get_page_permalink('myaccount'));
+            exit;
+        }
+
         $action      = sanitize_key(wp_unslash($_POST['stk_action']));
         $user_id     = get_current_user_id();
         $exchange_id = isset($_POST['exchange_id']) ? absint($_POST['exchange_id']) : 0;
@@ -570,6 +587,9 @@ class STK_Frontend {
         $user_id = get_current_user_id();
         if (!$user_id) {
             wp_send_json_error(array('message' => __('Vous devez être connecté.', 'stickers')), 403);
+        }
+        if (!STK_Status::can_access()) {
+            wp_send_json_error(array('message' => __('La bourse aux stickers n\'est pas encore ouverte.', 'stickers')), 403);
         }
 
         $sticker_id = isset($_POST['sticker_id']) ? absint($_POST['sticker_id']) : 0;

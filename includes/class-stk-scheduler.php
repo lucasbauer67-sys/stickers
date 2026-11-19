@@ -49,6 +49,11 @@ class STK_Scheduler {
         $now   = $now ? (int) $now : time();
         $stats = array('expired' => 0, 'reminder_proposal' => 0, 'reminder_ship' => 0, 'reminder_receive' => 0, 'purged' => 0);
 
+        // Bourse fermée aux clients : ni expiration, ni rappel, ni purge (les membres ne peuvent pas agir).
+        if (!STK_Status::is_open()) {
+            return $stats;
+        }
+
         self::process_proposals($now, $stats);
         self::process_accepted($now, $stats);
 

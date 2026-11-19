@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0
+
+- Interrupteur « Ouvrir / Fermer la bourse » (Catalogue et Réglages), fermée par défaut : onglet masqué aux clients, aperçu pour les administrateurs, page des CGU privée, tâche horaire suspendue.
+
 ## 1.1.0
 
 - Menu de l'onglet Stickers sur une ligne (libellés raccourcis).
