@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0
+
+- Menu de l'onglet Stickers sur une ligne (libellés raccourcis).
+- Profil : explication du fonctionnement et case d'acceptation obligatoire, valant acceptation des CGU ; versionnage des règles et nouvelle acceptation à la demande.
+- Page « Conditions générales d'utilisation de la bourse aux stickers » créée automatiquement.
+- Filigrane « SPÉCIMEN » sur toutes les images de stickers montrées aux membres (copies réduites générées côté serveur).
+
 ## 1.0.0 — étape 4
 
 - Emails transactionnels en texte brut (14 modèles), objets et textes modifiables dans les réglages.

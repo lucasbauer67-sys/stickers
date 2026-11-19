@@ -107,6 +107,8 @@ class STK_Admin {
             $this->redirect('stk-catalogue', $id ? array('edit' => $id) : array());
         }
 
+        STK_Watermark::generate(STK_Catalog::get($result));
+
         if ($id) {
             $this->set_notice(__('Sticker mis à jour.', 'stickers'));
             $this->redirect('stk-catalogue');
@@ -134,6 +136,9 @@ class STK_Admin {
                 break;
             case 'delete':
                 $result = STK_Catalog::delete($id);
+                if (!is_wp_error($result)) {
+                    STK_Watermark::delete_for($id);
+                }
                 if (is_wp_error($result)) {
                     $this->set_notice($result->get_error_message(), 'error');
                 } else {
@@ -222,6 +227,17 @@ class STK_Admin {
             </div>
 
             <h2><?php esc_html_e('Stickers du catalogue', 'stickers'); ?></h2>
+            <?php if (!STK_Watermark::available()) : ?>
+                <div class="notice notice-error inline"><p><?php esc_html_e('L\'extension PHP GD n\'est pas disponible : les images filigranées ne peuvent pas être générées, aucune image n\'est donc montrée aux membres.', 'stickers'); ?></p></div>
+            <?php endif; ?>
+            <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" class="stk-regenerate">
+                <input type="hidden" name="action" value="stk_regenerate_watermarks">
+                <?php wp_nonce_field('stk_regenerate_watermarks'); ?>
+                <p class="description">
+                    <?php esc_html_e('Les membres voient une copie réduite de chaque image, avec le filigrane « SPÉCIMEN ». Elle est créée automatiquement à l\'enregistrement d\'un sticker. La colonne Image ci-dessous montre l\'original (visible des administrateurs seulement).', 'stickers'); ?>
+                    <button type="submit" class="button button-small"><?php esc_html_e('Régénérer toutes les images filigranées', 'stickers'); ?></button>
+                </p>
+            </form>
             <?php if (!$stickers) : ?>
                 <p><?php esc_html_e('Aucun sticker pour l\'instant.', 'stickers'); ?></p>
             <?php else : ?>
@@ -427,6 +443,22 @@ class STK_Admin {
                         <p><?php esc_html_e('Compte supprimé', 'stickers'); ?></p>
                     <?php endif; ?>
 
+                    <h2><?php esc_html_e('Règles de la bourse', 'stickers'); ?></h2>
+                    <p>
+                        <?php
+                        $accepted_at = STK_Terms::accepted_at($user_id);
+                        if (STK_Terms::has_accepted($user_id)) {
+                            printf(
+                                /* translators: %s: date */
+                                esc_html__('Acceptées le %s.', 'stickers'),
+                                esc_html(get_date_from_gmt($accepted_at, get_option('date_format') . ' H:i'))
+                            );
+                        } else {
+                            echo $accepted_at ? esc_html__('Acceptation à renouveler (règles modifiées depuis).', 'stickers') : esc_html__('Pas encore acceptées : ce membre n\'apparaît pas dans la bourse.', 'stickers');
+                        }
+                        ?>
+                    </p>
+
                     <h2><?php esc_html_e('Adresse de la bourse', 'stickers'); ?></h2>
                     <?php if (STK_Members::has_address($member)) : ?>
                         <address>
@@ -503,6 +535,10 @@ class STK_Admin {
             'sanitize_callback' => array('STK_Settings', 'sanitize'),
             'default'           => STK_Settings::defaults(),
         ));
+        register_setting('stk_settings', STK_Terms::OPTION_PAGE, array(
+            'type'              => 'integer',
+            'sanitize_callback' => 'absint',
+        ));
         register_setting('stk_settings', STK_Emails::OPTION, array(
             'type'              => 'array',
             'sanitize_callback' => array('STK_Emails', 'sanitize'),
@@ -561,6 +597,44 @@ class STK_Admin {
                         <td>
                             <input type="text" id="stk-collection-name" name="stk_collection_name" class="regular-text" maxlength="190" value="<?php echo esc_attr(get_option('stk_collection_name', '')); ?>">
                             <p class="description"><?php esc_html_e('Affiché en titre de l\'inventaire des membres. Laisser vide pour ne rien afficher.', 'stickers'); ?></p>
+                        </td>
+                    </tr>
+                </table>
+
+                <h2><?php esc_html_e('Conditions générales d\'utilisation', 'stickers'); ?></h2>
+                <table class="form-table" role="presentation">
+                    <tr>
+                        <th scope="row"><label for="stk-terms-page"><?php esc_html_e('Page des conditions', 'stickers'); ?></label></th>
+                        <td>
+                            <?php
+                            wp_dropdown_pages(array(
+                                'name'              => STK_Terms::OPTION_PAGE,
+                                'id'                => 'stk-terms-page',
+                                'selected'          => (int) get_option(STK_Terms::OPTION_PAGE, 0),
+                                'show_option_none'  => __('— Aucune —', 'stickers'),
+                                'option_none_value' => '0',
+                                'post_status'       => array('publish', 'draft', 'private'),
+                            ));
+                            $terms_page = (int) get_option(STK_Terms::OPTION_PAGE, 0);
+                            if ($terms_page && get_post($terms_page)) {
+                                echo ' <a href="' . esc_url(get_edit_post_link($terms_page)) . '">' . esc_html__('Modifier le texte', 'stickers') . '</a>';
+                                echo ' · <a href="' . esc_url(get_permalink($terms_page)) . '" target="_blank" rel="noopener">' . esc_html__('Voir', 'stickers') . '</a>';
+                            }
+                            ?>
+                            <p class="description"><?php esc_html_e('Page créée automatiquement par le plugin, modifiable comme une page ordinaire. Le lien est affiché dans Stickers → Profil, à côté de la case à cocher : accepter le fonctionnement de la bourse vaut acceptation de ces conditions.', 'stickers'); ?></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e('Acceptation par les membres', 'stickers'); ?></th>
+                        <td>
+                            <?php
+                            printf(
+                                /* translators: %d: numéro de version des règles */
+                                esc_html__('Version actuelle des règles : %d.', 'stickers'),
+                                (int) STK_Terms::version()
+                            );
+                            ?>
+                            <p class="description"><?php esc_html_e('Après une modification importante des conditions ou du fonctionnement, utilisez le bouton « Demander une nouvelle acceptation » en bas de page : chaque membre devra de nouveau cocher la case avant de pouvoir proposer ou accepter un échange.', 'stickers'); ?></p>
                         </td>
                     </tr>
                 </table>
@@ -664,6 +738,12 @@ class STK_Admin {
                     </tr>
                 </table>
                 <?php submit_button(); ?>
+            </form>
+
+            <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" class="stk-resolve-form" data-confirm="<?php esc_attr_e('Demander à tous les membres d\'accepter de nouveau les règles de la bourse ?', 'stickers'); ?>">
+                <input type="hidden" name="action" value="stk_rules_bump">
+                <?php wp_nonce_field('stk_rules_bump'); ?>
+                <p><button type="submit" class="button"><?php esc_html_e('Demander une nouvelle acceptation', 'stickers'); ?></button></p>
             </form>
         </div>
         <?php

@@ -75,8 +75,9 @@ $stats     = $args['stats'];
                             __('Ajouter un exemplaire : %s', 'stickers'),
                             STK_Catalog::label($sticker)
                         )); ?>">
-                            <?php if ($sticker->image_id) : ?>
-                                <?php echo wp_get_attachment_image((int) $sticker->image_id, 'thumbnail', false, array('class' => 'stk-card-img', 'alt' => '', 'loading' => 'lazy')); ?>
+                            <?php $image_url = STK_Watermark::url($sticker); // Copie filigranée, jamais l'original. ?>
+                            <?php if ($image_url) : ?>
+                                <img class="stk-card-img" src="<?php echo esc_url($image_url); ?>" alt="" loading="lazy" draggable="false">
                             <?php endif; ?>
                             <span class="stk-card-num"><?php echo esc_html($sticker->numero); ?></span>
                             <span class="stk-card-name"><?php echo esc_html($sticker->nom); ?></span>

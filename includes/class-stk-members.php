@@ -194,10 +194,10 @@ class STK_Members {
     }
 
     /**
-     * Pseudo + adresse complète : condition pour proposer ou accepter un échange.
+     * Pseudo + adresse complète + règles acceptées : condition pour proposer ou accepter un échange.
      */
     public static function is_ready($user_id) {
-        return self::has_address(self::get($user_id));
+        return self::has_address(self::get($user_id)) && STK_Terms::has_accepted($user_id);
     }
 
     public static function touch_activity($user_id) {

@@ -1,18 +1,28 @@
 /* Bourse aux stickers — Mon compte */
 
+/* Menu sur une seule ligne ; sur petit écran, il défile horizontalement au lieu de passer à la ligne. */
 .stk-nav ul {
     display: flex;
-    flex-wrap: wrap;
-    gap: .5rem;
+    flex-wrap: nowrap;
+    gap: .15rem;
     list-style: none;
     margin: 0 0 1.5rem;
     padding: 0;
     border-bottom: 1px solid rgba(0, 0, 0, .12);
+    overflow-x: auto;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+}
+
+.stk-nav li {
+    flex: 0 0 auto;
+    margin: 0;
 }
 
 .stk-nav li a {
     display: inline-block;
-    padding: .5rem .9rem;
+    padding: .5rem .6rem;
+    white-space: nowrap;
     text-decoration: none;
     border-bottom: 2px solid transparent;
 }
@@ -498,4 +508,33 @@
 .stk-status-litige {
     background: #b32d2e;
     color: #fff;
+}
+
+/* ---- 1.1.0 : règles de la bourse ---- */
+
+.stk-rules {
+    margin-bottom: 2rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid rgba(0, 0, 0, .15);
+}
+
+.stk-rules summary {
+    cursor: pointer;
+}
+
+.stk-rules summary h3 {
+    display: inline;
+    margin: 0;
+}
+
+.stk-rules-steps {
+    margin: 1rem 0 1rem 1.25rem;
+}
+
+.stk-rules-steps li {
+    margin-bottom: .5rem;
+}
+
+.stk-rules-form label {
+    font-weight: 600;
 }

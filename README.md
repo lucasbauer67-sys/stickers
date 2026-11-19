@@ -1,4 +1,4 @@
-# Bourse aux stickers — v1.0.0
+# Bourse aux stickers — v1.1.0
 
 Plugin WordPress/WooCommerce des éditions Black and White : bourse d'échange de stickers entre membres connectés, dans l'esprit des albums Panini. Indépendant du plugin « Abonnements Éditions Limitées ».
 
@@ -63,6 +63,13 @@ En tête de **Mon compte → Stickers → Propositions** : les membres avec qui 
 **Litiges** : « Signaler un problème » sur un échange accepté, par l'un ou l'autre, jusqu'à la clôture (motif obligatoire). L'échange est suspendu : réservations maintenues, adresse masquée, plus d'expédition ni d'annulation, discussion ouverte. **Admin → Stickers → Litiges** (compteur dans le menu) : motif, notes internes, « Clôturer comme réussi » (inventaires mis à jour) ou « Annuler l'échange » (réservations libérées, inventaires inchangés). Aucune correction automatique.
 
 **RGPD** : export et effacement via Outils → Exporter / Effacer les données personnelles ; même effacement à la suppression d'un compte. L'effacement annule ou refuse les propositions en attente, transmet les échanges acceptés à l'admin (litige), supprime pseudo, adresse et inventaire, efface le texte des messages ; l'historique des échanges reste visible pour l'autre membre (« Membre supprimé »). Texte proposé pour la politique de confidentialité (Réglages → Confidentialité → guide).
+
+## Version 1.1.0 — règles, CGU, filigrane
+
+- **Menu** de l'onglet sur une ligne : Inventaire, Bourse, Propositions, Échanges, Profil (défilement horizontal sur petit écran).
+- **Profil** : explication du fonctionnement de la bourse + case « J'ai lu le fonctionnement de la bourse et j'accepte les conditions générales d'utilisation ». Tant qu'elle n'est pas cochée, le membre ne peut ni choisir son pseudo, ni voir la bourse, ni proposer ou accepter un échange, et il n'apparaît pas aux autres. Acceptation stockée (version + date) en métadonnées utilisateur ; affichée dans la fiche membre de l'admin et dans l'export RGPD.
+- **CGU** : page WordPress « Conditions générales d'utilisation de la bourse aux stickers » (`/conditions-bourse-stickers/`) créée automatiquement, modifiable comme une page ordinaire ; lien dans le Profil, à côté de la case. Réglages : choix de la page, « Demander une nouvelle acceptation » (augmente la version des règles).
+- **Filigrane** : les membres ne voient qu'une copie réduite (400 px max.) avec « SPÉCIMEN — Bourse d'échange · ne pas imprimer » en travers, générée par GD dans `uploads/stickers-filigrane/` (à l'enregistrement d'un sticker, en tâche de fond après mise à jour, ou bouton « Régénérer » du Catalogue). L'original reste dans la médiathèque, visible des administrateurs. Calques : `assets/img/filigrane-portrait.png`, `filigrane-paysage.png`.
 
 ## Règles de stock
 

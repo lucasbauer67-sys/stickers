@@ -33,9 +33,34 @@ $stk_options = array(
     'stk_settings',
     'stk_emails',
     'stk_last_purge',
+    'stk_rules_version',
+    'stk_wm_version',
 );
+// Page des conditions générales créée par le plugin : mise à la corbeille (récupérable).
+$stk_terms_page = (int) get_option('stk_terms_page_id', 0);
+if ($stk_terms_page) {
+    wp_trash_post($stk_terms_page);
+}
+$stk_options[] = 'stk_terms_page_id';
+
 foreach ($stk_options as $stk_option) {
     delete_option($stk_option);
+}
+
+// Acceptations des règles par les membres.
+delete_metadata('user', 0, 'stk_rules_version', '', true);
+delete_metadata('user', 0, 'stk_rules_accepted_at', '', true);
+
+// Images filigranées générées par le plugin.
+$stk_upload = wp_upload_dir(null, false);
+$stk_wm_dir = trailingslashit($stk_upload['basedir']) . 'stickers-filigrane';
+if (is_dir($stk_wm_dir)) {
+    foreach ((array) glob($stk_wm_dir . '/*') as $stk_file) {
+        if (is_file($stk_file)) {
+            wp_delete_file($stk_file);
+        }
+    }
+    @rmdir($stk_wm_dir); // phpcs:ignore WordPress.PHP.NoSilencedErrors -- dossier éventuellement non vide (fichiers ajoutés à la main).
 }
 
 delete_transient('stk_github_release');

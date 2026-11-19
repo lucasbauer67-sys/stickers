@@ -68,11 +68,11 @@ class STK_Frontend {
      */
     public static function views() {
         return array(
-            'inventaire'   => __('Mon inventaire', 'stickers'),
+            'inventaire'   => __('Inventaire', 'stickers'),
             'bourse'       => __('Bourse', 'stickers'),
             'propositions' => __('Propositions', 'stickers'),
             'echanges'     => __('Échanges', 'stickers'),
-            'profil'       => __('Pseudo et adresse', 'stickers'),
+            'profil'       => __('Profil', 'stickers'),
         );
     }
 
@@ -152,6 +152,15 @@ class STK_Frontend {
                 ),
                 'notice'
             );
+        } elseif ($member && !STK_Terms::has_accepted($user_id) && $view !== 'profil') {
+            wc_print_notice(
+                sprintf(
+                    /* translators: %s: lien vers le Profil */
+                    __('Avant de participer à la bourse, lisez son fonctionnement et acceptez les conditions d\'utilisation : %s', 'stickers'),
+                    '<a href="' . esc_url(self::url('profil')) . '">' . esc_html__('lire et accepter', 'stickers') . '</a>'
+                ),
+                'notice'
+            );
         } elseif ($member && !STK_Members::has_address($member) && in_array($view, array('bourse', 'membre', 'propositions'), true)) {
             wc_print_notice(
                 sprintf(
@@ -166,8 +175,11 @@ class STK_Frontend {
         switch ($view) {
             case 'profil':
                 self::template('profil', array(
-                    'member'    => $member,
-                    'countries' => STK_Members::allowed_countries(),
+                    'member'      => $member,
+                    'countries'   => STK_Members::allowed_countries(),
+                    'accepted'    => STK_Terms::has_accepted($user_id),
+                    'accepted_at' => STK_Terms::accepted_at($user_id),
+                    'terms_url'   => STK_Terms::page_url(),
                 ));
                 break;
 
@@ -207,7 +219,7 @@ class STK_Frontend {
     }
 
     private function render_bourse($user_id, $member) {
-        if (!$member) {
+        if (!$member || !STK_Terms::has_accepted($user_id)) {
             return;
         }
         // phpcs:disable WordPress.Security.NonceVerification.Recommended -- filtres de navigation.
@@ -243,7 +255,7 @@ class STK_Frontend {
     }
 
     private function render_member($user_id, $member) {
-        if (!$member) {
+        if (!$member || !STK_Terms::has_accepted($user_id)) {
             return;
         }
         // phpcs:disable WordPress.Security.NonceVerification.Recommended
@@ -430,14 +442,24 @@ class STK_Frontend {
                 $redirect = self::url('inventaire');
                 break;
 
+            case 'accept_rules':
+                $result   = STK_Terms::accept($user_id, !empty($_POST['accept_rules']));
+                $success  = __('Merci ! Vous avez accepté le fonctionnement et les conditions d\'utilisation de la bourse.', 'stickers');
+                $redirect = self::url('profil');
+                break;
+
             case 'save_pseudo':
-                $result   = STK_Members::save_pseudo($user_id, $_POST['pseudo'] ?? ''); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- nettoyé dans validate_pseudo().
+                $result   = STK_Terms::has_accepted($user_id)
+                    ? STK_Members::save_pseudo($user_id, $_POST['pseudo'] ?? '') // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- nettoyé dans validate_pseudo().
+                    : new WP_Error('stk_rules', __('Acceptez d\'abord le fonctionnement et les conditions d\'utilisation de la bourse.', 'stickers'));
                 $success  = __('Pseudo enregistré.', 'stickers');
                 $redirect = self::url('profil');
                 break;
 
             case 'save_address':
-                $result   = STK_Members::save_address($user_id, $_POST); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- nettoyé dans validate_address().
+                $result   = STK_Terms::has_accepted($user_id)
+                    ? STK_Members::save_address($user_id, $_POST) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- nettoyé dans validate_address().
+                    : new WP_Error('stk_rules', __('Acceptez d\'abord le fonctionnement et les conditions d\'utilisation de la bourse.', 'stickers'));
                 $success  = __('Adresse enregistrée.', 'stickers');
                 $redirect = self::url('profil');
                 break;

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Bourse aux stickers
  * Description: Bourse d'échange de stickers entre membres connectés : inventaire déclaratif, propositions d'échange, suggestions automatiques.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Xylene14
  * Requires at least: 7.1
  * Requires PHP: 8.3
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('STK_VERSION', '1.0.0');
+define('STK_VERSION', '1.1.0');
 define('STK_PLUGIN_FILE', __FILE__);
 define('STK_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('STK_PLUGIN_URL', plugin_dir_url(__FILE__));
@@ -38,6 +38,8 @@ require_once STK_PLUGIN_DIR . 'includes/class-stk-suggestions.php';
 require_once STK_PLUGIN_DIR . 'includes/class-stk-emails.php';
 require_once STK_PLUGIN_DIR . 'includes/class-stk-scheduler.php';
 require_once STK_PLUGIN_DIR . 'includes/class-stk-privacy.php';
+require_once STK_PLUGIN_DIR . 'includes/class-stk-terms.php';
+require_once STK_PLUGIN_DIR . 'includes/class-stk-watermark.php';
 require_once STK_PLUGIN_DIR . 'includes/class-stk-frontend.php';
 require_once STK_PLUGIN_DIR . 'includes/class-stk-admin.php';
 require_once STK_PLUGIN_DIR . 'includes/class-stk-admin-exchanges.php';
@@ -56,6 +58,8 @@ final class STK_Plugin {
     public $emails;
     public $scheduler;
     public $privacy;
+    public $terms;
+    public $watermark;
     public $updater;
 
     public static function instance() {
@@ -98,6 +102,8 @@ final class STK_Plugin {
         $this->emails    = new STK_Emails();
         $this->scheduler = new STK_Scheduler();
         $this->privacy   = new STK_Privacy();
+        $this->terms     = new STK_Terms();
+        $this->watermark = new STK_Watermark();
 
         if (is_admin() || wp_doing_cron()) {
             $this->updater = new STK_GitHub_Updater();

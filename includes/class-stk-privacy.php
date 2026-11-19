@@ -80,6 +80,7 @@ class STK_Privacy {
                     array('name' => __('Code postal', 'stickers'), 'value' => $member->code_postal),
                     array('name' => __('Ville', 'stickers'), 'value' => $member->ville),
                     array('name' => __('Pays', 'stickers'), 'value' => STK_Members::country_label($member->pays)),
+                    array('name' => __('Conditions d\'utilisation acceptées le', 'stickers'), 'value' => STK_Terms::accepted_at($uid)),
                 ),
             );
         }
@@ -200,6 +201,7 @@ class STK_Privacy {
             $user_id
         ));
 
+        STK_Terms::forget($user_id);
         $removed  = (int) $wpdb->delete(STK_Database::table('inventory'), array('user_id' => $user_id), array('%d'));
         $removed += (int) $wpdb->delete(STK_Database::table('members'), array('user_id' => $user_id), array('%d'));
         $removed += (int) $wpdb->update(STK_Database::table('messages'), array('message' => ''), array('user_id' => $user_id), array('%s'), array('%d'));

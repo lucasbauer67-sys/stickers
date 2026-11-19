@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Bourse aux stickers 1.0.0\n"
+"Project-Id-Version: Bourse aux stickers 1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-15T20:57:40+00:00\n"
+"POT-Creation-Date: 2026-11-19T06:45:18+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: stickers\n"
@@ -57,6 +57,8 @@ msgstr ""
 #: includes/class-stk-admin-exchanges.php:67
 #: includes/class-stk-admin-exchanges.php:114
 #: includes/class-stk-admin.php:90
+#: includes/class-stk-terms.php:147
+#: includes/class-stk-watermark.php:191
 msgid "Action non autorisée."
 msgstr ""
 
@@ -179,8 +181,8 @@ msgstr ""
 
 #: includes/class-stk-admin-exchanges.php:202
 #: includes/class-stk-admin-exchanges.php:204
-#: includes/class-stk-admin.php:327
-#: includes/class-stk-admin.php:329
+#: includes/class-stk-admin.php:343
+#: includes/class-stk-admin.php:345
 msgid "Rechercher"
 msgstr ""
 
@@ -197,9 +199,9 @@ msgid "Proposeur → destinataire"
 msgstr ""
 
 #: includes/class-stk-admin-exchanges.php:212
-#: includes/class-stk-admin.php:213
-#: includes/class-stk-admin.php:235
-#: includes/class-stk-privacy.php:110
+#: includes/class-stk-admin.php:218
+#: includes/class-stk-admin.php:251
+#: includes/class-stk-privacy.php:111
 msgid "Statut"
 msgstr ""
 
@@ -225,15 +227,15 @@ msgstr ""
 
 #: includes/class-stk-admin-exchanges.php:253
 #: includes/class-stk-exchanges.php:297
-#: includes/class-stk-frontend.php:335
+#: includes/class-stk-frontend.php:347
 #: includes/class-stk-messages.php:38
 msgid "Échange introuvable."
 msgstr ""
 
 #: includes/class-stk-admin-exchanges.php:253
 #: includes/class-stk-admin-exchanges.php:277
-#: includes/class-stk-admin.php:394
 #: includes/class-stk-admin.php:410
+#: includes/class-stk-admin.php:426
 msgid "Retour à la liste"
 msgstr ""
 
@@ -413,7 +415,7 @@ msgid "Masquer"
 msgstr ""
 
 #: includes/class-stk-admin.php:39
-#: includes/class-stk-admin.php:161
+#: includes/class-stk-admin.php:166
 msgid "Catalogue des stickers"
 msgstr ""
 
@@ -422,7 +424,7 @@ msgid "Catalogue"
 msgstr ""
 
 #: includes/class-stk-admin.php:40
-#: includes/class-stk-admin.php:322
+#: includes/class-stk-admin.php:338
 msgid "Membres de la bourse"
 msgstr ""
 
@@ -431,7 +433,7 @@ msgid "Membres"
 msgstr ""
 
 #: includes/class-stk-admin.php:41
-#: includes/class-stk-admin.php:552
+#: includes/class-stk-admin.php:588
 msgid "Réglages de la bourse"
 msgstr ""
 
@@ -451,33 +453,33 @@ msgstr ""
 msgid "Supprimer définitivement ce sticker ?"
 msgstr ""
 
-#: includes/class-stk-admin.php:111
+#: includes/class-stk-admin.php:113
 msgid "Sticker mis à jour."
 msgstr ""
 
-#: includes/class-stk-admin.php:115
+#: includes/class-stk-admin.php:117
 msgid "Sticker ajouté. Vous pouvez saisir le suivant."
 msgstr ""
 
-#: includes/class-stk-admin.php:125
+#: includes/class-stk-admin.php:127
 #: includes/class-stk-catalog.php:129
 msgid "Sticker introuvable."
 msgstr ""
 
-#: includes/class-stk-admin.php:133
+#: includes/class-stk-admin.php:135
 msgid "Sticker activé."
 msgstr ""
 
-#: includes/class-stk-admin.php:133
+#: includes/class-stk-admin.php:135
 msgid "Sticker désactivé : il n'apparaît plus dans la bourse, les quantités déclarées sont conservées."
 msgstr ""
 
-#: includes/class-stk-admin.php:140
+#: includes/class-stk-admin.php:145
 msgid "Sticker supprimé."
 msgstr ""
 
 #. translators: %d: nombre de stickers actifs
-#: includes/class-stk-admin.php:166
+#: includes/class-stk-admin.php:171
 #, php-format
 msgid "%d sticker actif : c'est le total de la collection affiché aux membres."
 msgid_plural "%d stickers actifs : c'est le total de la collection affiché aux membres."
@@ -485,376 +487,454 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: numéro du sticker
-#: includes/class-stk-admin.php:175
+#: includes/class-stk-admin.php:180
 #, php-format
 msgid "Modifier le sticker nº %s"
 msgstr ""
 
-#: includes/class-stk-admin.php:177
+#: includes/class-stk-admin.php:182
 msgid "Ajouter un sticker"
 msgstr ""
 
-#: includes/class-stk-admin.php:185
-#: includes/class-stk-admin.php:232
-#: includes/class-stk-privacy.php:109
+#: includes/class-stk-admin.php:190
+#: includes/class-stk-admin.php:248
+#: includes/class-stk-privacy.php:110
 msgid "Numéro"
 msgstr ""
 
-#: includes/class-stk-admin.php:188
+#: includes/class-stk-admin.php:193
 msgid "Numéro unique dans la collection. Les numéros spéciaux sont acceptés (ex. 12a)."
 msgstr ""
 
-#: includes/class-stk-admin.php:192
-#: includes/class-stk-admin.php:234
+#: includes/class-stk-admin.php:197
+#: includes/class-stk-admin.php:250
 msgid "Nom"
 msgstr ""
 
-#: includes/class-stk-admin.php:196
+#: includes/class-stk-admin.php:201
 msgid "Ordre d'affichage"
 msgstr ""
 
-#: includes/class-stk-admin.php:199
+#: includes/class-stk-admin.php:204
 msgid "Laisser vide pour un ordre automatique (numéro × 10). Exemple : 125 place un sticker entre le 12 et le 13."
 msgstr ""
 
-#: includes/class-stk-admin.php:203
+#: includes/class-stk-admin.php:208
 msgid "Image (facultative)"
 msgstr ""
 
-#: includes/class-stk-admin.php:208
+#: includes/class-stk-admin.php:213
 msgid "Choisir une image"
 msgstr ""
 
-#: includes/class-stk-admin.php:209
+#: includes/class-stk-admin.php:214
 msgid "Retirer l'image"
 msgstr ""
 
-#: includes/class-stk-admin.php:214
+#: includes/class-stk-admin.php:219
 msgid "Actif (visible dans la bourse)"
 msgstr ""
 
-#: includes/class-stk-admin.php:217
+#: includes/class-stk-admin.php:222
 msgid "Mettre à jour"
 msgstr ""
 
-#: includes/class-stk-admin.php:217
+#: includes/class-stk-admin.php:222
 msgid "Ajouter le sticker"
 msgstr ""
 
-#: includes/class-stk-admin.php:219
+#: includes/class-stk-admin.php:224
 msgid "Annuler"
 msgstr ""
 
-#: includes/class-stk-admin.php:224
+#: includes/class-stk-admin.php:229
 msgid "Stickers du catalogue"
 msgstr ""
 
-#: includes/class-stk-admin.php:226
-msgid "Aucun sticker pour l'instant."
-msgstr ""
-
 #: includes/class-stk-admin.php:231
-msgid "Ordre"
-msgstr ""
-
-#: includes/class-stk-admin.php:233
-msgid "Image"
-msgstr ""
-
-#: includes/class-stk-admin.php:236
-msgid "Membres qui l'ont"
+msgid "L'extension PHP GD n'est pas disponible : les images filigranées ne peuvent pas être générées, aucune image n'est donc montrée aux membres."
 msgstr ""
 
 #: includes/class-stk-admin.php:237
-msgid "Actions"
+msgid "Les membres voient une copie réduite de chaque image, avec le filigrane « SPÉCIMEN ». Elle est créée automatiquement à l'enregistrement d'un sticker. La colonne Image ci-dessous montre l'original (visible des administrateurs seulement)."
 msgstr ""
 
-#: includes/class-stk-admin.php:250
-msgid "Actif"
+#: includes/class-stk-admin.php:238
+msgid "Régénérer toutes les images filigranées"
 msgstr ""
 
-#: includes/class-stk-admin.php:250
-msgid "Désactivé"
+#: includes/class-stk-admin.php:242
+msgid "Aucun sticker pour l'instant."
+msgstr ""
+
+#: includes/class-stk-admin.php:247
+msgid "Ordre"
+msgstr ""
+
+#: includes/class-stk-admin.php:249
+msgid "Image"
+msgstr ""
+
+#: includes/class-stk-admin.php:252
+msgid "Membres qui l'ont"
 msgstr ""
 
 #: includes/class-stk-admin.php:253
+msgid "Actions"
+msgstr ""
+
+#: includes/class-stk-admin.php:266
+msgid "Actif"
+msgstr ""
+
+#: includes/class-stk-admin.php:266
+msgid "Désactivé"
+msgstr ""
+
+#: includes/class-stk-admin.php:269
 msgid "Modifier"
 msgstr ""
 
-#: includes/class-stk-admin.php:259
+#: includes/class-stk-admin.php:275
 msgid "Désactiver"
 msgstr ""
 
-#: includes/class-stk-admin.php:259
+#: includes/class-stk-admin.php:275
 msgid "Activer"
 msgstr ""
 
-#: includes/class-stk-admin.php:267
+#: includes/class-stk-admin.php:283
 msgid "Supprimer"
 msgstr ""
 
-#: includes/class-stk-admin.php:289
-#: includes/class-stk-admin.php:394
+#: includes/class-stk-admin.php:305
+#: includes/class-stk-admin.php:410
 msgid "Membre introuvable."
 msgstr ""
 
-#: includes/class-stk-admin.php:297
+#: includes/class-stk-admin.php:313
 msgid "Pseudo modifié."
 msgstr ""
 
-#: includes/class-stk-admin.php:323
+#: includes/class-stk-admin.php:339
 msgid "Sont listés les clients qui ont choisi un pseudo."
 msgstr ""
 
-#: includes/class-stk-admin.php:328
+#: includes/class-stk-admin.php:344
 msgid "Pseudo, nom ou email"
 msgstr ""
 
-#: includes/class-stk-admin.php:335
-#: includes/class-stk-admin.php:414
+#: includes/class-stk-admin.php:351
+#: includes/class-stk-admin.php:430
 #: includes/class-stk-privacy.php:77
-#: templates/myaccount/profil.php:30
+#: templates/myaccount/profil.php:95
 msgid "Pseudo"
 msgstr ""
 
-#: includes/class-stk-admin.php:336
-#: includes/class-stk-admin.php:423
+#: includes/class-stk-admin.php:352
+#: includes/class-stk-admin.php:439
 msgid "Compte client"
 msgstr ""
 
-#: includes/class-stk-admin.php:337
+#: includes/class-stk-admin.php:353
 #: includes/class-stk-privacy.php:79
-#: templates/myaccount/profil.php:64
+#: templates/myaccount/profil.php:129
 msgid "Adresse"
 msgstr ""
 
-#: includes/class-stk-admin.php:338
+#: includes/class-stk-admin.php:354
 msgid "Possédés"
 msgstr ""
 
-#: includes/class-stk-admin.php:339
+#: includes/class-stk-admin.php:355
 #: templates/myaccount/inventaire.php:54
 msgid "Doubles"
 msgstr ""
 
-#: includes/class-stk-admin.php:340
+#: includes/class-stk-admin.php:356
 msgid "Dernière activité"
 msgstr ""
 
-#: includes/class-stk-admin.php:345
+#: includes/class-stk-admin.php:361
 msgid "Aucun membre."
 msgstr ""
 
-#: includes/class-stk-admin.php:355
-#: includes/class-stk-admin.php:427
+#: includes/class-stk-admin.php:371
+#: includes/class-stk-admin.php:443
 msgid "Compte supprimé"
 msgstr ""
 
-#: includes/class-stk-admin.php:362
+#: includes/class-stk-admin.php:378
 msgid "Incomplète"
 msgstr ""
 
 #. translators: %s: pseudo
-#: includes/class-stk-admin.php:407
+#: includes/class-stk-admin.php:423
 #, php-format
 msgid "Membre : %s"
 msgstr ""
 
-#: includes/class-stk-admin.php:420
+#: includes/class-stk-admin.php:436
 msgid "Modifier le pseudo"
 msgstr ""
 
-#: includes/class-stk-admin.php:430
+#: includes/class-stk-admin.php:446
+msgid "Règles de la bourse"
+msgstr ""
+
+#. translators: %s: date
+#: includes/class-stk-admin.php:453
+#, php-format
+msgid "Acceptées le %s."
+msgstr ""
+
+#: includes/class-stk-admin.php:457
+msgid "Acceptation à renouveler (règles modifiées depuis)."
+msgstr ""
+
+#: includes/class-stk-admin.php:457
+msgid "Pas encore acceptées : ce membre n'apparaît pas dans la bourse."
+msgstr ""
+
+#: includes/class-stk-admin.php:462
 msgid "Adresse de la bourse"
 msgstr ""
 
-#: includes/class-stk-admin.php:440
+#: includes/class-stk-admin.php:472
 msgid "Adresse non renseignée."
 msgstr ""
 
-#: includes/class-stk-admin.php:445
+#: includes/class-stk-admin.php:477
+#: includes/class-stk-frontend.php:71
 msgid "Inventaire"
 msgstr ""
 
 #. translators: 1: possédés, 2: total, 3: manquants, 4: doubles
-#: includes/class-stk-admin.php:450
+#: includes/class-stk-admin.php:482
 #, php-format
 msgid "%1$d / %2$d possédés · %3$d manquants · %4$d doubles"
 msgstr ""
 
 #. translators: %d: nombre d'exemplaires promis
-#: includes/class-stk-admin.php:468
+#: includes/class-stk-admin.php:500
 #, php-format
 msgid "%d promis"
 msgstr ""
 
-#: includes/class-stk-admin.php:546
+#: includes/class-stk-admin.php:582
 msgid "Proposition sans réponse"
 msgstr ""
 
-#: includes/class-stk-admin.php:546
+#: includes/class-stk-admin.php:582
 msgid "au destinataire, compté depuis l'envoi de la proposition"
 msgstr ""
 
-#: includes/class-stk-admin.php:547
+#: includes/class-stk-admin.php:583
 msgid "Expédition"
 msgstr ""
 
-#: includes/class-stk-admin.php:547
+#: includes/class-stk-admin.php:583
 msgid "à celui qui n'a pas indiqué son envoi, compté depuis l'acceptation"
 msgstr ""
 
-#: includes/class-stk-admin.php:548
+#: includes/class-stk-admin.php:584
 msgid "Confirmation de réception"
 msgstr ""
 
-#: includes/class-stk-admin.php:548
+#: includes/class-stk-admin.php:584
 msgid "à celui qui doit confirmer, compté depuis l'expédition par l'autre membre"
 msgstr ""
 
-#: includes/class-stk-admin.php:557
+#: includes/class-stk-admin.php:593
 msgid "Général"
 msgstr ""
 
-#: includes/class-stk-admin.php:560
+#: includes/class-stk-admin.php:596
 msgid "Nom de la collection"
 msgstr ""
 
-#: includes/class-stk-admin.php:563
+#: includes/class-stk-admin.php:599
 msgid "Affiché en titre de l'inventaire des membres. Laisser vide pour ne rien afficher."
 msgstr ""
 
-#: includes/class-stk-admin.php:568
-msgid "Délais et rappels"
+#: includes/class-stk-admin.php:604
+msgid "Conditions générales d'utilisation"
 msgstr ""
 
-#: includes/class-stk-admin.php:571
-msgid "Expiration des propositions"
+#: includes/class-stk-admin.php:607
+msgid "Page des conditions"
 msgstr ""
 
-#: includes/class-stk-admin.php:574
-msgid "jours sans réponse"
+#: includes/class-stk-admin.php:614
+msgid "— Aucune —"
 msgstr ""
 
-#: includes/class-stk-admin.php:575
-msgid "La proposition expire et les stickers réservés sont libérés. Le proposeur est prévenu par email."
+#: includes/class-stk-admin.php:620
+msgid "Modifier le texte"
 msgstr ""
 
-#: includes/class-stk-admin.php:582
-msgid "Rappel"
+#: includes/class-stk-admin.php:621
+#: templates/myaccount/exchange-card.php:39
+msgid "Voir"
 msgstr ""
 
-#: includes/class-stk-admin.php:583
-msgid "Premier rappel après"
-msgstr ""
-
-#: includes/class-stk-admin.php:584
-msgid "Puis tous les"
-msgstr ""
-
-#: includes/class-stk-admin.php:585
-msgid "Nombre de rappels"
-msgstr ""
-
-#: includes/class-stk-admin.php:586
-msgid "Calendrier actuel"
-msgstr ""
-
-#: includes/class-stk-admin.php:600
-msgid "premier rappel après (jours)"
-msgstr ""
-
-#: includes/class-stk-admin.php:600
-#: includes/class-stk-admin.php:601
-msgid "jours"
-msgstr ""
-
-#: includes/class-stk-admin.php:601
-msgid "intervalle (jours)"
-msgstr ""
-
-#: includes/class-stk-admin.php:602
-msgid "nombre de rappels"
-msgstr ""
-
-#: includes/class-stk-admin.php:603
-msgid "aucun rappel"
-msgstr ""
-
-#: includes/class-stk-admin.php:608
-msgid "0 rappel = aucun rappel. Les rappels de proposition prévus le jour de l'expiration ou après ne sont pas envoyés. Les vérifications ont lieu une fois par heure (WooCommerce → État → Actions planifiées, action « stk_hourly »)."
-msgstr ""
-
-#: includes/class-stk-admin.php:610
-msgid "Emails"
-msgstr ""
-
-#: includes/class-stk-admin.php:611
-msgid "Emails envoyés en texte brut. Videz un champ pour revenir au texte par défaut."
-msgstr ""
-
-#: includes/class-stk-admin.php:618
-msgid "Objet"
-msgstr ""
-
-#: includes/class-stk-admin.php:622
-msgid "Texte"
+#: includes/class-stk-admin.php:624
+msgid "Page créée automatiquement par le plugin, modifiable comme une page ordinaire. Le lien est affiché dans Stickers → Profil, à côté de la case à cocher : accepter le fonctionnement de la bourse vaut acceptation de ces conditions."
 msgstr ""
 
 #: includes/class-stk-admin.php:628
-msgid "Données personnelles"
+msgid "Acceptation par les membres"
 msgstr ""
 
-#: includes/class-stk-admin.php:631
-msgid "Purge des membres inactifs"
-msgstr ""
-
-#: includes/class-stk-admin.php:635
-msgid "Effacer automatiquement les données de bourse des membres inactifs depuis"
-msgstr ""
-
-#: includes/class-stk-admin.php:636
-msgid "Nombre de mois"
+#. translators: %d: numéro de version des règles
+#: includes/class-stk-admin.php:633
+#, php-format
+msgid "Version actuelle des règles : %d."
 msgstr ""
 
 #: includes/class-stk-admin.php:637
-msgid "mois"
+msgid "Après une modification importante des conditions ou du fonctionnement, utilisez le bouton « Demander une nouvelle acceptation » en bas de page : chaque membre devra de nouveau cocher la case avant de pouvoir proposer ou accepter un échange."
 msgstr ""
 
-#: includes/class-stk-admin.php:638
-msgid "Désactivé par défaut. Activité = inventaire, profil, messages, clôture d'échange. Les membres ayant une proposition, un échange ou un litige en cours ne sont jamais purgés. Export et effacement à la demande : Outils → Exporter / Effacer les données personnelles."
+#: includes/class-stk-admin.php:642
+msgid "Délais et rappels"
 msgstr ""
 
-#: includes/class-stk-admin.php:643
-msgid "Mises à jour et désinstallation"
+#: includes/class-stk-admin.php:645
+msgid "Expiration des propositions"
 msgstr ""
 
-#: includes/class-stk-admin.php:646
-msgid "Token GitHub (mises à jour)"
+#: includes/class-stk-admin.php:648
+msgid "jours sans réponse"
 msgstr ""
 
 #: includes/class-stk-admin.php:649
-msgid "Token enregistré — laisser vide pour le conserver"
+msgid "La proposition expire et les stickers réservés sont libérés. Le proposeur est prévenu par email."
 msgstr ""
 
-#: includes/class-stk-admin.php:651
-msgid "Supprimer le token enregistré"
-msgstr ""
-
-#: includes/class-stk-admin.php:653
-msgid "Nécessaire pour que WordPress détecte les nouvelles versions publiées sur le dépôt privé GitHub « stickers » (Releases)."
+#: includes/class-stk-admin.php:656
+msgid "Rappel"
 msgstr ""
 
 #: includes/class-stk-admin.php:657
+msgid "Premier rappel après"
+msgstr ""
+
+#: includes/class-stk-admin.php:658
+msgid "Puis tous les"
+msgstr ""
+
+#: includes/class-stk-admin.php:659
+msgid "Nombre de rappels"
+msgstr ""
+
+#: includes/class-stk-admin.php:660
+msgid "Calendrier actuel"
+msgstr ""
+
+#: includes/class-stk-admin.php:674
+msgid "premier rappel après (jours)"
+msgstr ""
+
+#: includes/class-stk-admin.php:674
+#: includes/class-stk-admin.php:675
+msgid "jours"
+msgstr ""
+
+#: includes/class-stk-admin.php:675
+msgid "intervalle (jours)"
+msgstr ""
+
+#: includes/class-stk-admin.php:676
+msgid "nombre de rappels"
+msgstr ""
+
+#: includes/class-stk-admin.php:677
+msgid "aucun rappel"
+msgstr ""
+
+#: includes/class-stk-admin.php:682
+msgid "0 rappel = aucun rappel. Les rappels de proposition prévus le jour de l'expiration ou après ne sont pas envoyés. Les vérifications ont lieu une fois par heure (WooCommerce → État → Actions planifiées, action « stk_hourly »)."
+msgstr ""
+
+#: includes/class-stk-admin.php:684
+msgid "Emails"
+msgstr ""
+
+#: includes/class-stk-admin.php:685
+msgid "Emails envoyés en texte brut. Videz un champ pour revenir au texte par défaut."
+msgstr ""
+
+#: includes/class-stk-admin.php:692
+msgid "Objet"
+msgstr ""
+
+#: includes/class-stk-admin.php:696
+msgid "Texte"
+msgstr ""
+
+#: includes/class-stk-admin.php:702
+msgid "Données personnelles"
+msgstr ""
+
+#: includes/class-stk-admin.php:705
+msgid "Purge des membres inactifs"
+msgstr ""
+
+#: includes/class-stk-admin.php:709
+msgid "Effacer automatiquement les données de bourse des membres inactifs depuis"
+msgstr ""
+
+#: includes/class-stk-admin.php:710
+msgid "Nombre de mois"
+msgstr ""
+
+#: includes/class-stk-admin.php:711
+msgid "mois"
+msgstr ""
+
+#: includes/class-stk-admin.php:712
+msgid "Désactivé par défaut. Activité = inventaire, profil, messages, clôture d'échange. Les membres ayant une proposition, un échange ou un litige en cours ne sont jamais purgés. Export et effacement à la demande : Outils → Exporter / Effacer les données personnelles."
+msgstr ""
+
+#: includes/class-stk-admin.php:717
+msgid "Mises à jour et désinstallation"
+msgstr ""
+
+#: includes/class-stk-admin.php:720
+msgid "Token GitHub (mises à jour)"
+msgstr ""
+
+#: includes/class-stk-admin.php:723
+msgid "Token enregistré — laisser vide pour le conserver"
+msgstr ""
+
+#: includes/class-stk-admin.php:725
+msgid "Supprimer le token enregistré"
+msgstr ""
+
+#: includes/class-stk-admin.php:727
+msgid "Nécessaire pour que WordPress détecte les nouvelles versions publiées sur le dépôt privé GitHub « stickers » (Releases)."
+msgstr ""
+
+#: includes/class-stk-admin.php:731
 msgid "Désinstallation"
 msgstr ""
 
-#: includes/class-stk-admin.php:661
+#: includes/class-stk-admin.php:735
 msgid "Supprimer toutes les données de la bourse (catalogue, inventaires, membres, échanges, réglages) quand le plugin est supprimé"
 msgstr ""
 
-#: includes/class-stk-admin.php:662
+#: includes/class-stk-admin.php:736
 msgid "Décoché par défaut : la suppression du plugin conserve alors toutes les données."
+msgstr ""
+
+#: includes/class-stk-admin.php:743
+msgid "Demander à tous les membres d'accepter de nouveau les règles de la bourse ?"
+msgstr ""
+
+#: includes/class-stk-admin.php:746
+msgid "Demander une nouvelle acceptation"
 msgstr ""
 
 #. translators: %d: longueur maximale
@@ -1276,7 +1356,7 @@ msgid "Sticker inconnu ou désactivé."
 msgstr ""
 
 #: includes/class-stk-exchanges.php:356
-#: includes/class-stk-frontend.php:454
+#: includes/class-stk-frontend.php:476
 msgid "Destinataire invalide."
 msgstr ""
 
@@ -1380,10 +1460,6 @@ msgstr ""
 msgid "Décision inconnue."
 msgstr ""
 
-#: includes/class-stk-frontend.php:71
-msgid "Mon inventaire"
-msgstr ""
-
 #: includes/class-stk-frontend.php:72
 msgid "Bourse"
 msgstr ""
@@ -1393,7 +1469,7 @@ msgid "Propositions"
 msgstr ""
 
 #: includes/class-stk-frontend.php:75
-msgid "Pseudo et adresse"
+msgid "Profil"
 msgstr ""
 
 #: includes/class-stk-frontend.php:120
@@ -1414,108 +1490,127 @@ msgstr ""
 msgid "choisir mon pseudo"
 msgstr ""
 
-#. translators: %s: lien vers la page Pseudo et adresse
+#. translators: %s: lien vers le Profil
 #: includes/class-stk-frontend.php:159
+#, php-format
+msgid "Avant de participer à la bourse, lisez son fonctionnement et acceptez les conditions d'utilisation : %s"
+msgstr ""
+
+#: includes/class-stk-frontend.php:160
+msgid "lire et accepter"
+msgstr ""
+
+#. translators: %s: lien vers la page Pseudo et adresse
+#: includes/class-stk-frontend.php:168
 #, php-format
 msgid "Renseignez votre adresse pour pouvoir proposer ou accepter un échange : %s"
 msgstr ""
 
-#: includes/class-stk-frontend.php:160
+#: includes/class-stk-frontend.php:169
 msgid "mon adresse"
 msgstr ""
 
-#: includes/class-stk-frontend.php:257
+#: includes/class-stk-frontend.php:269
 msgid "Ce membre n'est pas disponible dans la bourse."
 msgstr ""
 
-#: includes/class-stk-frontend.php:267
+#: includes/class-stk-frontend.php:279
 msgid "Cette proposition n'est plus en attente : la contre-proposition n'est pas possible."
 msgstr ""
 
-#: includes/class-stk-frontend.php:286
+#: includes/class-stk-frontend.php:298
 msgid "Cette suggestion n'est plus d'actualité : les inventaires ont changé."
 msgstr ""
 
 #. translators: 1: numéro, 2: nom
-#: includes/class-stk-frontend.php:380
+#: includes/class-stk-frontend.php:392
 #: templates/myaccount/propositions.php:49
 #, php-format
 msgid "nº %1$s %2$s"
 msgstr ""
 
-#: includes/class-stk-frontend.php:413
+#: includes/class-stk-frontend.php:425
 msgid "Session expirée, veuillez réessayer."
 msgstr ""
 
-#: includes/class-stk-frontend.php:429
+#: includes/class-stk-frontend.php:441
 msgid "Inventaire enregistré."
 msgstr ""
 
-#: includes/class-stk-frontend.php:435
+#: includes/class-stk-frontend.php:447
+msgid "Merci ! Vous avez accepté le fonctionnement et les conditions d'utilisation de la bourse."
+msgstr ""
+
+#: includes/class-stk-frontend.php:454
+#: includes/class-stk-frontend.php:462
+msgid "Acceptez d'abord le fonctionnement et les conditions d'utilisation de la bourse."
+msgstr ""
+
+#: includes/class-stk-frontend.php:455
 msgid "Pseudo enregistré."
 msgstr ""
 
-#: includes/class-stk-frontend.php:441
+#: includes/class-stk-frontend.php:463
 msgid "Adresse enregistrée."
 msgstr ""
 
-#: includes/class-stk-frontend.php:458
+#: includes/class-stk-frontend.php:480
 msgid "Contre-proposition envoyée."
 msgstr ""
 
-#: includes/class-stk-frontend.php:458
+#: includes/class-stk-frontend.php:480
 msgid "Proposition envoyée."
 msgstr ""
 
-#: includes/class-stk-frontend.php:465
+#: includes/class-stk-frontend.php:487
 msgid "Échange accepté : l'adresse d'envoi est maintenant visible par celui qui doit expédier."
 msgstr ""
 
-#: includes/class-stk-frontend.php:470
+#: includes/class-stk-frontend.php:492
 msgid "Proposition refusée."
 msgstr ""
 
-#: includes/class-stk-frontend.php:475
+#: includes/class-stk-frontend.php:497
 msgid "Proposition annulée."
 msgstr ""
 
-#: includes/class-stk-frontend.php:480
+#: includes/class-stk-frontend.php:502
 msgid "Expédition enregistrée."
 msgstr ""
 
-#: includes/class-stk-frontend.php:486
+#: includes/class-stk-frontend.php:508
 msgid "Réception confirmée : l'échange est clôturé et les inventaires sont à jour."
 msgstr ""
 
-#: includes/class-stk-frontend.php:487
+#: includes/class-stk-frontend.php:509
 msgid "Réception confirmée."
 msgstr ""
 
-#: includes/class-stk-frontend.php:492
+#: includes/class-stk-frontend.php:514
 msgid "Demande d'annulation envoyée : l'autre membre doit la confirmer."
 msgstr ""
 
-#: includes/class-stk-frontend.php:500
+#: includes/class-stk-frontend.php:522
 msgid "Échange annulé."
 msgstr ""
 
-#: includes/class-stk-frontend.php:500
+#: includes/class-stk-frontend.php:522
 msgid "Demande d'annulation retirée."
 msgstr ""
 
-#: includes/class-stk-frontend.php:502
+#: includes/class-stk-frontend.php:524
 msgid "Demande d'annulation refusée : l'échange continue."
 msgstr ""
 
-#: includes/class-stk-frontend.php:508
+#: includes/class-stk-frontend.php:530
 msgid "Problème signalé : l'équipe du site va examiner la situation. L'échange est suspendu en attendant."
 msgstr ""
 
-#: includes/class-stk-frontend.php:513
+#: includes/class-stk-frontend.php:535
 msgid "Message envoyé."
 msgstr ""
 
-#: includes/class-stk-frontend.php:550
+#: includes/class-stk-frontend.php:572
 msgid "Vous devez être connecté."
 msgstr ""
 
@@ -1611,72 +1706,206 @@ msgid "Bourse aux stickers : profil"
 msgstr ""
 
 #: includes/class-stk-privacy.php:80
-#: templates/myaccount/profil.php:72
+#: templates/myaccount/profil.php:137
 msgid "Code postal"
 msgstr ""
 
 #: includes/class-stk-privacy.php:81
-#: templates/myaccount/profil.php:76
+#: templates/myaccount/profil.php:141
 msgid "Ville"
 msgstr ""
 
 #: includes/class-stk-privacy.php:82
-#: templates/myaccount/profil.php:80
+#: templates/myaccount/profil.php:145
 msgid "Pays"
 msgstr ""
 
-#: includes/class-stk-privacy.php:95
+#: includes/class-stk-privacy.php:83
+msgid "Conditions d'utilisation acceptées le"
+msgstr ""
+
+#: includes/class-stk-privacy.php:96
 msgid "Bourse aux stickers : inventaire"
 msgstr ""
 
-#: includes/class-stk-privacy.php:106
+#: includes/class-stk-privacy.php:107
 msgid "Bourse aux stickers : échanges"
 msgstr ""
 
-#: includes/class-stk-privacy.php:111
-#: includes/class-stk-privacy.php:129
+#: includes/class-stk-privacy.php:112
+#: includes/class-stk-privacy.php:130
 msgid "Date"
 msgstr ""
 
-#: includes/class-stk-privacy.php:112
+#: includes/class-stk-privacy.php:113
 #: templates/myaccount/echange.php:71
 msgid "Vous donnez"
 msgstr ""
 
-#: includes/class-stk-privacy.php:113
+#: includes/class-stk-privacy.php:114
 #: templates/myaccount/echange.php:72
 msgid "Vous recevez"
 msgstr ""
 
-#: includes/class-stk-privacy.php:126
+#: includes/class-stk-privacy.php:127
 msgid "Bourse aux stickers : messages"
 msgstr ""
 
-#: includes/class-stk-privacy.php:130
+#: includes/class-stk-privacy.php:131
 msgid "Échange"
 msgstr ""
 
-#: includes/class-stk-privacy.php:131
+#: includes/class-stk-privacy.php:132
 msgid "Message"
 msgstr ""
 
 #. translators: %d: nombre d'échanges
-#: includes/class-stk-privacy.php:154
+#: includes/class-stk-privacy.php:155
 #, php-format
 msgid "%d échange en cours a été transmis à l'administrateur pour arbitrage."
 msgid_plural "%d échanges en cours ont été transmis à l'administrateur pour arbitrage."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-stk-privacy.php:159
+#: includes/class-stk-privacy.php:160
 msgid "L'historique des échanges est conservé pour l'autre membre, sans pseudo, adresse ni contenu des messages."
 msgstr ""
 
-#: includes/class-stk-privacy.php:192
+#: includes/class-stk-privacy.php:193
 msgid "Compte du membre supprimé ou effacé (RGPD) pendant l'échange."
 msgstr ""
 
-#: stickers.php:113
+#: includes/class-stk-terms.php:45
+msgid "Cochez la case pour confirmer que vous avez lu le fonctionnement de la bourse et accepté les conditions générales d'utilisation."
+msgstr ""
+
+#: includes/class-stk-terms.php:82
+msgid "Conditions générales d'utilisation de la bourse aux stickers"
+msgstr ""
+
+#: includes/class-stk-terms.php:93
+msgid "1. Objet"
+msgstr ""
+
+#: includes/class-stk-terms.php:94
+msgid "La bourse aux stickers est un service gratuit proposé par les éditions Black and White à leurs clients disposant d'un compte sur le site. Elle leur permet d'échanger entre eux les stickers de la collection ALL IN COLOR PHOTONIK afin de compléter leur album."
+msgstr ""
+
+#: includes/class-stk-terms.php:96
+msgid "2. Un service indépendant de la boutique"
+msgstr ""
+
+#: includes/class-stk-terms.php:97
+msgid "La bourse est indépendante de la boutique en ligne : elle n'est liée à aucun achat ni à aucune commande, et les conditions générales de vente de la boutique ne s'appliquent pas aux échanges entre membres."
+msgstr ""
+
+#: includes/class-stk-terms.php:98
+msgid "Les éditions Black and White mettent uniquement la plateforme à disposition. Elles ne sont pas partie aux échanges, n'expédient aucun sticker et ne garantissent ni la disponibilité, ni l'état, ni l'acheminement des stickers échangés."
+msgstr ""
+
+#: includes/class-stk-terms.php:100
+msgid "3. Accès et acceptation des conditions"
+msgstr ""
+
+#: includes/class-stk-terms.php:101
+msgid "La bourse est réservée aux clients connectés à leur compte qui ont choisi un pseudo, renseigné une adresse d'envoi et accepté les présentes conditions."
+msgstr ""
+
+#: includes/class-stk-terms.php:102
+msgid "Cocher la case confirmant la lecture du fonctionnement de la bourse, dans l'onglet Stickers → Profil de « Mon compte », vaut acceptation des présentes conditions générales d'utilisation. En cas de modification des conditions, une nouvelle acceptation peut être demandée."
+msgstr ""
+
+#: includes/class-stk-terms.php:104
+msgid "4. Des échanges sans argent"
+msgstr ""
+
+#: includes/class-stk-terms.php:105
+msgid "Les échanges se font exclusivement stickers contre stickers, ou sous forme de don. Toute transaction monétisée est interdite : vente, achat, demande ou proposition de paiement, de contrepartie financière ou de tout autre bien que des stickers de la collection."
+msgstr ""
+
+#: includes/class-stk-terms.php:107
+msgid "5. Courtoisie et comportement"
+msgstr ""
+
+#: includes/class-stk-terms.php:108
+msgid "Chaque membre s'engage à rester courtois en toutes circonstances, dans les messages comme dans le déroulement des échanges, et à honorer les échanges qu'il a acceptés."
+msgstr ""
+
+#: includes/class-stk-terms.php:109
+msgid "Sont strictement interdits les propos insultants, injurieux, racistes, antisémites, homophobes, sexistes, diffamatoires, discriminatoires ou menaçants, ainsi que toute forme de harcèlement."
+msgstr ""
+
+#: includes/class-stk-terms.php:110
+msgid "Les messages échangés sont visibles par l'équipe du site, qui peut les masquer. Les éditions Black and White peuvent retirer l'accès à la bourse à un membre qui ne respecte pas ces règles."
+msgstr ""
+
+#: includes/class-stk-terms.php:112
+msgid "6. Envois postaux"
+msgstr ""
+
+#: includes/class-stk-terms.php:113
+msgid "Chaque membre envoie lui-même ses stickers par courrier, à l'adresse qui lui est communiquée une fois l'échange accepté, et prend en charge les frais de son propre envoi. Les éditions Black and White ne sont pas responsables des pertes, retards ou dégradations liés à l'acheminement postal."
+msgstr ""
+
+#: includes/class-stk-terms.php:115
+msgid "7. Données personnelles"
+msgstr ""
+
+#: includes/class-stk-terms.php:116
+msgid "Votre pseudo et votre inventaire (doubles et numéros manquants) sont visibles des autres membres connectés. Votre nom et votre adresse ne sont communiqués qu'au membre avec qui vous avez accepté un échange, jusqu'à la clôture de cet échange, et uniquement pour l'envoi des stickers : toute autre utilisation de ces informations est interdite."
+msgstr ""
+
+#: includes/class-stk-terms.php:117
+msgid "Vous pouvez demander l'export ou l'effacement de vos données de la bourse auprès des éditions Black and White."
+msgstr ""
+
+#: includes/class-stk-terms.php:119
+msgid "8. Litiges entre membres"
+msgstr ""
+
+#: includes/class-stk-terms.php:120
+msgid "En cas de problème sur un échange (stickers non reçus, différents de ceux prévus, absence de réponse…), chaque membre peut utiliser le bouton « Signaler un problème ». L'échange est alors suspendu."
+msgstr ""
+
+#: includes/class-stk-terms.php:121
+msgid "Les éditions Black and White examinent la situation, notamment à partir des messages et du déroulement de l'échange, et décident de son issue : clôture de l'échange comme réussi (les inventaires sont mis à jour) ou annulation (aucun inventaire n'est modifié). Cette décision est définitive dans le cadre de la bourse : elle n'est pas discutable et ne donne lieu à aucun recours au sein du service."
+msgstr ""
+
+#: includes/class-stk-terms.php:123
+msgid "9. Responsabilité"
+msgstr ""
+
+#: includes/class-stk-terms.php:124
+msgid "Le service est fourni gracieusement, en l'état, sans garantie de disponibilité. Les échanges se font sous la seule responsabilité des membres concernés : les éditions Black and White n'y étant pas parties, leur responsabilité ne saurait être engagée au titre de leur exécution (stickers non reçus, non conformes ou abîmés, comportement d'un membre…)."
+msgstr ""
+
+#: includes/class-stk-terms.php:125
+msgid "Les propos insultants, racistes, diffamatoires, homophobes ou discriminatoires engagent la responsabilité de leur auteur et peuvent donner lieu à des poursuites, notamment judiciaires."
+msgstr ""
+
+#: includes/class-stk-terms.php:127
+msgid "10. Modification des conditions et droit applicable"
+msgstr ""
+
+#: includes/class-stk-terms.php:128
+msgid "Les éditions Black and White peuvent modifier les présentes conditions à tout moment ; en cas de modification importante, une nouvelle acceptation est demandée aux membres. Les présentes conditions sont soumises au droit français."
+msgstr ""
+
+#: includes/class-stk-terms.php:152
+msgid "Nouvelle acceptation demandée : chaque membre devra de nouveau cocher la case dans son Profil avant de pouvoir proposer ou accepter un échange."
+msgstr ""
+
+#: includes/class-stk-watermark.php:195
+msgid "L'extension PHP GD n'est pas disponible sur le serveur : impossible de générer les images filigranées."
+msgstr ""
+
+#. translators: 1: nombre d'images générées, 2: nombre d'échecs
+#: includes/class-stk-watermark.php:201
+#, php-format
+msgid "Images filigranées régénérées : %1$d, échecs : %2$d."
+msgstr ""
+
+#: stickers.php:119
 msgid "Bourse aux stickers nécessite WooCommerce actif."
 msgstr ""
 
@@ -2013,10 +2242,6 @@ msgstr ""
 msgid "Vous recevez :"
 msgstr ""
 
-#: templates/myaccount/exchange-card.php:39
-msgid "Voir"
-msgstr ""
-
 #: templates/myaccount/inventaire.php:25
 msgid "Le catalogue des stickers n'est pas encore disponible."
 msgstr ""
@@ -2048,24 +2273,24 @@ msgid "Ajouter un exemplaire : %s"
 msgstr ""
 
 #. translators: %s: libellé du sticker
-#: templates/myaccount/inventaire.php:87
+#: templates/myaccount/inventaire.php:88
 #, php-format
 msgid "Retirer un exemplaire : %s"
 msgstr ""
 
 #. translators: %s: libellé du sticker
-#: templates/myaccount/inventaire.php:92
+#: templates/myaccount/inventaire.php:93
 #, php-format
 msgid "Exemplaires : %s"
 msgstr ""
 
 #. translators: %d: nombre d'exemplaires promis
-#: templates/myaccount/inventaire.php:101
+#: templates/myaccount/inventaire.php:102
 #, php-format
 msgid "dont %d promis"
 msgstr ""
 
-#: templates/myaccount/inventaire.php:110
+#: templates/myaccount/inventaire.php:111
 msgid "Enregistrer l'inventaire"
 msgstr ""
 
@@ -2161,49 +2386,119 @@ msgid_plural "%d en attente"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/myaccount/profil.php:22
-msgid "Votre pseudo est visible des autres membres de la bourse. Votre nom et votre adresse ne sont communiqués qu'à la personne avec qui vous avez accepté un échange, et seulement jusqu'à sa clôture."
+#: templates/myaccount/profil.php:23
+msgid "Comment fonctionne la bourse"
+msgstr ""
+
+#: templates/myaccount/profil.php:25
+msgid "Inventaire : indiquez combien d'exemplaires vous possédez de chaque sticker. Vos doubles et vos numéros manquants sont calculés automatiquement."
 msgstr ""
 
 #: templates/myaccount/profil.php:26
+msgid "Bourse : trouvez les membres qui ont en double les stickers qui vous manquent (des suggestions vous sont aussi proposées dans « Propositions »), puis envoyez-leur une proposition : ce que vous demandez, ce que vous donnez."
+msgstr ""
+
+#. translators: %d: nombre de jours avant expiration
+#: templates/myaccount/profil.php:30
+#, php-format
+msgid "Les stickers que vous proposez sont réservés pendant l'attente de la réponse. L'autre membre peut accepter, refuser ou faire une contre-proposition ; sans réponse sous %d jours, la proposition expire."
+msgstr ""
+
+#: templates/myaccount/profil.php:34
+msgid "Une fois l'échange accepté, l'adresse d'envoi s'affiche pour celui qui doit expédier. Chacun envoie ses stickers par courrier, à ses frais, puis clique sur « J'ai expédié »."
+msgstr ""
+
+#: templates/myaccount/profil.php:35
+msgid "À réception, cliquez sur « Reçu ». Quand toutes les réceptions sont confirmées, l'échange est clôturé et les inventaires sont mis à jour automatiquement."
+msgstr ""
+
+#: templates/myaccount/profil.php:36
+msgid "Tant que rien n'est expédié, un échange accepté peut être annulé d'un commun accord. En cas de problème, utilisez « Signaler un problème » : l'équipe du site examine la situation et sa décision est définitive."
+msgstr ""
+
+#: templates/myaccount/profil.php:37
+msgid "Votre pseudo et vos doubles et manquants sont visibles des autres membres. Votre nom et votre adresse ne sont communiqués qu'au membre avec qui vous échangez, jusqu'à la clôture de l'échange."
+msgstr ""
+
+#: templates/myaccount/profil.php:38
+msgid "Les échanges se font uniquement sticker contre sticker (ou en don) : aucune vente ni contrepartie en argent. Restez courtois en toutes circonstances."
+msgstr ""
+
+#: templates/myaccount/profil.php:41
+msgid "Lire les conditions générales d'utilisation de la bourse"
+msgstr ""
+
+#. translators: %s: date
+#: templates/myaccount/profil.php:50
+#, php-format
+msgid "Vous avez accepté le fonctionnement et les conditions d'utilisation de la bourse le %s."
+msgstr ""
+
+#. translators: %s: lien vers les conditions générales d'utilisation
+#: templates/myaccount/profil.php:66
+#, php-format
+msgid "J'ai lu le fonctionnement de la bourse et j'accepte les %s."
+msgstr ""
+
+#: templates/myaccount/profil.php:67
+msgid "conditions générales d'utilisation de la bourse aux stickers"
+msgstr ""
+
+#: templates/myaccount/profil.php:70
+msgid "J'ai lu le fonctionnement de la bourse et j'accepte les conditions générales d'utilisation de la bourse aux stickers."
+msgstr ""
+
+#: templates/myaccount/profil.php:75
+msgid "Valider"
+msgstr ""
+
+#: templates/myaccount/profil.php:81
+msgid "Une fois le fonctionnement de la bourse accepté, vous pourrez choisir votre pseudo et renseigner votre adresse d'envoi."
+msgstr ""
+
+#: templates/myaccount/profil.php:87
+msgid "Votre pseudo est visible des autres membres de la bourse. Votre nom et votre adresse ne sont communiqués qu'à la personne avec qui vous avez accepté un échange, et seulement jusqu'à sa clôture."
+msgstr ""
+
+#: templates/myaccount/profil.php:91
 msgid "Mon pseudo"
 msgstr ""
 
 #. translators: 1: longueur minimale, 2: longueur maximale
-#: templates/myaccount/profil.php:39
+#: templates/myaccount/profil.php:104
 #, php-format
 msgid "%1$d à %2$d caractères : lettres sans accent, chiffres, point, tiret ou tiret bas. Votre pseudo doit être unique."
 msgstr ""
 
-#: templates/myaccount/profil.php:46
+#: templates/myaccount/profil.php:111
 msgid "Enregistrer le pseudo"
 msgstr ""
 
-#: templates/myaccount/profil.php:50
+#: templates/myaccount/profil.php:115
 msgid "Mon adresse pour les échanges"
 msgstr ""
 
-#: templates/myaccount/profil.php:53
+#: templates/myaccount/profil.php:118
 msgid "Choisissez d'abord votre pseudo pour pouvoir enregistrer votre adresse."
 msgstr ""
 
-#: templates/myaccount/profil.php:55
+#: templates/myaccount/profil.php:120
 msgid "Cette adresse est propre à la bourse : elle ne modifie pas vos adresses de facturation et de livraison de la boutique."
 msgstr ""
 
-#: templates/myaccount/profil.php:60
+#: templates/myaccount/profil.php:125
 msgid "Nom et prénom du destinataire"
 msgstr ""
 
-#: templates/myaccount/profil.php:68
+#: templates/myaccount/profil.php:133
 msgid "Complément d'adresse (facultatif)"
 msgstr ""
 
-#: templates/myaccount/profil.php:82
+#: templates/myaccount/profil.php:147
 msgid "Choisir…"
 msgstr ""
 
-#: templates/myaccount/profil.php:89
+#: templates/myaccount/profil.php:154
 msgid "Enregistrer l'adresse"
 msgstr ""
 

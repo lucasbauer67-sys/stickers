@@ -20,7 +20,7 @@ class STK_Market {
     }
 
     /**
-     * Membres prêts à échanger (pseudo + adresse complète, compte existant), hors $viewer_id,
+     * Membres prêts à échanger (pseudo + adresse complète + règles acceptées, compte existant), hors $viewer_id,
      * avec deux compteurs :
      *  - theirs : nombre de numéros dont il a un double disponible et qui me manquent ;
      *  - mine   : nombre de numéros dont j'ai un double disponible et qui lui manquent.
@@ -39,7 +39,10 @@ class STK_Market {
         $rows = (array) $wpdb->get_results($wpdb->prepare(
             "SELECT m.user_id, m.pseudo FROM $members m
              JOIN {$wpdb->users} u ON u.ID = m.user_id
+             JOIN {$wpdb->usermeta} um ON um.user_id = m.user_id AND um.meta_key = %s AND CAST(um.meta_value AS UNSIGNED) >= %d
              WHERE m.user_id <> %d AND m.destinataire <> '' AND m.adresse_1 <> '' AND m.code_postal <> '' AND m.ville <> '' AND m.pays <> ''",
+            STK_Terms::META_VERSION,
+            STK_Terms::version(),
             $viewer_id
         ));
         if (!$rows) {
