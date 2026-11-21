@@ -1,4 +1,4 @@
-# Bourse aux stickers — v1.2.0
+# Bourse aux stickers — v1.2.1
 
 Plugin WordPress/WooCommerce des éditions Black and White : bourse d'échange de stickers entre membres connectés, dans l'esprit des albums Panini. Indépendant du plugin « Abonnements Éditions Limitées ».
 
@@ -63,6 +63,12 @@ En tête de **Mon compte → Stickers → Propositions** : les membres avec qui 
 **Litiges** : « Signaler un problème » sur un échange accepté, par l'un ou l'autre, jusqu'à la clôture (motif obligatoire). L'échange est suspendu : réservations maintenues, adresse masquée, plus d'expédition ni d'annulation, discussion ouverte. **Admin → Stickers → Litiges** (compteur dans le menu) : motif, notes internes, « Clôturer comme réussi » (inventaires mis à jour) ou « Annuler l'échange » (réservations libérées, inventaires inchangés). Aucune correction automatique.
 
 **RGPD** : export et effacement via Outils → Exporter / Effacer les données personnelles ; même effacement à la suppression d'un compte. L'effacement annule ou refuse les propositions en attente, transmet les échanges acceptés à l'admin (litige), supprime pseudo, adresse et inventaire, efface le texte des messages ; l'historique des échanges reste visible pour l'autre membre (« Membre supprimé »). Texte proposé pour la politique de confidentialité (Réglages → Confidentialité → guide).
+
+## Version 1.2.1 — affichage de l'inventaire
+
+- Cases de l'inventaire : visuel, numéro complet, nom, puis « − » [nombre] « + ». Cliquer sur la case n'ajoute plus d'exemplaire.
+- Clic sur un visuel : visionneuse avec la copie filigranée (400 px max), flèches ‹ › et touches ← → pour passer au sticker précédent/suivant parmi ceux affichés (filtre en cours), Échap, × ou clic à côté pour fermer. Sans JavaScript, le visuel s'ouvre dans un nouvel onglet.
+- Styles renforcés contre les règles génériques des thèmes sur les boutons (cause du numéro tronqué avec Hello Elementor).
 
 ## Version 1.2.0 — ouverture / fermeture de la bourse
 

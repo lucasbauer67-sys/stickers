@@ -139,6 +139,96 @@
         scheduleSave(card, input, saved);
     });
 
+    /* ------------------------------------------------------------------
+     * Visionneuse : clic sur un visuel = image agrandie (copie filigranée),
+     * flèches ← → pour passer au sticker précédent / suivant, Échap pour fermer.
+     * Sans JavaScript, le lien ouvre simplement l'image dans un nouvel onglet.
+     * ------------------------------------------------------------------ */
+    var box = null, boxImg, boxCaption, btnPrev, btnNext, btnClose, current = -1, items = [], opener = null;
+
+    function buildBox() {
+        box = document.createElement('div');
+        box.className = 'stk-lightbox';
+        box.hidden = true;
+        box.setAttribute('role', 'dialog');
+        box.setAttribute('aria-modal', 'true');
+        box.setAttribute('aria-label', stkFront.i18n.viewer);
+        box.innerHTML =
+            '<figure class="stk-lb-figure"><img class="stk-lb-img" alt="" draggable="false"><figcaption class="stk-lb-caption"></figcaption></figure>' +
+            '<button type="button" class="stk-lb-btn stk-lb-prev"></button>' +
+            '<button type="button" class="stk-lb-btn stk-lb-next"></button>' +
+            '<button type="button" class="stk-lb-btn stk-lb-close"></button>';
+        boxImg = box.querySelector('.stk-lb-img');
+        boxCaption = box.querySelector('.stk-lb-caption');
+        btnPrev = box.querySelector('.stk-lb-prev');
+        btnNext = box.querySelector('.stk-lb-next');
+        btnClose = box.querySelector('.stk-lb-close');
+        btnPrev.textContent = '‹'; btnPrev.setAttribute('aria-label', stkFront.i18n.prev);
+        btnNext.textContent = '›'; btnNext.setAttribute('aria-label', stkFront.i18n.next);
+        btnClose.textContent = '×'; btnClose.setAttribute('aria-label', stkFront.i18n.close);
+        btnPrev.addEventListener('click', function () { show(current - 1); });
+        btnNext.addEventListener('click', function () { show(current + 1); });
+        btnClose.addEventListener('click', closeBox);
+        box.addEventListener('click', function (event) {
+            if (event.target === box) { closeBox(); }
+        });
+        box.addEventListener('contextmenu', function (event) { event.preventDefault(); });
+        // Écouté sur le document : le focus peut quitter la visionneuse quand une flèche se masque.
+        document.addEventListener('keydown', function (event) {
+            if (box.hidden) { return; }
+            if (event.key === 'Escape') { event.preventDefault(); closeBox(); }
+            else if (event.key === 'ArrowLeft') { event.preventDefault(); show(current - 1); }
+            else if (event.key === 'ArrowRight') { event.preventDefault(); show(current + 1); }
+            else if (event.key === 'Tab') {
+                // Garde le focus dans la visionneuse.
+                var focusable = [btnPrev, btnNext, btnClose].filter(function (b) { return !b.hidden; });
+                var i = focusable.indexOf(document.activeElement);
+                event.preventDefault();
+                focusable[(i + (event.shiftKey ? -1 : 1) + focusable.length) % focusable.length].focus();
+            }
+        });
+        document.body.appendChild(box);
+    }
+
+    function show(index) {
+        if (index < 0 || index >= items.length) { return; }
+        current = index;
+        var link = items[index];
+        boxImg.src = link.getAttribute('href');
+        boxCaption.textContent = link.getAttribute('data-stk-caption') || '';
+        btnPrev.hidden = index === 0;
+        btnNext.hidden = index === items.length - 1;
+        if (!box.contains(document.activeElement) || document.activeElement.hidden) { btnClose.focus(); }
+    }
+
+    function openBox(link) {
+        if (!box) { buildBox(); }
+        // Stickers visibles (filtre en cours) ayant un visuel, dans l'ordre de la grille.
+        items = Array.prototype.filter.call(root.querySelectorAll('.stk-card-zoom'), function (a) {
+            return !a.closest('.stk-card').hidden;
+        });
+        opener = link;
+        box.hidden = false;
+        document.body.classList.add('stk-lightbox-open');
+        show(items.indexOf(link));
+        btnClose.focus();
+    }
+
+    function closeBox() {
+        box.hidden = true;
+        boxImg.removeAttribute('src');
+        document.body.classList.remove('stk-lightbox-open');
+        if (opener) { opener.focus(); }
+    }
+
+    root.addEventListener('click', function (event) {
+        var link = event.target.closest('.stk-card-zoom');
+        if (link) {
+            event.preventDefault();
+            openBox(link);
+        }
+    });
+
     // La touche Entrée dans un champ ne doit pas soumettre tout le formulaire.
     if (form) {
         form.addEventListener('submit', function (event) {

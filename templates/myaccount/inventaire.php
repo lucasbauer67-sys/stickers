@@ -42,7 +42,7 @@ $stats     = $args['stats'];
             <?php
             printf(
                 /* translators: %d: quantité maximale */
-                esc_html__('Indiquez pour chaque numéro le nombre d\'exemplaires que vous possédez (0 à %d). Cliquez sur une case pour ajouter un exemplaire, sur « − » pour en retirer un.', 'stickers'),
+                esc_html__('Indiquez pour chaque numéro le nombre d\'exemplaires que vous possédez (0 à %d) avec les boutons « − » et « + », ou en saisissant le nombre. Cliquez sur un visuel pour l\'agrandir.', 'stickers'),
                 (int) STK_MAX_QTY
             );
             ?>
@@ -70,20 +70,24 @@ $stats     = $args['stats'];
                         data-stk-id="<?php echo esc_attr($id); ?>"
                         data-stk-min="<?php echo esc_attr($min); ?>"
                         data-stk-reserved="<?php echo esc_attr($res); ?>">
-                        <button type="button" class="stk-card-plus" aria-label="<?php echo esc_attr(sprintf(
-                            /* translators: %s: libellé du sticker */
-                            __('Ajouter un exemplaire : %s', 'stickers'),
-                            STK_Catalog::label($sticker)
-                        )); ?>">
-                            <?php $image_url = STK_Watermark::url($sticker); // Copie filigranée, jamais l'original. ?>
-                            <?php if ($image_url) : ?>
+                        <?php $image_url = STK_Watermark::url($sticker); // Copie filigranée, jamais l'original. ?>
+                        <?php if ($image_url) : ?>
+                            <a class="stk-card-zoom" href="<?php echo esc_url($image_url); ?>" target="_blank" rel="noopener"
+                                data-stk-caption="<?php echo esc_attr(STK_Catalog::label($sticker)); ?>"
+                                aria-label="<?php echo esc_attr(sprintf(
+                                    /* translators: %s: libellé du sticker */
+                                    __('Agrandir le visuel : %s', 'stickers'),
+                                    STK_Catalog::label($sticker)
+                                )); ?>">
                                 <img class="stk-card-img" src="<?php echo esc_url($image_url); ?>" alt="" loading="lazy" draggable="false">
-                            <?php endif; ?>
-                            <span class="stk-card-num"><?php echo esc_html($sticker->numero); ?></span>
-                            <span class="stk-card-name"><?php echo esc_html($sticker->nom); ?></span>
-                        </button>
+                            </a>
+                        <?php else : ?>
+                            <span class="stk-card-noimg" aria-hidden="true"></span>
+                        <?php endif; ?>
+                        <span class="stk-card-num"><?php echo esc_html($sticker->numero); ?></span>
+                        <span class="stk-card-name"><?php echo esc_html($sticker->nom); ?></span>
                         <span class="stk-card-qty">
-                            <button type="button" class="stk-card-minus" aria-label="<?php echo esc_attr(sprintf(
+                            <button type="button" class="stk-qty-btn stk-card-minus" aria-label="<?php echo esc_attr(sprintf(
                                 /* translators: %s: libellé du sticker */
                                 __('Retirer un exemplaire : %s', 'stickers'),
                                 STK_Catalog::label($sticker)
@@ -95,6 +99,11 @@ $stats     = $args['stats'];
                             )); ?></label>
                             <input type="number" id="<?php echo esc_attr($field); ?>" name="qty[<?php echo esc_attr($id); ?>]"
                                 value="<?php echo esc_attr($qty); ?>" min="<?php echo esc_attr($min); ?>" max="<?php echo esc_attr(STK_MAX_QTY); ?>" step="1" inputmode="numeric">
+                            <button type="button" class="stk-qty-btn stk-card-plus" aria-label="<?php echo esc_attr(sprintf(
+                                /* translators: %s: libellé du sticker */
+                                __('Ajouter un exemplaire : %s', 'stickers'),
+                                STK_Catalog::label($sticker)
+                            )); ?>">+</button>
                         </span>
                         <span class="stk-card-reserved"<?php echo $res ? '' : ' hidden'; ?>>
                             <?php echo esc_html(sprintf(

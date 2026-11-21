@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Bourse aux stickers 1.2.0\n"
-"Report-Msgid-Bugs-To: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"Project-Id-Version: Bourse aux stickers 1.2.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stickers\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-19T07:04:04+00:00\n"
+"POT-Creation-Date: 2026-11-21T14:22:34+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: stickers\n"
@@ -228,7 +228,7 @@ msgstr ""
 
 #: includes/class-stk-admin-exchanges.php:253
 #: includes/class-stk-exchanges.php:297
-#: includes/class-stk-frontend.php:358
+#: includes/class-stk-frontend.php:362
 #: includes/class-stk-messages.php:38
 msgid "Échange introuvable."
 msgstr ""
@@ -1357,7 +1357,7 @@ msgid "Sticker inconnu ou désactivé."
 msgstr ""
 
 #: includes/class-stk-exchanges.php:356
-#: includes/class-stk-frontend.php:493
+#: includes/class-stk-frontend.php:497
 msgid "Destinataire invalide."
 msgstr ""
 
@@ -1481,147 +1481,163 @@ msgstr ""
 msgid "Erreur, la modification n'a pas été enregistrée."
 msgstr ""
 
-#: includes/class-stk-frontend.php:140
-#: includes/class-stk-frontend.php:430
-#: includes/class-stk-frontend.php:592
-msgid "La bourse aux stickers n'est pas encore ouverte."
+#: includes/class-stk-frontend.php:125
+msgid "Visuel agrandi"
+msgstr ""
+
+#: includes/class-stk-frontend.php:126
+msgid "Sticker précédent"
+msgstr ""
+
+#: includes/class-stk-frontend.php:127
+msgid "Sticker suivant"
+msgstr ""
+
+#: includes/class-stk-frontend.php:128
+msgid "Fermer"
 msgstr ""
 
 #: includes/class-stk-frontend.php:144
+#: includes/class-stk-frontend.php:434
+#: includes/class-stk-frontend.php:596
+msgid "La bourse aux stickers n'est pas encore ouverte."
+msgstr ""
+
+#: includes/class-stk-frontend.php:148
 msgid "Aperçu administrateur : la bourse est fermée aux clients, eux ne voient pas cet onglet."
 msgstr ""
 
 #. translators: %s: lien vers la page Pseudo et adresse
-#: includes/class-stk-frontend.php:161
+#: includes/class-stk-frontend.php:165
 #, php-format
 msgid "Choisissez un pseudo pour participer à la bourse : %s"
 msgstr ""
 
-#: includes/class-stk-frontend.php:162
+#: includes/class-stk-frontend.php:166
 msgid "choisir mon pseudo"
 msgstr ""
 
 #. translators: %s: lien vers le Profil
-#: includes/class-stk-frontend.php:170
+#: includes/class-stk-frontend.php:174
 #, php-format
 msgid "Avant de participer à la bourse, lisez son fonctionnement et acceptez les conditions d'utilisation : %s"
 msgstr ""
 
-#: includes/class-stk-frontend.php:171
+#: includes/class-stk-frontend.php:175
 msgid "lire et accepter"
 msgstr ""
 
 #. translators: %s: lien vers la page Pseudo et adresse
-#: includes/class-stk-frontend.php:179
+#: includes/class-stk-frontend.php:183
 #, php-format
 msgid "Renseignez votre adresse pour pouvoir proposer ou accepter un échange : %s"
 msgstr ""
 
-#: includes/class-stk-frontend.php:180
+#: includes/class-stk-frontend.php:184
 msgid "mon adresse"
 msgstr ""
 
-#: includes/class-stk-frontend.php:280
+#: includes/class-stk-frontend.php:284
 msgid "Ce membre n'est pas disponible dans la bourse."
 msgstr ""
 
-#: includes/class-stk-frontend.php:290
+#: includes/class-stk-frontend.php:294
 msgid "Cette proposition n'est plus en attente : la contre-proposition n'est pas possible."
 msgstr ""
 
-#: includes/class-stk-frontend.php:309
+#: includes/class-stk-frontend.php:313
 msgid "Cette suggestion n'est plus d'actualité : les inventaires ont changé."
 msgstr ""
 
 #. translators: 1: numéro, 2: nom
-#: includes/class-stk-frontend.php:403
+#: includes/class-stk-frontend.php:407
 #: templates/myaccount/propositions.php:49
 #, php-format
 msgid "nº %1$s %2$s"
 msgstr ""
 
-#: includes/class-stk-frontend.php:442
+#: includes/class-stk-frontend.php:446
 msgid "Session expirée, veuillez réessayer."
 msgstr ""
 
-#: includes/class-stk-frontend.php:458
+#: includes/class-stk-frontend.php:462
 msgid "Inventaire enregistré."
 msgstr ""
 
-#: includes/class-stk-frontend.php:464
+#: includes/class-stk-frontend.php:468
 msgid "Merci ! Vous avez accepté le fonctionnement et les conditions d'utilisation de la bourse."
 msgstr ""
 
-#: includes/class-stk-frontend.php:471
-#: includes/class-stk-frontend.php:479
+#: includes/class-stk-frontend.php:475
+#: includes/class-stk-frontend.php:483
 msgid "Acceptez d'abord le fonctionnement et les conditions d'utilisation de la bourse."
 msgstr ""
 
-#: includes/class-stk-frontend.php:472
+#: includes/class-stk-frontend.php:476
 msgid "Pseudo enregistré."
 msgstr ""
 
-#: includes/class-stk-frontend.php:480
+#: includes/class-stk-frontend.php:484
 msgid "Adresse enregistrée."
 msgstr ""
 
-#: includes/class-stk-frontend.php:497
+#: includes/class-stk-frontend.php:501
 msgid "Contre-proposition envoyée."
 msgstr ""
 
-#: includes/class-stk-frontend.php:497
+#: includes/class-stk-frontend.php:501
 msgid "Proposition envoyée."
 msgstr ""
 
-#: includes/class-stk-frontend.php:504
+#: includes/class-stk-frontend.php:508
 msgid "Échange accepté : l'adresse d'envoi est maintenant visible par celui qui doit expédier."
 msgstr ""
 
-#: includes/class-stk-frontend.php:509
+#: includes/class-stk-frontend.php:513
 msgid "Proposition refusée."
 msgstr ""
 
-#: includes/class-stk-frontend.php:514
+#: includes/class-stk-frontend.php:518
 msgid "Proposition annulée."
 msgstr ""
 
-#: includes/class-stk-frontend.php:519
+#: includes/class-stk-frontend.php:523
 msgid "Expédition enregistrée."
 msgstr ""
 
-#: includes/class-stk-frontend.php:525
+#: includes/class-stk-frontend.php:529
 msgid "Réception confirmée : l'échange est clôturé et les inventaires sont à jour."
 msgstr ""
 
-#: includes/class-stk-frontend.php:526
+#: includes/class-stk-frontend.php:530
 msgid "Réception confirmée."
 msgstr ""
 
-#: includes/class-stk-frontend.php:531
+#: includes/class-stk-frontend.php:535
 msgid "Demande d'annulation envoyée : l'autre membre doit la confirmer."
 msgstr ""
 
-#: includes/class-stk-frontend.php:539
+#: includes/class-stk-frontend.php:543
 msgid "Échange annulé."
 msgstr ""
 
-#: includes/class-stk-frontend.php:539
+#: includes/class-stk-frontend.php:543
 msgid "Demande d'annulation retirée."
 msgstr ""
 
-#: includes/class-stk-frontend.php:541
+#: includes/class-stk-frontend.php:545
 msgid "Demande d'annulation refusée : l'échange continue."
 msgstr ""
 
-#: includes/class-stk-frontend.php:547
+#: includes/class-stk-frontend.php:551
 msgid "Problème signalé : l'équipe du site va examiner la situation. L'échange est suspendu en attendant."
 msgstr ""
 
-#: includes/class-stk-frontend.php:552
+#: includes/class-stk-frontend.php:556
 msgid "Message envoyé."
 msgstr ""
 
-#: includes/class-stk-frontend.php:589
+#: includes/class-stk-frontend.php:593
 msgid "Vous devez être connecté."
 msgstr ""
 
@@ -2310,7 +2326,7 @@ msgstr ""
 #. translators: %d: quantité maximale
 #: templates/myaccount/inventaire.php:45
 #, php-format
-msgid "Indiquez pour chaque numéro le nombre d'exemplaires que vous possédez (0 à %d). Cliquez sur une case pour ajouter un exemplaire, sur « − » pour en retirer un."
+msgid "Indiquez pour chaque numéro le nombre d'exemplaires que vous possédez (0 à %d) avec les boutons « − » et « + », ou en saisissant le nombre. Cliquez sur un visuel pour l'agrandir."
 msgstr ""
 
 #: templates/myaccount/inventaire.php:51
@@ -2322,30 +2338,36 @@ msgid "Manquants"
 msgstr ""
 
 #. translators: %s: libellé du sticker
-#: templates/myaccount/inventaire.php:75
+#: templates/myaccount/inventaire.php:79
 #, php-format
-msgid "Ajouter un exemplaire : %s"
+msgid "Agrandir le visuel : %s"
 msgstr ""
 
 #. translators: %s: libellé du sticker
-#: templates/myaccount/inventaire.php:88
+#: templates/myaccount/inventaire.php:92
 #, php-format
 msgid "Retirer un exemplaire : %s"
 msgstr ""
 
 #. translators: %s: libellé du sticker
-#: templates/myaccount/inventaire.php:93
+#: templates/myaccount/inventaire.php:97
 #, php-format
 msgid "Exemplaires : %s"
 msgstr ""
 
+#. translators: %s: libellé du sticker
+#: templates/myaccount/inventaire.php:104
+#, php-format
+msgid "Ajouter un exemplaire : %s"
+msgstr ""
+
 #. translators: %d: nombre d'exemplaires promis
-#: templates/myaccount/inventaire.php:102
+#: templates/myaccount/inventaire.php:111
 #, php-format
 msgid "dont %d promis"
 msgstr ""
 
-#: templates/myaccount/inventaire.php:111
+#: templates/myaccount/inventaire.php:120
 msgid "Enregistrer l'inventaire"
 msgstr ""
 

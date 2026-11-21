@@ -54,103 +54,159 @@
     text-decoration: underline;
 }
 
-.stk-grid {
+/*
+ * Grille d'inventaire. Les sélecteurs sont préfixés par .stk-inventory pour l'emporter
+ * sur les styles génériques des thèmes (ex. Hello Elementor : « [type="button"], button »
+ * impose bordure, marges intérieures, inline-block et nowrap à tous les boutons).
+ */
+.stk-inventory .stk-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
     gap: .75rem;
     list-style: none;
     margin: 0 0 1rem;
     padding: 0;
 }
 
-.stk-card {
+.stk-inventory .stk-card {
     display: flex;
     flex-direction: column;
+    align-items: stretch;
+    min-width: 0;
+    margin: 0;
     border: 2px solid rgba(0, 0, 0, .12);
     border-radius: 6px;
     overflow: hidden;
     background: #fff;
+    text-align: center;
     transition: border-color .15s, opacity .15s;
 }
 
-.stk-card[hidden] {
+.stk-inventory .stk-card[hidden] {
     display: none;
 }
 
-.stk-card.is-saving {
+.stk-inventory .stk-card.is-saving {
     opacity: .6;
 }
 
-.stk-card-plus {
+.stk-inventory .stk-card .stk-card-zoom {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: .25rem;
-    width: 100%;
-    padding: .5rem;
+    justify-content: center;
+    height: 96px;
+    padding: .4rem .4rem 0;
     border: 0;
     background: transparent;
-    color: inherit;
-    cursor: pointer;
-    font: inherit;
-    text-align: center;
+    cursor: zoom-in;
+    text-decoration: none;
 }
 
-.stk-card-plus:focus-visible,
-.stk-card-minus:focus-visible {
+.stk-inventory .stk-card .stk-card-zoom:focus-visible {
     outline: 2px solid currentColor;
     outline-offset: -2px;
 }
 
-.stk-card-img {
-    width: 100%;
+.stk-inventory .stk-card .stk-card-img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
     height: auto;
-    max-height: 90px;
     object-fit: contain;
+    -webkit-user-drag: none;
+    user-select: none;
 }
 
-.stk-card-num {
+.stk-inventory .stk-card .stk-card-noimg {
+    display: block;
+    height: .4rem;
+}
+
+.stk-inventory .stk-card .stk-card-num {
+    display: block;
+    padding: .25rem .25rem 0;
     font-size: 1.4em;
     font-weight: 700;
-    line-height: 1.1;
+    line-height: 1.15;
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
-.stk-card-name {
+.stk-inventory .stk-card .stk-card-name {
+    display: block;
+    padding: 0 .35rem .4rem;
     font-size: .8em;
-    line-height: 1.2;
-    word-break: break-word;
+    line-height: 1.25;
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
-.stk-card-qty {
+/* Quantité : « − » à gauche, nombre au centre, « + » à droite. */
+.stk-inventory .stk-card .stk-card-qty {
     display: flex;
-    align-items: center;
+    align-items: stretch;
+    margin-top: auto;
     border-top: 1px solid rgba(0, 0, 0, .1);
 }
 
-.stk-card-minus {
+.stk-inventory .stk-card .stk-qty-btn {
+    all: unset;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex: 0 0 2.2rem;
+    width: 2.2rem;
     height: 2.2rem;
-    border: 0;
-    border-right: 1px solid rgba(0, 0, 0, .1);
-    background: transparent;
-    color: inherit;
     cursor: pointer;
-    font-size: 1.2em;
+    font-size: 1.25rem;
+    font-weight: 600;
     line-height: 1;
+    color: inherit;
+    background: transparent;
+    user-select: none;
 }
 
-.stk-card-qty input[type="number"] {
+.stk-inventory .stk-card .stk-card-minus {
+    border-right: 1px solid rgba(0, 0, 0, .1);
+}
+
+.stk-inventory .stk-card .stk-card-plus {
+    border-left: 1px solid rgba(0, 0, 0, .1);
+}
+
+.stk-inventory .stk-card .stk-qty-btn:hover {
+    background: rgba(0, 0, 0, .06);
+}
+
+.stk-inventory .stk-card .stk-qty-btn:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+}
+
+.stk-inventory .stk-card .stk-card-qty input[type="number"] {
     flex: 1 1 auto;
     width: 100%;
     min-width: 0;
     height: 2.2rem;
+    margin: 0;
+    padding: 0 .1rem;
     border: 0;
-    padding: 0 .25rem;
-    text-align: center;
+    border-radius: 0;
     background: transparent;
+    font-size: 1rem;
+    text-align: center;
+    -moz-appearance: textfield;
 }
 
-.stk-card-reserved {
+.stk-inventory .stk-card .stk-card-qty input[type="number"]::-webkit-outer-spin-button,
+.stk-inventory .stk-card .stk-card-qty input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.stk-inventory .stk-card .stk-card-reserved {
     display: block;
     padding: .15rem .25rem;
     font-size: .75em;
@@ -158,27 +214,128 @@
     background: rgba(0, 0, 0, .06);
 }
 
-.stk-card-reserved[hidden] {
+.stk-inventory .stk-card .stk-card-reserved[hidden] {
     display: none;
 }
 
 /* États : manquant (estompé), possédé, double (mis en avant). */
-.stk-state-manquant {
+.stk-inventory .stk-state-manquant {
     opacity: .55;
     border-style: dashed;
 }
 
-.stk-state-manquant.is-saving {
+.stk-inventory .stk-state-manquant.is-saving {
     opacity: .4;
 }
 
-.stk-state-possede {
+.stk-inventory .stk-state-possede {
     border-color: rgba(0, 0, 0, .45);
 }
 
-.stk-state-double {
+.stk-inventory .stk-state-double {
     border-color: #000;
     box-shadow: 0 0 0 1px #000;
+}
+
+/* Visionneuse (image agrandie). Ajoutée à la fin de <body> par frontend.js. */
+.stk-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, .82);
+}
+
+.stk-lightbox[hidden] {
+    display: none;
+}
+
+.stk-lightbox .stk-lb-figure {
+    margin: 0;
+    max-width: min(92vw, 520px);
+    text-align: center;
+}
+
+.stk-lightbox .stk-lb-img {
+    display: block;
+    max-width: 100%;
+    max-height: 78vh;
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, .5);
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.stk-lightbox .stk-lb-caption {
+    margin-top: .75rem;
+    color: #fff;
+    font-size: 1rem;
+    line-height: 1.3;
+}
+
+.stk-lightbox .stk-lb-btn {
+    all: unset;
+    box-sizing: border-box;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .15);
+    color: #fff;
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+    user-select: none;
+}
+
+.stk-lightbox .stk-lb-btn:hover,
+.stk-lightbox .stk-lb-btn:focus-visible {
+    background: rgba(255, 255, 255, .3);
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+.stk-lightbox .stk-lb-close {
+    top: 1rem;
+    right: 1rem;
+}
+
+.stk-lightbox .stk-lb-prev {
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.stk-lightbox .stk-lb-next {
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.stk-lightbox .stk-lb-btn[hidden] {
+    display: none;
+}
+
+body.stk-lightbox-open {
+    overflow: hidden;
+}
+
+@media (max-width: 600px) {
+    .stk-lightbox .stk-lb-prev,
+    .stk-lightbox .stk-lb-next {
+        top: auto;
+        bottom: 1rem;
+        transform: none;
+    }
 }
 
 .stk-inventory-status.is-error {

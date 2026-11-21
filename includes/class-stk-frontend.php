@@ -120,8 +120,12 @@ class STK_Frontend {
             'nonce'   => wp_create_nonce('stk_frontend'),
             'max'     => STK_MAX_QTY,
             'i18n'    => array(
-                'saved' => __('Enregistré', 'stickers'),
-                'error' => __('Erreur, la modification n\'a pas été enregistrée.', 'stickers'),
+                'saved'  => __('Enregistré', 'stickers'),
+                'error'  => __('Erreur, la modification n\'a pas été enregistrée.', 'stickers'),
+                'viewer' => __('Visuel agrandi', 'stickers'),
+                'prev'   => __('Sticker précédent', 'stickers'),
+                'next'   => __('Sticker suivant', 'stickers'),
+                'close'  => __('Fermer', 'stickers'),
             ),
         ));
     }

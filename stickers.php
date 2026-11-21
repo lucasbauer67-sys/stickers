@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Bourse aux stickers
  * Description: Bourse d'échange de stickers entre membres connectés : inventaire déclaratif, propositions d'échange, suggestions automatiques.
- * Version: 1.2.0
+ * Version: 1.2.1
  * Author: Xylene14
  * Requires at least: 7.1
  * Requires PHP: 8.3
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('STK_VERSION', '1.2.0');
+define('STK_VERSION', '1.2.1');
 define('STK_PLUGIN_FILE', __FILE__);
 define('STK_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('STK_PLUGIN_URL', plugin_dir_url(__FILE__));

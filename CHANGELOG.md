@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.1
+
+- Correctif : numéros à deux chiffres tronqués dans l'inventaire (styles du thème appliqués aux boutons).
+- Bouton « + » à droite de la quantité (« − » à gauche) ; le clic sur la case n'ajoute plus d'exemplaire.
+- Clic sur un visuel : image agrandie (copie filigranée 400 px) avec navigation précédent / suivant (flèches et clavier).
+
 ## 1.2.0
 
 - Interrupteur « Ouvrir / Fermer la bourse » (Catalogue et Réglages), fermée par défaut : onglet masqué aux clients, aperçu pour les administrateurs, page des CGU privée, tâche horaire suspendue.
